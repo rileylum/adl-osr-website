@@ -1,0 +1,23 @@
+---
+import NavLink from './NavLink.astro';
+import NavDropdown from './NavDropdown.astro';
+---
+
+<div class="navbar bg-base-100 shadow-sm">
+  <div class="max-w-7xl mx-auto w-full flex">
+    <div class="flex-1">
+      <a href="/" class="btn btn-ghost text-xl">ADL OSR - GazzaCon</a>
+    </div>
+    <div class="flex-none flex items-center gap-1">
+      <NavDropdown title="ATTEND">
+        <NavLink text="Event Signup" url="/signup" disabled={true}/>
+        <NavLink text="Event Schedule" url="/schedule" />
+        <NavLink text="Event Location" url="https://share.google/iibTkupt3oBTgX044" />
+      </NavDropdown>
+      <NavDropdown title="GM'S" alignEnd={true}>
+        <NavLink text="GM Info" url="/gm-info" disabled={true}/>
+        <NavLink text="Game Submission" url="/gm-submission" />
+      </NavDropdown>
+    </div>
+  </div>
+</div>

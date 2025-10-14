@@ -1,0 +1,20 @@
+---
+interface Props {
+  text: string;
+  url: string;
+  disabled?: boolean;
+}
+
+const { text, url, disabled = false } = Astro.props;
+---
+
+<li class={disabled ? 'disabled' : ''}>
+  <a
+    href={disabled ? undefined : url}
+    class={disabled ? 'opacity-50 cursor-not-allowed' : ''}
+    title={disabled ? 'Coming Soon' : undefined}
+    onclick={disabled ? 'event.preventDefault(); return false;' : undefined}
+  >
+    {text}
+  </a>
+</li>

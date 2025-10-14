@@ -1,0 +1,72 @@
+---
+import CalendarIcon from '../assets/calendar.svg?raw';
+import LocationIcon from '../assets/location.svg?raw';
+---
+
+<div class="hero bg-base-200 min-h-screen">
+  <div class="hero-content text-center">
+    <div class="max-w-2xl">
+      <h1 class="text-5xl font-bold">GAZZA CON SCHEDULE</h1>
+      <div class="py-6 flex items-center justify-center">
+        <div class="flex items-center gap-2 mr-6">
+          <Fragment set:html={CalendarIcon} />
+          <span>Feburary 7th, 2026</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <Fragment set:html={LocationIcon} />
+          <span>Colonel Light Gardens RSL</span>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
+        <table class="table table-zebra">
+          <thead>
+            <tr>
+              <th class="text-lg">Event</th>
+              <th class="text-lg">Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Setup</td>
+              <td>0800 - 0900</td>
+            </tr>
+            <tr>
+              <td>Meet and Greet, Welcome</td>
+              <td>0900 - 0930</td>
+            </tr>
+            <tr>
+              <td>Games Session 1</td>
+              <td>0930 - 1230</td>
+            </tr>
+            <tr>
+              <td>Lunch</td>
+              <td>1230 - 1400</td>
+            </tr>
+            <tr>
+              <td>Games Session 2</td>
+              <td>1400 - 1700</td>
+            </tr>
+            <tr>
+              <td>Dinner</td>
+              <td>1700 - 1830</td>
+            </tr>
+            <tr>
+              <td>Games Session 3</td>
+              <td>1830 - 2130</td>
+            </tr>
+            <tr>
+              <td>Close and Pack Up</td>
+              <td>2130 - 2200</td>
+            </tr>
+            <tr>
+              <td>After Party</td>
+              <td>2200 - Close</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,31 @@
+---
+import CalendarIcon from '../assets/calendar.svg?raw';
+import LocationIcon from '../assets/location.svg?raw';
+import DiscordIcon from '../assets/discord.svg?raw';
+---
+
+<div class="hero bg-base-200 min-h-screen">
+  <div class="hero-content text-center">
+    <div class="max-w-md">
+      <h1 class="text-5xl font-bold">WELCOME TO GAZZA CON</h1>
+      <div class="py-6 flex items-center justify-center">
+        <div class="flex items-center gap-2 mr-6">
+          <Fragment set:html={CalendarIcon} />
+          <span>Feburary 7th, 2026</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <Fragment set:html={LocationIcon} />
+          <span>Colonel Light Gardens RSL</span>
+        </div>
+      </div>
+      <div>
+        <p class="text-lg mb-4">Stay up to date on all things Gazza Con</p>
+        <p class="text-lg mb-6">Join our community Discord server!</p>
+      </div>
+      <a href="https://discord.gg/BNehJG2xP4" target="_blank" rel="noopener noreferrer" class="btn btn-primary gap-2">
+        <Fragment set:html={DiscordIcon} />
+        Join Discord
+      </a>
+    </div>
+  </div>
+</div>
