@@ -7,6 +7,14 @@ import DiscordIcon from '../assets/discord.svg?raw';
 <div class="hero bg-base-200 min-h-screen">
   <div class="hero-content text-center">
     <div class="max-w-lg">
+      <div class="mb-8">
+        <img
+          src="/images/OZORC_Dungeon.svg"
+          alt="OZ ORC Logo"
+          class="w-full max-w-md mx-auto banner-logo"
+          transition:name="logo"
+        />
+      </div>
       <h1 class="text-5xl font-bold">
         WELCOME TO OZ OLD-SCHOOL ROLEPLAYING CON
       </h1>
@@ -36,3 +44,17 @@ import DiscordIcon from '../assets/discord.svg?raw';
     </div>
   </div>
 </div>
+
+<style>
+  /* Invert the SVG colors in dark mode */
+  @media (prefers-color-scheme: dark) {
+    .banner-logo {
+      filter: invert(1);
+    }
+  }
+
+  /* For DaisyUI dark theme */
+  [data-theme='dark'] .banner-logo {
+    filter: invert(1);
+  }
+</style>

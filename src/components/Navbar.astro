@@ -1,16 +1,35 @@
 ---
 import NavLink from './NavLink.astro';
 import NavDropdown from './NavDropdown.astro';
+
+interface Props {
+  showLogo?: boolean;
+}
+
+const { showLogo = true } = Astro.props;
 ---
 
 <div class="navbar bg-base-100 shadow-sm">
-  <div class="max-w-7xl mx-auto w-full flex">
+  <div class="max-w-7xl mx-auto w-full flex items-center">
     <div class="flex-1">
       <a href="/" class="btn btn-ghost text-xl">ADL OSR - OZ ORC</a>
     </div>
-    <div class="flex-none flex items-center gap-1">
+    {
+      showLogo && (
+        <div class="flex-none">
+          <a href="/" class="block px-4">
+            <img
+              src="/images/OZORC_Dungeon.svg"
+              alt="OZ ORC Logo"
+              class="h-12 navbar-logo"
+            />
+          </a>
+        </div>
+      )
+    }
+    <div class="flex-1 flex justify-end items-center gap-1">
       <NavDropdown title="ATTEND">
-        <NavLink text="Code of Conduct" url="/code-of-conduct" />
+        <!-- <NavLink text="Code of Conduct" url="/code-of-conduct" /> -->
         <NavLink text="Event Signup" url="/signup" disabled={true} />
         <NavLink text="Event Schedule" url="/schedule" />
         <NavLink text="Event Location" url="/location" />
@@ -26,3 +45,17 @@ import NavDropdown from './NavDropdown.astro';
     </div>
   </div>
 </div>
+
+<style>
+  /* Invert the SVG colors in dark mode */
+  @media (prefers-color-scheme: dark) {
+    .navbar-logo {
+      filter: invert(1);
+    }
+  }
+
+  /* For DaisyUI dark theme */
+  [data-theme='dark'] .navbar-logo {
+    filter: invert(1);
+  }
+</style>
