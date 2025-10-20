@@ -7,9 +7,14 @@ interface Props {
 const { title, alignEnd = false } = Astro.props;
 ---
 
-<div class={`dropdown dropdown-hover ${alignEnd ? 'dropdown-end' : 'dropdown-bottom'}`}>
+<div
+  class={`dropdown dropdown-hover ${alignEnd ? 'dropdown-end' : 'dropdown-bottom'}`}
+>
   <div tabindex="0" role="button" class="btn btn-ghost">{title}</div>
-  <ul tabindex="-1" class={`dropdown-content menu bg-base-content text-base-100 rounded-box z-[1] w-fit min-w-max p-2 shadow ${alignEnd ? '' : 'left-1/2 -translate-x-1/2'}`}>
+  <ul
+    tabindex="-1"
+    class={`dropdown-content menu bg-base-content text-base-100 rounded-box z-[1] w-fit min-w-max p-2 shadow ${alignEnd ? '' : 'left-1/2 -translate-x-1/2'}`}
+  >
     <slot />
   </ul>
 </div>
