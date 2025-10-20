@@ -1,0 +1,23 @@
+---
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'OZ ORC',
+  description:
+    "Adelaide's premier old-school roleplaying convention for OSR and classic D&D gaming",
+  url: 'https://gazzacon.com',
+  logo: 'https://gazzacon.com/images/OZORC_Dungeon.svg',
+  sameAs: ['https://discord.gg/BNehJG2xP4'],
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Adelaide',
+    addressRegion: 'SA',
+    addressCountry: 'AU',
+  },
+};
+---
+
+<script
+  type="application/ld+json"
+  set:html={JSON.stringify(organizationSchema)}
+/>

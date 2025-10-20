@@ -1,20 +1,44 @@
 ---
 import '../assets/app.css';
 import { ViewTransitions } from 'astro:transitions';
+import SEO from '../components/SEO.astro';
+import OrganizationSchema from '../components/schemas/OrganizationSchema.astro';
+
+export interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  type?: 'website' | 'article';
+}
+
+const {
+  title = 'OZ ORC 2026 - Adelaide\'s Premier Old-School RPG Convention',
+  description = 'Join us February 7th, 2026 at Colonel Light Gardens RSL for Adelaide\'s premier old-school D&D and OSR gaming convention. Experience classic tabletop RPGs with expert GMs.',
+  image,
+  type,
+} = Astro.props;
+
+const site = 'https://gazzacon.com';
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en-AU">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>Adelaide OSR</title>
+    <SEO
+      title={title}
+      description={description}
+      image={image}
+      type={type}
+    />
     <ViewTransitions />
   </head>
   <body>
     <slot />
+    <OrganizationSchema />
   </body>
 </html>
 

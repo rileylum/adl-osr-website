@@ -6,13 +6,18 @@ import About from '../components/About.astro';
 import WhatToBring from '../components/WhatToBring.astro';
 import Testimonials from '../components/Testimonials.astro';
 import FAQ from '../components/FAQ.astro';
+import EventSchema from '../components/schemas/EventSchema.astro';
 ---
 
-<Layout>
+<Layout
+  title="OZ ORC 2026 - Adelaide's Premier Old-School RPG Convention | Feb 7, 2026"
+  description="Join Adelaide's premier old-school D&D and OSR gaming convention on February 7th, 2026 at Colonel Light Gardens RSL. Experience classic tabletop RPGs with expert GMs, from original-edition D&D to weird sci-fi adventures."
+>
   <Navbar showLogo={false} />
   <Hero />
   <About />
   <WhatToBring />
   <Testimonials />
   <FAQ />
+  <EventSchema />
 </Layout>

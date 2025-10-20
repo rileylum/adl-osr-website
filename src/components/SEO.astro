@@ -1,0 +1,51 @@
+---
+export interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  type?: 'website' | 'article';
+  canonical?: string;
+}
+
+const {
+  title,
+  description,
+  image = '/images/OZORC_Dungeon.svg',
+  type = 'website',
+  canonical,
+} = Astro.props;
+
+const siteUrl = Astro.site || 'https://gazzacon.com';
+const canonicalURL = canonical || new URL(Astro.url.pathname, siteUrl).href;
+const imageUrl = new URL(image, siteUrl).href;
+
+const siteName = 'OZ ORC - Adelaide OSR Gaming Convention';
+---
+
+<!-- Primary Meta Tags -->
+<title>{title}</title>
+<meta name="title" content={title} />
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalURL} />
+
+<!-- Geo Meta Tags for Adelaide Local SEO -->
+<meta name="geo.region" content="AU-SA" />
+<meta name="geo.placename" content="Adelaide" />
+<meta name="geo.position" content="-34.986050;138.597715" />
+<meta name="ICBM" content="-34.986050, 138.597715" />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={type} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={imageUrl} />
+<meta property="og:site_name" content={siteName} />
+<meta property="og:locale" content="en_AU" />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={canonicalURL} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageUrl} />

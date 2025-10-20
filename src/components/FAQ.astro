@@ -1,5 +1,42 @@
 ---
-
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'What is OSR?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'OSR stands for "Old-School Renaissance" or "Old-School Revival". It\'s a style of tabletop RPG gaming that emphasizes exploration, player creativity, and challenge. OSR games typically feature high stakes, meaningful choices, and a focus on problem-solving.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: "I'm new to tabletop RPGs. Can I still attend?",
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Absolutely! Our GMs are experienced at welcoming new players and will teach you everything you need to know.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How much does it cost?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Ticket pricing information will be announced soon! Keep an eye on our Discord for updates.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Can I run a game as a GM?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes! We welcome GMs of all experience levels. Check out the Game Submission page to submit your game proposal.',
+      },
+    },
+  ],
+};
 ---
 
 <section class="bg-base-200 py-20">
@@ -92,3 +129,8 @@
     </div>
   </div>
 </section>
+
+<script
+  type="application/ld+json"
+  set:html={JSON.stringify(faqSchema)}
+/>
