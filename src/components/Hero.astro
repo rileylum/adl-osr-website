@@ -14,7 +14,6 @@ import DiscordIcon from '../assets/discord.svg?raw';
           width="5000"
           height="2500"
           class="w-full max-w-md mx-auto banner-logo"
-          transition:name="logo"
         />
       </div>
       <h1 class="text-5xl font-bold">
@@ -48,6 +47,11 @@ import DiscordIcon from '../assets/discord.svg?raw';
 </div>
 
 <style>
+  .banner-logo {
+    width: 100%;
+    height: auto;
+  }
+
   /* Invert the SVG colors in dark mode */
   @media (prefers-color-scheme: dark) {
     .banner-logo {

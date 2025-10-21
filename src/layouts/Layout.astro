@@ -2,6 +2,7 @@
 import '../assets/app.css';
 import { ViewTransitions } from 'astro:transitions';
 import SEO from '../components/SEO.astro';
+import Navbar from '../components/Navbar.astro';
 import OrganizationSchema from '../components/schemas/OrganizationSchema.astro';
 
 export interface Props {
@@ -9,6 +10,7 @@ export interface Props {
   description: string;
   image?: string;
   type?: 'website' | 'article';
+  showLogo?: boolean;
 }
 
 const {
@@ -16,6 +18,7 @@ const {
   description = 'Join us February 7th, 2026 at Colonel Light Gardens RSL for Adelaide\'s premier old-school D&D and OSR gaming convention. Experience classic tabletop RPGs with expert GMs.',
   image,
   type,
+  showLogo = true,
 } = Astro.props;
 
 const site = 'https://gazzacon.com';
@@ -37,6 +40,7 @@ const site = 'https://gazzacon.com';
     <ViewTransitions />
   </head>
   <body>
+    <Navbar showLogo={showLogo} />
     <main>
       <slot />
     </main>
