@@ -2,4 +2,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://gazzacon.com/sitemap-index.xml
+Sitemap: https://ozorc.com/sitemap-index.xml

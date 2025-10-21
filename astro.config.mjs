@@ -5,7 +5,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://gazzacon.com',
+  site: 'https://ozorc.com',
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],

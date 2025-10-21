@@ -15,7 +15,7 @@ const {
   canonical,
 } = Astro.props;
 
-const siteUrl = Astro.site || 'https://gazzacon.com';
+const siteUrl = Astro.site || 'https://ozorc.com';
 const canonicalURL = canonical || new URL(Astro.url.pathname, siteUrl).href;
 const imageUrl = new URL(image, siteUrl).href;
 
