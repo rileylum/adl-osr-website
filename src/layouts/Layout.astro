@@ -3,6 +3,7 @@ import '../assets/app.css';
 import { ViewTransitions } from 'astro:transitions';
 import SEO from '../components/SEO.astro';
 import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
 import OrganizationSchema from '../components/schemas/OrganizationSchema.astro';
 
 export interface Props {
@@ -44,6 +45,7 @@ const site = 'https://ozorc.com';
     <main>
       <slot />
     </main>
+    <Footer />
     <OrganizationSchema />
   </body>
 </html>
