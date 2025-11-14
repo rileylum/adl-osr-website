@@ -1,6 +1,7 @@
 ---
 import { games } from '../data/games';
 import FeaturedGame from './FeaturedGame.astro';
+import 'swiper/swiper-bundle.css';
 ---
 
 <section class="bg-base-100 py-12">
@@ -30,10 +31,6 @@ import FeaturedGame from './FeaturedGame.astro';
 </section>
 
 <style is:global>
-  @import 'swiper/css';
-  @import 'swiper/css/navigation';
-  @import 'swiper/css/pagination';
-
   .games-swiper {
     padding-bottom: 2rem;
   }
