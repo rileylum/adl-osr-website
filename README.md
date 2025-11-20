@@ -74,19 +74,7 @@ public/
 └── images/          # Static images
     ├── games/       # Game cover art (16:9 WebP)
     └── gallery/     # Event photos
-
-scripts/
-├── import-warhorn.ts              # Import games from Warhorn API
-└── optimize-game-images.js        # Optimize game images to WebP
 ```
-
-### Key Technical Notes
-
-- **View Transitions**: Astro's View Transitions API is enabled for smooth page navigation
-- **SEO**: Comprehensive meta tags, Open Graph, and JSON-LD schema
-- **Performance**: All images are WebP format with responsive srcsets
-- **Carousel**: Swiper carousel with loop mode disabled (13 slides insufficient for loop with slidesPerView: 2.5)
-
 ---
 
 ## For Content Contributors
