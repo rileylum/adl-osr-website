@@ -17,10 +17,13 @@ const { title, system, image, description, warhornUrl, gm, level, tags } =
 <div class="card bg-base-200 shadow-sm h-full flex flex-col">
   <figure class="aspect-video overflow-hidden">
     <img
-      src={image}
+      src={image.replace('.webp', '-400w.webp')}
+      srcset={`${image.replace('.webp', '-400w.webp')} 400w, ${image.replace('.webp', '-600w.webp')} 600w, ${image.replace('.webp', '-800w.webp')} 800w`}
+      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 400px, 400px"
       alt={`${title} - ${system} tabletop RPG module cover art for OZ ORC Adelaide`}
       class="w-full h-full object-cover"
       loading="lazy"
+      decoding="async"
     />
   </figure>
   <div class="card-body flex flex-col flex-1">
@@ -32,14 +35,14 @@ const { title, system, image, description, warhornUrl, gm, level, tags } =
 
     {
       gm && (
-        <div class="text-sm text-base-content/70 mb-3">
+        <div class="text-sm text-base-content mb-3">
           <span class="font-semibold">GM:</span> {gm}
         </div>
       )
     }
 
     <div class="mb-4">
-      <p class="line-clamp-4">{description}</p>
+      <p class="line-clamp-4 text-base-content">{description}</p>
     </div>
 
     {

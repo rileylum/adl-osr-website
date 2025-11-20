@@ -1,2 +1,10 @@
 @import 'tailwindcss';
 @plugin "daisyui";
+
+/* Override base-content color for light mode to meet WCAG AA contrast requirements */
+@layer theme {
+  :root,
+  [data-theme='light'] {
+    --color-base-content: oklch(15% 0.006 285.885);
+  }
+}

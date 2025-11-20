@@ -9,10 +9,13 @@ import DiscordIcon from '../assets/discord.svg?raw';
     <div class="max-w-2xl">
       <div>
         <img
-          src="/images/OZORC_Dungeon.svg"
+          src="/images/OZORC_Dungeon-500w.webp"
+          srcset="/images/OZORC_Dungeon-500w.webp 500w, /images/OZORC_Dungeon-800w.webp 800w, /images/OZORC_Dungeon.webp 1200w"
+          sizes="(max-width: 768px) 100vw, 448px"
           alt="OZ ORC Logo"
-          width="5000"
-          height="2500"
+          width="500"
+          height="250"
+          fetchpriority="high"
           class="w-full max-w-md mx-auto banner-logo"
         />
       </div>
