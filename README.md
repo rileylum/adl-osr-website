@@ -15,17 +15,21 @@ The official website for OZ ORC - Adelaide's premier old-school D&D and OSR gami
 ### Getting Started
 
 1. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 2. **Run development server**
+
    ```bash
    npm run dev
    ```
+
    Site will be available at `http://localhost:4321`
 
 3. **Build for production**
+
    ```bash
    npm run build
    ```
@@ -38,15 +42,15 @@ The official website for OZ ORC - Adelaide's premier old-school D&D and OSR gami
 
 ### Development Commands
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start dev server at localhost:4321 |
-| `npm run build` | Build production site to `./dist/` |
-| `npm run preview` | Preview production build locally |
-| `npm run format` | Format code with Prettier |
-| `npm run format:check` | Check code formatting |
-| `npm run lint` | Lint code with ESLint |
-| `npm run lint:fix` | Fix linting issues |
+| Command                | Description                        |
+| ---------------------- | ---------------------------------- |
+| `npm run dev`          | Start dev server at localhost:4321 |
+| `npm run build`        | Build production site to `./dist/` |
+| `npm run preview`      | Preview production build locally   |
+| `npm run format`       | Format code with Prettier          |
+| `npm run format:check` | Check code formatting              |
+| `npm run lint`         | Lint code with ESLint              |
+| `npm run lint:fix`     | Fix linting issues                 |
 
 ### Project Structure
 
@@ -75,6 +79,7 @@ public/
     ├── games/       # Game cover art (16:9 WebP)
     └── gallery/     # Event photos
 ```
+
 ---
 
 ## For Content Contributors
@@ -101,11 +106,13 @@ Each game is an object in the `games` array:
 ```
 
 **To add a new game:**
+
 1. Add game image to `public/images/games/` (16:9 aspect ratio recommended)
 2. Run `node scripts/optimize-game-images.js` to optimize the image
 3. Add game object to the `games` array in `src/data/games.ts`
 
 **Common tags:**
+
 - "Dungeon Crawl"
 - "Mystery/Investigation"
 - "New Player Friendly"
@@ -119,6 +126,7 @@ Each game is an object in the `games` array:
 **Date, Venue, Price**: Edit `src/components/Hero.astro`
 
 Look for these lines:
+
 ```astro
 <span>February 7th, 2026</span>
 <span>Colonel Light Gardens RSL</span>
@@ -132,6 +140,7 @@ Look for these lines:
 **File**: `src/components/Testimonials.astro`
 
 Add a new blockquote:
+
 ```astro
 <blockquote class="bg-base-200 p-6 rounded-lg shadow-md">
   <p class="text-lg mb-4">"Quote text here..."</p>
@@ -144,11 +153,10 @@ Add a new blockquote:
 **File**: `src/components/FAQ.astro`
 
 Add a new question by copying an existing collapse block:
+
 ```astro
 <input type="radio" name="faq-accordion" />
-<div class="collapse-title text-xl font-medium">
-  Your Question?
-</div>
+<div class="collapse-title text-xl font-medium">Your Question?</div>
 <div class="collapse-content">
   <p>Your answer here.</p>
 </div>
