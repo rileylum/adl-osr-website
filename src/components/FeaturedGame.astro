@@ -1,0 +1,82 @@
+---
+export interface Props {
+  title: string;
+  system: string;
+  image: string;
+  description: string;
+  warhornUrl: string;
+  gm?: string;
+  level?: string;
+  tags?: string[];
+}
+
+const { title, system, image, description, warhornUrl, gm, level, tags } =
+  Astro.props;
+---
+
+<div class="card bg-base-200 shadow-sm h-full flex flex-col">
+  <figure class="aspect-video overflow-hidden">
+    <img
+      src={image.replace('.webp', '-400w.webp')}
+      srcset={`${image.replace('.webp', '-400w.webp')} 400w, ${image.replace('.webp', '-600w.webp')} 600w, ${image.replace('.webp', '-800w.webp')} 800w`}
+      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 400px, 400px"
+      alt={`${title} - ${system} tabletop RPG module cover art for OZ ORC Adelaide`}
+      class="w-full h-full object-cover"
+      loading="lazy"
+      decoding="async"
+    />
+  </figure>
+  <div class="card-body flex flex-col flex-1">
+    <h3 class="card-title text-2xl mb-2">{title}</h3>
+    <div class="flex flex-wrap gap-2 mb-3">
+      <div class="badge badge-accent">{system}</div>
+      {level && <div class="badge badge-primary">Level {level}</div>}
+    </div>
+
+    {
+      gm && (
+        <div class="text-sm text-base-content mb-3">
+          <span class="font-semibold">GM:</span> {gm}
+        </div>
+      )
+    }
+
+    <div class="mb-4">
+      <p class="line-clamp-4 text-base-content">{description}</p>
+    </div>
+
+    {
+      tags && tags.length > 0 && (
+        <div class="flex flex-wrap gap-2 mb-4">
+          {tags.map((tag) => (
+            <span class="badge badge-primary">{tag}</span>
+          ))}
+        </div>
+      )
+    }
+
+    <div class="mt-auto">
+      <a
+        href={warhornUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn btn-primary w-full"
+      >
+        Sign Up on Warhorn
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  @media (max-width: 400px) {
+    .card-body {
+      padding: 1rem !important;
+    }
+
+    .card-title {
+      font-size: 1.25rem !important;
+      line-height: 1.75rem !important;
+    }
+  }
+</style>

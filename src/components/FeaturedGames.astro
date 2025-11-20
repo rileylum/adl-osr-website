@@ -1,0 +1,173 @@
+---
+import { games } from '../data/games';
+import FeaturedGame from './FeaturedGame.astro';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+---
+
+<section class="bg-base-100 py-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="text-center mb-8">
+      <h2 class="text-3xl sm:text-4xl font-bold mb-4">FEATURED GAMES</h2>
+    </div>
+
+    <div class="relative">
+      <div class="swiper games-swiper">
+        <div class="swiper-wrapper">
+          {
+            games.map((game) => (
+              <div class="swiper-slide">
+                <FeaturedGame {...game} />
+              </div>
+            ))
+          }
+        </div>
+
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-pagination"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .games-swiper {
+    padding-bottom: 2rem;
+  }
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background-color: hsl(var(--p));
+    color: hsl(var(--pc));
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  }
+
+  .swiper-button-prev:after,
+  .swiper-button-next:after {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+
+  .swiper-button-prev:hover,
+  .swiper-button-next:hover {
+    background-color: hsl(var(--pf));
+  }
+
+  @media (max-width: 640px) {
+    .swiper-button-prev,
+    .swiper-button-next {
+      display: none;
+    }
+  }
+
+  .swiper-pagination {
+    bottom: 0 !important;
+  }
+
+  .swiper-pagination-bullet {
+    width: 0.75rem;
+    height: 0.75rem;
+    background-color: hsl(var(--bc) / 0.3);
+    opacity: 1;
+  }
+
+  .swiper-pagination-bullet-active {
+    background-color: hsl(var(--p));
+  }
+
+  .swiper-slide {
+    height: auto;
+    display: flex;
+    transition: all 0.3s ease;
+  }
+
+  .swiper-slide > div {
+    width: 100%;
+  }
+
+  .swiper-slide:not(.swiper-slide-active) {
+    opacity: 0.5;
+    transform: scale(0.9);
+  }
+
+  .swiper-slide:not(.swiper-slide-active) .btn {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .swiper-slide .btn {
+    transition: opacity 0.3s ease;
+  }
+
+  @media (max-width: 400px) {
+    .games-swiper {
+      padding-bottom: 1.5rem;
+    }
+  }
+</style>
+
+<script>
+  import Swiper from 'swiper';
+  import { Navigation, Pagination } from 'swiper/modules';
+
+  let swiperInstance: Swiper | null = null;
+
+  function initSwiper() {
+    const swiperElement = document.querySelector('.games-swiper');
+    if (!swiperElement) return;
+
+    // Destroy existing instance if it exists
+    if (swiperInstance) {
+      swiperInstance.destroy(true, true);
+      swiperInstance = null;
+    }
+
+    // Small delay to ensure DOM is ready
+    setTimeout(() => {
+      // Initialize new Swiper instance
+      swiperInstance = new Swiper('.games-swiper', {
+        modules: [Navigation, Pagination],
+        slidesPerView: 1,
+        spaceBetween: 24,
+        centeredSlides: true,
+        loop: false,
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+        breakpoints: {
+          640: {
+            slidesPerView: 1.5,
+            spaceBetween: 24,
+          },
+          1024: {
+            slidesPerView: 2.5,
+            spaceBetween: 24,
+          },
+        },
+      });
+
+      // Force update for Firefox to properly apply active slide styles
+      setTimeout(() => {
+        if (swiperInstance) {
+          swiperInstance.update();
+        }
+      }, 100);
+    }, 50);
+  }
+
+  // Initialize on first load
+  initSwiper();
+
+  // Reinitialize after view transitions
+  document.addEventListener('astro:page-load', initSwiper);
+</script>

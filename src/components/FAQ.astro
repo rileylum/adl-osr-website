@@ -13,18 +13,42 @@ const faqSchema = {
     },
     {
       '@type': 'Question',
-      name: "I'm new to tabletop RPGs. Can I still attend?",
+      name: 'How much does it cost?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Absolutely! Our GMs are experienced at welcoming new players and will teach you everything you need to know.',
+        text: 'Tickets are $15 AUD per person. You can register and pay through our Warhorn event page.',
       },
     },
     {
       '@type': 'Question',
-      name: 'How much does it cost?',
+      name: "I'm new to tabletop RPGs. Can I still attend?",
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Ticket pricing information will be announced soon! Keep an eye on our Discord for updates.',
+        text: 'Absolutely! Our GMs are experienced at welcoming new players. You don\'t need to know the rules or bring a character - just bring yourself and a willingness to explore strange worlds.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Is food provided?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Please bring your own food and drinks (non-alcoholic). There are many places nearby to get food during scheduled breaks. A bar will also be open in the afternoon for those who wish to purchase refreshments.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Is there a minimum age to attend?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Attendees under 18 are welcome but must be accompanied by a parent or guardian throughout the event, as the venue is licensed.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What if I don\'t know anyone? Can I attend alone?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Absolutely! Many attendees come solo and make new friends through gaming. You\'ll be seated with other players who share your love of old-school gaming.',
       },
     },
     {
@@ -32,7 +56,7 @@ const faqSchema = {
       name: 'Can I run a game as a GM?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Yes! We welcome GMs of all experience levels. Check out the Game Submission page to submit your game proposal.',
+        text: 'Yes! We welcome GMs of all experience levels. GM spaces for OZ ORC 2026 are almost full, but we are also accepting submissions for reserves or future events. Check out the Game Submission page to submit your game proposal.',
       },
     },
   ],
@@ -65,6 +89,39 @@ const faqSchema = {
         </div>
       </div>
 
+      <div class="collapse collapse-plus bg-base-100">
+        <input
+          type="radio"
+          name="faq-accordion"
+          aria-label="How much does it cost?"
+        />
+        <div class="collapse-title text-xl font-medium">
+          How much does it cost?
+        </div>
+        <div class="collapse-content">
+          <p>
+            Tickets are $15 AUD per person. You can register and pay through
+            our <a href="https://warhorn.net/events/oz-orc-adelaide-feb-2026" target="_blank" rel="noopener noreferrer" class="link link-primary">Warhorn event page</a>.
+          </p>
+        </div>
+      </div>
+
+      <div class="collapse collapse-plus bg-base-100">
+        <input
+          type="radio"
+          name="faq-accordion"
+          aria-label="I'm new to tabletop RPGs. Can I still attend?"
+        />
+        <div class="collapse-title text-xl font-medium">
+          I'm new to tabletop RPGs. Can I still attend?
+        </div>
+        <div class="collapse-content">
+          <p>
+            Absolutely! Our GMs are experienced at welcoming new players. You don't need to know the rules or bring a character - just bring yourself and a willingness to explore strange worlds.
+          </p>
+        </div>
+      </div>
+
       <!-- <div class="collapse collapse-plus bg-base-100"> -->
       <!--   <input type="radio" name="faq-accordion" /> -->
       <!--   <div class="collapse-title text-xl font-medium"> -->
@@ -81,47 +138,31 @@ const faqSchema = {
       <!-- </div> -->
 
       <div class="collapse collapse-plus bg-base-100">
-        <input
-          type="radio"
-          name="faq-accordion"
-          aria-label="I'm new to tabletop RPGs. Can I still attend?"
-        />
-        <div class="collapse-title text-xl font-medium">
-          I'm new to tabletop RPGs. Can I still attend?
-        </div>
+        <input type="radio" name="faq-accordion" aria-label="Is food provided?" />
+        <div class="collapse-title text-xl font-medium">Is food provided?</div>
         <div class="collapse-content">
           <p>
-            Absolutely! Our GMs are experienced at welcoming new players and
-            will teach you everything you need to know.
+            Please bring your own food and drinks (non-alcoholic). There are many places nearby to get food during scheduled breaks. A bar will also be open in the afternoon for those who wish to purchase refreshments.
           </p>
         </div>
       </div>
 
-      <!-- <div class="collapse collapse-plus bg-base-100"> -->
-      <!--   <input type="radio" name="faq-accordion" /> -->
-      <!--   <div class="collapse-title text-xl font-medium">Is food provided?</div> -->
-      <!--   <div class="collapse-content"> -->
-      <!--     <p> -->
-      <!--       Yes! Lunch and dinner are included with your ticket. We'll have -->
-      <!--       breaks scheduled for meals so you can refuel between gaming -->
-      <!--       sessions. -->
-      <!--     </p> -->
-      <!--   </div> -->
-      <!-- </div> -->
-
       <div class="collapse collapse-plus bg-base-100">
-        <input
-          type="radio"
-          name="faq-accordion"
-          aria-label="How much does it cost?"
-        />
-        <div class="collapse-title text-xl font-medium">
-          How much does it cost?
-        </div>
+        <input type="radio" name="faq-accordion" aria-label="Is there a minimum age to attend?" />
+        <div class="collapse-title text-xl font-medium">Is there a minimum age to attend?</div>
         <div class="collapse-content">
           <p>
-            Ticket pricing information will be announced soon! Keep an eye on
-            our Discord for updates.
+            Attendees under 18 are welcome but must be accompanied by a parent or guardian throughout the event, as the venue is licensed.
+          </p>
+        </div>
+      </div>
+
+      <div class="collapse collapse-plus bg-base-100">
+        <input type="radio" name="faq-accordion" aria-label="What if I don't know anyone? Can I attend alone?" />
+        <div class="collapse-title text-xl font-medium">What if I don't know anyone? Can I attend alone?</div>
+        <div class="collapse-content">
+          <p>
+            Absolutely! Many attendees come solo and make new friends through gaming. You'll be seated with other players who share your love of old-school gaming.
           </p>
         </div>
       </div>
@@ -137,7 +178,7 @@ const faqSchema = {
         </div>
         <div class="collapse-content">
           <p>
-            Yes! We welcome GMs of all experience levels. Check out the <a
+            Yes! We welcome GMs of all experience levels. GM spaces for OZ ORC 2026 are almost full, but we are also accepting submissions for reserves or future events. Check out the <a
               href="/gm-submission"
               class="link link-primary">Game Submission</a
             > page to submit your game proposal.
