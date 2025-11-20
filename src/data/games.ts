@@ -10,16 +10,16 @@ export interface Game {
 }
 
 export const games: Game[] = [
-  // {
-  //   title: "Against the Cult of the Reptile God: The Swamp Dungeon",
-  //   system: "Basic Fantasy Role-Playing Game",
-  //   level: "3",
-  //   image: "/images/games/against-the-cult-of-the-reptile-god-the-swamp-dung.webp",
-  //   description: "The village of Orlane suffers under the oppressive presence of a secret cult dedicated to the Reptile God. The dying wizard Ramne has discovered this hidden evil and tasks you with infiltrating the cult's swamp stronghold to destroy the entity once and for all.",
-  //   warhornUrl: "https://warhorn.net/events/oz-orc-adelaide-feb-2026/schedule/sessions/a848938c-0190-499d-a0e5-012e8d8ae123",
-  //   gm: "Doug",
-  //   tags: ["Classic Module", "Horror", "Dungeon Crawl"],
-  // },
+  {
+    title: "Against the Cult of the Reptile God: The Swamp Dungeon",
+    system: "Basic Fantasy Role-Playing Game",
+    level: "3",
+    image: "/images/games/against-the-cult-of-the-reptile-god-the-swamp-dung.webp",
+    description: "The village of Orlane suffers under the oppressive presence of a secret cult dedicated to the Reptile God. The dying wizard Ramne has discovered this hidden evil and tasks you with infiltrating the cult's swamp stronghold to destroy the entity once and for all.",
+    warhornUrl: "https://warhorn.net/events/oz-orc-adelaide-feb-2026/schedule/sessions/a848938c-0190-499d-a0e5-012e8d8ae123",
+    gm: "Doug",
+    tags: ["Classic Module", "Horror", "Dungeon Crawl"],
+  },
   {
     title: "A Windswept Scene",
     system: "Forbidden Lands",
