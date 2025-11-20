@@ -13,6 +13,14 @@ const faqSchema = {
     },
     {
       '@type': 'Question',
+      name: 'How much does it cost?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Tickets are $15 AUD per person. You can register and pay through our Warhorn event page.',
+      },
+    },
+    {
+      '@type': 'Question',
       name: "I'm new to tabletop RPGs. Can I still attend?",
       acceptedAnswer: {
         '@type': 'Answer',
@@ -21,10 +29,10 @@ const faqSchema = {
     },
     {
       '@type': 'Question',
-      name: 'How much does it cost?',
+      name: 'Is food provided?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Tickets are $15 AUD per person. You can register and pay through our Warhorn event page.',
+        text: 'Please bring your own food and drinks (non-alcoholic). There are many places nearby to get food during scheduled breaks. A bar will also be open in the afternoon for those who wish to purchase refreshments.',
       },
     },
     {
@@ -65,20 +73,22 @@ const faqSchema = {
         </div>
       </div>
 
-      <!-- <div class="collapse collapse-plus bg-base-100"> -->
-      <!--   <input type="radio" name="faq-accordion" /> -->
-      <!--   <div class="collapse-title text-xl font-medium"> -->
-      <!--     Do I need to bring my own character? -->
-      <!--   </div> -->
-      <!--   <div class="collapse-content"> -->
-      <!--     <p> -->
-      <!--       No! Pre-generated characters will be provided for all games. You can -->
-      <!--       jump right in and start playing. Of course, if you'd like to bring -->
-      <!--       your own character, check with your GM first to see if it fits the -->
-      <!--       game. -->
-      <!--     </p> -->
-      <!--   </div> -->
-      <!-- </div> -->
+      <div class="collapse collapse-plus bg-base-100">
+        <input
+          type="radio"
+          name="faq-accordion"
+          aria-label="How much does it cost?"
+        />
+        <div class="collapse-title text-xl font-medium">
+          How much does it cost?
+        </div>
+        <div class="collapse-content">
+          <p>
+            Tickets are $15 AUD per person. You can register and pay through
+            our <a href="https://warhorn.net/events/oz-orc-adelaide-feb-2026" target="_blank" rel="noopener noreferrer" class="link link-primary">Warhorn event page</a>.
+          </p>
+        </div>
+      </div>
 
       <div class="collapse collapse-plus bg-base-100">
         <input
@@ -99,29 +109,25 @@ const faqSchema = {
 
       <!-- <div class="collapse collapse-plus bg-base-100"> -->
       <!--   <input type="radio" name="faq-accordion" /> -->
-      <!--   <div class="collapse-title text-xl font-medium">Is food provided?</div> -->
+      <!--   <div class="collapse-title text-xl font-medium"> -->
+      <!--     Do I need to bring my own character? -->
+      <!--   </div> -->
       <!--   <div class="collapse-content"> -->
       <!--     <p> -->
-      <!--       Yes! Lunch and dinner are included with your ticket. We'll have -->
-      <!--       breaks scheduled for meals so you can refuel between gaming -->
-      <!--       sessions. -->
+      <!--       No! Pre-generated characters will be provided for all games. You can -->
+      <!--       jump right in and start playing. Of course, if you'd like to bring -->
+      <!--       your own character, check with your GM first to see if it fits the -->
+      <!--       game. -->
       <!--     </p> -->
       <!--   </div> -->
       <!-- </div> -->
 
       <div class="collapse collapse-plus bg-base-100">
-        <input
-          type="radio"
-          name="faq-accordion"
-          aria-label="How much does it cost?"
-        />
-        <div class="collapse-title text-xl font-medium">
-          How much does it cost?
-        </div>
+        <input type="radio" name="faq-accordion" aria-label="Is food provided?" />
+        <div class="collapse-title text-xl font-medium">Is food provided?</div>
         <div class="collapse-content">
           <p>
-            Tickets are $15 AUD per person. You can register and pay through
-            our <a href="https://warhorn.net/events/oz-orc-adelaide-feb-2026" target="_blank" rel="noopener noreferrer" class="link link-primary">Warhorn event page</a>.
+            Please bring your own food and drinks (non-alcoholic). There are many places nearby to get food during scheduled breaks. A bar will also be open in the afternoon for those who wish to purchase refreshments.
           </p>
         </div>
       </div>
