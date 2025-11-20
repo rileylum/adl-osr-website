@@ -113,29 +113,45 @@ import 'swiper/swiper-bundle.css';
   import Swiper from 'swiper';
   import { Navigation, Pagination } from 'swiper/modules';
 
-  new Swiper('.games-swiper', {
-    modules: [Navigation, Pagination],
-    slidesPerView: 1,
-    spaceBetween: 24,
-    centeredSlides: true,
-    loop: true,
-    navigation: {
-      nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev',
-    },
-    pagination: {
-      el: '.swiper-pagination',
-      clickable: true,
-    },
-    breakpoints: {
-      640: {
-        slidesPerView: 1.5,
-        spaceBetween: 24,
+  let swiperInstance: Swiper | null = null;
+
+  function initSwiper() {
+    // Destroy existing instance if it exists
+    if (swiperInstance) {
+      swiperInstance.destroy(true, true);
+    }
+
+    // Initialize new Swiper instance
+    swiperInstance = new Swiper('.games-swiper', {
+      modules: [Navigation, Pagination],
+      slidesPerView: 1,
+      spaceBetween: 24,
+      centeredSlides: true,
+      loop: true,
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
       },
-      1024: {
-        slidesPerView: 2.5,
-        spaceBetween: 24,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
       },
-    },
-  });
+      breakpoints: {
+        640: {
+          slidesPerView: 1.5,
+          spaceBetween: 24,
+        },
+        1024: {
+          slidesPerView: 2.5,
+          spaceBetween: 24,
+        },
+      },
+    });
+  }
+
+  // Initialize on first load
+  initSwiper();
+
+  // Reinitialize after view transitions
+  document.addEventListener('astro:page-load', initSwiper);
 </script>
