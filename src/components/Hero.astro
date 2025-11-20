@@ -30,18 +30,28 @@ import DiscordIcon from '../assets/discord.svg?raw';
         </div>
       </div>
       <div>
-        <p class="text-lg mb-4">Stay up to date on all things OZ ORC</p>
-        <p class="text-lg mb-6">Join our community Discord server!</p>
+        <p class="text-lg mb-4">Ready to join Adelaide's premier old-school gaming convention?</p>
+        <p class="text-lg mb-6">Sign up now or join our Discord community!</p>
       </div>
-      <a
-        href="https://discord.gg/BNehJG2xP4"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="btn btn-primary gap-2"
-      >
-        <Fragment set:html={DiscordIcon} />
-        Join Discord
-      </a>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a
+          href="https://warhorn.net/events/oz-orc-adelaide-feb-2026"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-primary"
+        >
+          Sign Up for Event
+        </a>
+        <a
+          href="https://discord.gg/BNehJG2xP4"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-primary gap-2"
+        >
+          <Fragment set:html={DiscordIcon} />
+          Join Discord
+        </a>
+      </div>
     </div>
   </div>
 </div>
