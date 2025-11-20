@@ -116,37 +116,44 @@ import 'swiper/swiper-bundle.css';
   let swiperInstance: Swiper | null = null;
 
   function initSwiper() {
+    const swiperElement = document.querySelector('.games-swiper');
+    if (!swiperElement) return;
+
     // Destroy existing instance if it exists
     if (swiperInstance) {
       swiperInstance.destroy(true, true);
+      swiperInstance = null;
     }
 
-    // Initialize new Swiper instance
-    swiperInstance = new Swiper('.games-swiper', {
-      modules: [Navigation, Pagination],
-      slidesPerView: 1,
-      spaceBetween: 24,
-      centeredSlides: true,
-      loop: true,
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-      pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-      },
-      breakpoints: {
-        640: {
-          slidesPerView: 1.5,
-          spaceBetween: 24,
+    // Small delay to ensure DOM is ready
+    setTimeout(() => {
+      // Initialize new Swiper instance
+      swiperInstance = new Swiper('.games-swiper', {
+        modules: [Navigation, Pagination],
+        slidesPerView: 1,
+        spaceBetween: 24,
+        centeredSlides: true,
+        loop: true,
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
         },
-        1024: {
-          slidesPerView: 2.5,
-          spaceBetween: 24,
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
         },
-      },
-    });
+        breakpoints: {
+          640: {
+            slidesPerView: 1.5,
+            spaceBetween: 24,
+          },
+          1024: {
+            slidesPerView: 2.5,
+            spaceBetween: 24,
+          },
+        },
+      });
+    }, 50);
   }
 
   // Initialize on first load

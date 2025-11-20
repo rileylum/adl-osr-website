@@ -2,6 +2,7 @@
 import DiscordIcon from '../assets/discord.svg?raw';
 import FacebookIcon from '../assets/facebook.svg?raw';
 import InstagramIcon from '../assets/instagram.svg?raw';
+import BlueskyIcon from '../assets/bluesky.svg?raw';
 ---
 
 <footer class="footer footer-center bg-base-200 text-base-content p-10">
@@ -34,9 +35,21 @@ import InstagramIcon from '../assets/instagram.svg?raw';
       >
         <Fragment set:html={InstagramIcon} />
       </a>
+      <a
+        href="https://bsky.app/profile/oz-orc.bsky.social"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn btn-circle btn-ghost"
+        aria-label="Follow us on Bluesky"
+      >
+        <Fragment set:html={BlueskyIcon} />
+      </a>
     </div>
   </div>
   <div>
+    <p class="mb-2">
+      Contact us: <a href="mailto:admin@ozorc.com" class="link link-primary">admin@ozorc.com</a>
+    </p>
     <p>© {new Date().getFullYear()} OZ ORC. All rights reserved.</p>
   </div>
 </footer>

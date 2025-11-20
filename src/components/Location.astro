@@ -3,9 +3,9 @@ import LocationIcon from '../assets/location.svg?raw';
 ---
 
 <div class="hero bg-base-200 min-h-screen">
-  <div class="hero-content text-center w-full">
+  <div class="hero-content w-full">
     <div class="max-w-4xl w-full px-4">
-      <h1 class="text-5xl font-bold">LOCATION</h1>
+      <h1 class="text-5xl font-bold text-center">LOCATION</h1>
       <div class="py-6 flex flex-col items-center justify-center gap-2">
         <div class="flex items-center gap-2">
           <Fragment set:html={LocationIcon} />
@@ -35,6 +35,39 @@ import LocationIcon from '../assets/location.svg?raw';
           <p class="text-base-content/70">
             4 Prince George Parade, Colonel Light Gardens Adelaide, SA, 5041
           </p>
+        </div>
+      </div>
+
+      <div class="mt-8 space-y-6">
+        <div class="card bg-base-100 shadow-sm">
+          <div class="card-body">
+            <h2 class="card-title text-2xl mb-4">Getting Here</h2>
+
+            <div class="mb-6">
+              <h3 class="font-bold text-lg mb-3">Parking</h3>
+              <p>Street parking is available in the surrounding streets of Colonel Light Gardens.</p>
+            </div>
+
+            <div class="mb-6">
+              <h3 class="font-bold text-lg mb-3">Public Transport</h3>
+              <p class="mb-2">The venue is approximately 7km south of Adelaide CBD and is accessible by public transport:</p>
+              <ul class="space-y-2">
+                <li class="flex items-start gap-2">
+                  <span class="text-primary">→</span>
+                  <span><strong>Bus:</strong> Routes 631, G10, G20, G21, 200, 200B, 200C service Colonel Light Gardens</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-primary">→</span>
+                  <span><strong>Train:</strong> Nearest stations are Mitcham and Torrens Park on the Belair line</span>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="font-bold text-lg mb-3">Contact Venue</h3>
+              <p>For specific parking or accessibility questions, contact the venue directly at (08) 8276 9080</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

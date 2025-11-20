@@ -6,8 +6,8 @@ import DiscordIcon from '../assets/discord.svg?raw';
 
 <div class="hero bg-base-200 min-h-screen">
   <div class="hero-content text-center">
-    <div class="max-w-lg">
-      <div class="mb-8">
+    <div class="max-w-2xl">
+      <div>
         <img
           src="/images/OZORC_Dungeon.svg"
           alt="OZ ORC Logo"
@@ -16,22 +16,27 @@ import DiscordIcon from '../assets/discord.svg?raw';
           class="w-full max-w-md mx-auto banner-logo"
         />
       </div>
-      <h1 class="text-5xl font-bold">
-        OZ ORC: Adelaide's Old-School D&D & OSR Convention 2026
+      <h1 class="text-5xl font-bold mb-4">
+        OZ ORC: Adelaide's <span class="whitespace-nowrap">Old-School</span> D&D & OSR Convention 2026
       </h1>
-      <div class="py-6 flex items-center justify-center">
-        <div class="flex items-center gap-2 mr-6">
-          <Fragment set:html={CalendarIcon} />
-          <span>February 7th, 2026</span>
+      <div class="py-4 flex flex-col items-center justify-center gap-2">
+        <div class="flex flex-wrap items-center justify-center gap-4">
+          <div class="flex items-center gap-2">
+            <Fragment set:html={CalendarIcon} />
+            <span>February 7th, 2026</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <Fragment set:html={LocationIcon} />
+            <span>Colonel Light Gardens RSL</span>
+          </div>
         </div>
-        <div class="flex items-center gap-2">
-          <Fragment set:html={LocationIcon} />
-          <span>Colonel Light Gardens RSL</span>
+        <div class="text-lg font-semibold">
+          <span class="text-primary">Tickets: $15 AUD</span>
         </div>
       </div>
       <div>
-        <p class="text-lg mb-4">Ready to join Adelaide's premier old-school gaming convention?</p>
-        <p class="text-lg mb-6">Sign up now or join our Discord community!</p>
+        <p class="text-lg mb-3">Ready to join Adelaide's premier old-school gaming convention?</p>
+        <p class="text-lg mb-5">Sign up now or join our Discord community!</p>
       </div>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
         <a

@@ -88,7 +88,7 @@ export const games: Game[] = [
   },
   {
     title: "The Harvest of Sommerton",
-    system: "old school essentials",
+    system: "Old School Essentials",
     level: "3",
     image: "https://imgur.com/NFWa83B.jpeg",
     description: "Players seek to join the Caryoptic Rangers, who defend the Caryoptic Plains against Chaos warband incursions from across the Wisterwal Ranges. Defend the village of Sommerton against agents of the enigmatic Sorceress-Queen Adastra and worse threats in this introductory scenario.",

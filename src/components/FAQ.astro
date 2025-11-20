@@ -24,7 +24,7 @@ const faqSchema = {
       name: "I'm new to tabletop RPGs. Can I still attend?",
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Absolutely! Our GMs are experienced at welcoming new players and will teach you everything you need to know.',
+        text: 'Absolutely! Our GMs are experienced at welcoming new players. You don\'t need to know the rules or bring a character - just bring yourself and a willingness to explore strange worlds.',
       },
     },
     {
@@ -37,10 +37,26 @@ const faqSchema = {
     },
     {
       '@type': 'Question',
+      name: 'Is there a minimum age to attend?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Attendees under 18 are welcome but must be accompanied by a parent or guardian throughout the event, as the venue is licensed.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What if I don\'t know anyone? Can I attend alone?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Absolutely! Many attendees come solo and make new friends through gaming. You\'ll be seated with other players who share your love of old-school gaming.',
+      },
+    },
+    {
+      '@type': 'Question',
       name: 'Can I run a game as a GM?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Yes! We welcome GMs of all experience levels. GM spaces for OZ ORC 2026 are almost full, but we are accepting submissions for reserves or future events. Check out the Game Submission page to submit your game proposal.',
+        text: 'Yes! We welcome GMs of all experience levels. GM spaces for OZ ORC 2026 are almost full, but we are also accepting submissions for reserves or future events. Check out the Game Submission page to submit your game proposal.',
       },
     },
   ],
@@ -101,8 +117,7 @@ const faqSchema = {
         </div>
         <div class="collapse-content">
           <p>
-            Absolutely! Our GMs are experienced at welcoming new players and
-            will teach you everything you need to know.
+            Absolutely! Our GMs are experienced at welcoming new players. You don't need to know the rules or bring a character - just bring yourself and a willingness to explore strange worlds.
           </p>
         </div>
       </div>
@@ -133,6 +148,26 @@ const faqSchema = {
       </div>
 
       <div class="collapse collapse-plus bg-base-100">
+        <input type="radio" name="faq-accordion" aria-label="Is there a minimum age to attend?" />
+        <div class="collapse-title text-xl font-medium">Is there a minimum age to attend?</div>
+        <div class="collapse-content">
+          <p>
+            Attendees under 18 are welcome but must be accompanied by a parent or guardian throughout the event, as the venue is licensed.
+          </p>
+        </div>
+      </div>
+
+      <div class="collapse collapse-plus bg-base-100">
+        <input type="radio" name="faq-accordion" aria-label="What if I don't know anyone? Can I attend alone?" />
+        <div class="collapse-title text-xl font-medium">What if I don't know anyone? Can I attend alone?</div>
+        <div class="collapse-content">
+          <p>
+            Absolutely! Many attendees come solo and make new friends through gaming. You'll be seated with other players who share your love of old-school gaming.
+          </p>
+        </div>
+      </div>
+
+      <div class="collapse collapse-plus bg-base-100">
         <input
           type="radio"
           name="faq-accordion"
@@ -143,7 +178,7 @@ const faqSchema = {
         </div>
         <div class="collapse-content">
           <p>
-            Yes! We welcome GMs of all experience levels. GM spaces for OZ ORC 2026 are almost full, but we are accepting submissions for reserves or future events. Check out the <a
+            Yes! We welcome GMs of all experience levels. GM spaces for OZ ORC 2026 are almost full, but we are also accepting submissions for reserves or future events. Check out the <a
               href="/gm-submission"
               class="link link-primary">Game Submission</a
             > page to submit your game proposal.
