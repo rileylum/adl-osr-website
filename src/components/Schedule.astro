@@ -1,14 +1,19 @@
 ---
 import CalendarIcon from '../assets/calendar.svg?raw';
 import LocationIcon from '../assets/location.svg?raw';
+import { games } from '../data/games';
+
+const slot1Games = games.filter((g) => g.slot === 1);
+const slot2Games = games.filter((g) => g.slot === 2);
+const slot3Games = games.filter((g) => g.slot === 3);
 ---
 
-<div class="hero bg-base-200 min-h-screen">
-  <div class="hero-content text-center">
-    <div class="max-w-2xl">
+<div class="bg-base-200 py-16">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-12">
       <h1 class="text-5xl font-bold">OZ ORC SCHEDULE</h1>
-      <div class="py-6 flex items-center justify-center">
-        <div class="flex items-center gap-2 mr-6">
+      <div class="py-6 flex items-center justify-center flex-wrap gap-4">
+        <div class="flex items-center gap-2">
           <Fragment set:html={CalendarIcon} />
           <span>February 7th, 2026</span>
         </div>
@@ -17,7 +22,9 @@ import LocationIcon from '../assets/location.svg?raw';
           <span>Colonel Light Gardens RSL</span>
         </div>
       </div>
+    </div>
 
+    <div class="max-w-2xl mx-auto mb-16">
       <div
         class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100"
       >
@@ -38,7 +45,10 @@ import LocationIcon from '../assets/location.svg?raw';
               <td>0900 - 0930</td>
             </tr>
             <tr>
-              <td>Games Session 1</td>
+              <td
+                ><a href="#session-1" class="link link-hover">Games Session 1</a
+                ></td
+              >
               <td>0930 - 1230</td>
             </tr>
             <tr>
@@ -46,7 +56,10 @@ import LocationIcon from '../assets/location.svg?raw';
               <td>1230 - 1400</td>
             </tr>
             <tr>
-              <td>Games Session 2</td>
+              <td
+                ><a href="#session-2" class="link link-hover">Games Session 2</a
+                ></td
+              >
               <td>1400 - 1700</td>
             </tr>
             <tr>
@@ -54,7 +67,10 @@ import LocationIcon from '../assets/location.svg?raw';
               <td>1700 - 1830</td>
             </tr>
             <tr>
-              <td>Games Session 3</td>
+              <td
+                ><a href="#session-3" class="link link-hover">Games Session 3</a
+                ></td
+              >
               <td>1830 - 2130</td>
             </tr>
             <tr>
@@ -68,6 +84,143 @@ import LocationIcon from '../assets/location.svg?raw';
           </tbody>
         </table>
       </div>
+    </div>
+
+    <div class="space-y-12">
+      <section id="session-1">
+        <h2 class="text-3xl font-bold mb-6 text-center">
+          Session 1 <span class="text-base-content/60 text-xl"
+            >(9:30AM - 12:30PM)</span
+          >
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {
+            slot1Games.map((game) => (
+              <a
+                href={game.warhornUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="card bg-base-100 shadow-sm hover:shadow-lg transition-shadow"
+              >
+                <figure class="aspect-video overflow-hidden">
+                  <img
+                    src={game.image.replace('.webp', '-400w.webp')}
+                    alt={game.title}
+                    class="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </figure>
+                <div class="card-body p-4">
+                  <h3 class="card-title text-lg">{game.title}</h3>
+                  <div class="flex flex-wrap gap-2">
+                    <span class="badge badge-accent badge-sm">
+                      {game.system}
+                    </span>
+                    {game.level && (
+                      <span class="badge badge-primary badge-sm">
+                        Level {game.level}
+                      </span>
+                    )}
+                  </div>
+                  {game.gm && (
+                    <p class="text-sm text-base-content/70">GM: {game.gm}</p>
+                  )}
+                </div>
+              </a>
+            ))
+          }
+        </div>
+      </section>
+
+      <section id="session-2">
+        <h2 class="text-3xl font-bold mb-6 text-center">
+          Session 2 <span class="text-base-content/60 text-xl"
+            >(2:00PM - 5:00PM)</span
+          >
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {
+            slot2Games.map((game) => (
+              <a
+                href={game.warhornUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="card bg-base-100 shadow-sm hover:shadow-lg transition-shadow"
+              >
+                <figure class="aspect-video overflow-hidden">
+                  <img
+                    src={game.image.replace('.webp', '-400w.webp')}
+                    alt={game.title}
+                    class="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </figure>
+                <div class="card-body p-4">
+                  <h3 class="card-title text-lg">{game.title}</h3>
+                  <div class="flex flex-wrap gap-2">
+                    <span class="badge badge-accent badge-sm">
+                      {game.system}
+                    </span>
+                    {game.level && (
+                      <span class="badge badge-primary badge-sm">
+                        Level {game.level}
+                      </span>
+                    )}
+                  </div>
+                  {game.gm && (
+                    <p class="text-sm text-base-content/70">GM: {game.gm}</p>
+                  )}
+                </div>
+              </a>
+            ))
+          }
+        </div>
+      </section>
+
+      <section id="session-3">
+        <h2 class="text-3xl font-bold mb-6 text-center">
+          Session 3 <span class="text-base-content/60 text-xl"
+            >(6:30PM - 9:30PM)</span
+          >
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {
+            slot3Games.map((game) => (
+              <a
+                href={game.warhornUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="card bg-base-100 shadow-sm hover:shadow-lg transition-shadow"
+              >
+                <figure class="aspect-video overflow-hidden">
+                  <img
+                    src={game.image.replace('.webp', '-400w.webp')}
+                    alt={game.title}
+                    class="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </figure>
+                <div class="card-body p-4">
+                  <h3 class="card-title text-lg">{game.title}</h3>
+                  <div class="flex flex-wrap gap-2">
+                    <span class="badge badge-accent badge-sm">
+                      {game.system}
+                    </span>
+                    {game.level && (
+                      <span class="badge badge-primary badge-sm">
+                        Level {game.level}
+                      </span>
+                    )}
+                  </div>
+                  {game.gm && (
+                    <p class="text-sm text-base-content/70">GM: {game.gm}</p>
+                  )}
+                </div>
+              </a>
+            ))
+          }
+        </div>
+      </section>
     </div>
   </div>
 </div>

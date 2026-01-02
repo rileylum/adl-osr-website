@@ -7,6 +7,7 @@ export interface Game {
   gm?: string;
   level?: string;
   tags?: string[];
+  slot?: 1 | 2 | 3;
 }
 
 export const games: Game[] = [
@@ -22,6 +23,7 @@ export const games: Game[] = [
       'https://warhorn.net/events/oz-orc-adelaide-feb-2026/schedule/sessions/a848938c-0190-499d-a0e5-012e8d8ae123',
     gm: 'Doug',
     tags: ['Classic Module', 'Horror', 'Dungeon Crawl'],
+    slot: 2,
   },
   {
     title: 'A Windswept Scene',
@@ -33,6 +35,7 @@ export const games: Game[] = [
       'https://warhorn.net/events/oz-orc-adelaide-feb-2026/schedule/sessions/f9a92770-9a8a-4198-81b7-25235d1cd7e0',
     gm: 'Tim',
     tags: ['Dungeon Crawl', 'Dark Fantasy'],
+    slot: 3,
   },
   {
     title: "Beneath the Dragon's Wing",
@@ -45,6 +48,7 @@ export const games: Game[] = [
       'https://warhorn.net/events/oz-orc-adelaide-feb-2026/schedule/sessions/a60001ae-e0ad-49b8-bec2-3b58d7edab53',
     gm: 'Josh',
     tags: [],
+    slot: 1,
   },
   {
     title: 'Cult of the Devouring Maw',
@@ -56,6 +60,7 @@ export const games: Game[] = [
       'https://warhorn.net/events/oz-orc-adelaide-feb-2026/schedule/sessions/3a8cf09d-b7b6-4590-9a16-be0b99143808',
     gm: 'Steven',
     tags: ['Mystery/Investigation', 'NSR'],
+    slot: 2,
   },
   {
     title: "DEBTOR'S RUN",
@@ -67,6 +72,7 @@ export const games: Game[] = [
       'https://warhorn.net/events/oz-orc-adelaide-feb-2026/schedule/sessions/9c234b91-fbb7-4d32-85f6-6f78f3c2e23e',
     gm: 'Travis',
     tags: ['Cyberpunk', 'Heist'],
+    slot: 1,
   },
   {
     title: 'Goat Quest',
@@ -79,6 +85,7 @@ export const games: Game[] = [
       'https://warhorn.net/events/oz-orc-adelaide-feb-2026/schedule/sessions/826ee2b7-05e4-4d52-a407-ef6ae00e646f',
     gm: 'Chris',
     tags: ['Comedy/Lighthearted'],
+    slot: 1,
   },
   {
     title: 'Pass through Baraz-Varr',
@@ -91,6 +98,7 @@ export const games: Game[] = [
       'https://warhorn.net/events/oz-orc-adelaide-feb-2026/schedule/sessions/08d67b1f-8621-45dd-a525-395ea857194d',
     gm: 'Riley Lum',
     tags: ['New Player Friendly', 'Dungeon Crawl'],
+    slot: 3,
   },
   {
     title: 'Technu',
@@ -102,6 +110,7 @@ export const games: Game[] = [
       'https://warhorn.net/events/oz-orc-adelaide-feb-2026/schedule/sessions/1965d799-ed3c-412a-95f5-58525900af40',
     gm: 'Marcus',
     tags: ['Cosmic Horror', 'Mystery/Investigation'],
+    slot: 3,
   },
   {
     title: 'The Harvest of Sommerton',
@@ -114,6 +123,7 @@ export const games: Game[] = [
       'https://warhorn.net/events/oz-orc-adelaide-feb-2026/schedule/sessions/658bac38-4fbb-4245-9e5c-eb1f2d1b73c0',
     gm: 'Dallas',
     tags: ['Wilderness', 'Dark Fantasy'],
+    slot: 2,
   },
   {
     title: 'The Sinking Tower',
@@ -125,6 +135,7 @@ export const games: Game[] = [
       'https://warhorn.net/events/oz-orc-adelaide-feb-2026/schedule/sessions/d89328fb-efe0-4c9b-9a37-1fd480c5a8a8',
     gm: 'Shaun',
     tags: ['Dungeon Crawl', 'Exploration'],
+    slot: 1,
   },
   {
     title: 'To Slay A Dragon',
@@ -137,6 +148,7 @@ export const games: Game[] = [
       'https://warhorn.net/events/oz-orc-adelaide-feb-2026/schedule/sessions/c1fd8215-1c93-47ab-97e3-2969f0ecc181',
     gm: 'Archon',
     tags: ['Dungeon Crawl', 'High Level'],
+    slot: 2,
   },
   {
     title: "What's With the Goblins??",
@@ -149,6 +161,7 @@ export const games: Game[] = [
       'https://warhorn.net/events/oz-orc-adelaide-feb-2026/schedule/sessions/137aa7cd-7351-4bf8-bcb1-619b4cdaa656',
     gm: 'Doug',
     tags: ['Mystery/Investigation'],
+    slot: 1,
   },
   {
     title: 'Lair of the Lamb',
@@ -160,5 +173,18 @@ export const games: Game[] = [
       'https://warhorn.net/events/oz-orc-adelaide-feb-2026/schedule/sessions/deffed52-df72-45ca-934d-7ff8d2c87822',
     gm: 'Nick',
     tags: ['Character Funnel', 'New Player Friendly', 'Dungeon Crawl'],
+    slot: 2,
+  },
+  {
+    title: 'Into the Mansion of Baron Thrasp',
+    system: 'Swyvers',
+    image: '/images/games/into-the-mansion-of-baron-thrasp.webp',
+    description:
+      'Baron Thrasp and his retinue have left the city to go on holiday - and left their home practically undefended. How much loot can your band of scallywags carry out of the mansion before the owner gets back? Race against rival swyvering bands in this medium-sized dungeoncrawl filled with puzzles, traps, and treasure.',
+    warhornUrl:
+      'https://warhorn.net/events/oz-orc-adelaide-feb-2026/schedule/sessions/4aa5c522-9d84-4478-9107-1ce81a7bf5f1',
+    gm: 'Alex',
+    tags: ['Heist', 'Dungeon Crawl'],
+    slot: 3,
   },
 ];
