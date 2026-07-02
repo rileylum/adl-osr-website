@@ -43,7 +43,7 @@ export const site: Site = {
     "Adelaide's premier old-school roleplaying convention for OSR and classic D&D gaming",
   url: 'https://ozorc.com',
   ogImage: '/images/OZORC_Dungeon.jpg',
-  email: 'admin@ozorc.com',
+  email: 'convention@ozorc.com',
   socials: {
     discord: 'https://discord.gg/BNehJG2xP4',
     facebook: 'https://www.facebook.com/profile.php?id=61582507863401',
