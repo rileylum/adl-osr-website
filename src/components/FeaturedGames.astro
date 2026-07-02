@@ -1,6 +1,6 @@
 ---
 import { currentEvent } from '../data/events';
-import FeaturedGame from './FeaturedGame.astro';
+import GameCard from './GameCard.astro';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -20,7 +20,7 @@ const { games } = currentEvent;
           {
             games.map((game) => (
               <div class="swiper-slide">
-                <FeaturedGame {...game} />
+                <GameCard game={game} variant="featured" />
               </div>
             ))
           }
