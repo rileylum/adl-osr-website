@@ -6,8 +6,13 @@ import {
   pastEvents,
   upcomingEvents,
   assertOneCurrentPerRegion,
+  sessionGroups,
+  eventStart,
+  eventEnd,
   type Event,
+  type AgendaRow,
 } from './events';
+import type { Game } from './games';
 
 /** Minimal Event fixture — only the fields the selectors read matter here. */
 function makeEvent(over: Partial<Event>): Event {
@@ -33,7 +38,28 @@ function makeEvent(over: Partial<Event>): Event {
     },
     price: { amount: '15', currency: 'AUD' },
     warhornUrl: 'https://warhorn.net/events/x',
+    agenda: [
+      {
+        label: 'Games Session 1',
+        start: '09:30',
+        end: '12:30',
+        sessionNumber: 1,
+      },
+    ],
+    games: [],
     ...over,
+  };
+}
+
+/** Minimal Game fixture — only `session` matters for grouping. */
+function makeGame(session: number, title: string): Game {
+  return {
+    title,
+    system: 'System',
+    image: '/images/games/x.webp',
+    description: 'A game.',
+    warhornUrl: 'https://warhorn.net/events/x/schedule/sessions/uuid',
+    session,
   };
 }
 
@@ -128,5 +154,113 @@ describe('assertOneCurrentPerRegion (build guard)', () => {
       makeEvent({ region: 'Melbourne', status: 'current' }),
     ];
     expect(() => assertOneCurrentPerRegion(all)).not.toThrow();
+  });
+});
+
+describe('sessionGroups', () => {
+  const agenda: AgendaRow[] = [
+    { label: 'Setup', start: '08:00', end: '09:00' },
+    {
+      label: 'Games Session 1',
+      start: '09:30',
+      end: '12:30',
+      sessionNumber: 1,
+    },
+    { label: 'Lunch', start: '12:30', end: '14:00' },
+    {
+      label: 'Games Session 2',
+      start: '14:00',
+      end: '17:00',
+      sessionNumber: 2,
+    },
+  ];
+  const games = [
+    makeGame(1, 'One-A'),
+    makeGame(2, 'Two-A'),
+    makeGame(1, 'One-B'),
+    makeGame(2, 'Two-B'),
+  ];
+
+  it('returns one group per session row, in agenda order', () => {
+    const groups = sessionGroups(agenda, games);
+    expect(groups.map((g) => g.sessionNumber)).toEqual([1, 2]);
+  });
+
+  it('carries each session row’s canonical times', () => {
+    const [first] = sessionGroups(agenda, games);
+    expect(first.start).toBe('09:30');
+    expect(first.end).toBe('12:30');
+  });
+
+  it('groups games by their session number', () => {
+    const groups = sessionGroups(agenda, games);
+    expect(groups[0].games.map((g) => g.title)).toEqual(['One-A', 'One-B']);
+    expect(groups[1].games.map((g) => g.title)).toEqual(['Two-A', 'Two-B']);
+  });
+
+  it('ignores non-session rows (no sessionNumber)', () => {
+    expect(sessionGroups(agenda, games)).toHaveLength(2);
+  });
+
+  it('yields an empty games array for a session with no games', () => {
+    const groups = sessionGroups(agenda, [makeGame(1, 'Only-One')]);
+    expect(groups[1].games).toEqual([]);
+  });
+
+  it('throws when a game-bearing session row has no end time', () => {
+    const bad: AgendaRow[] = [
+      { label: 'Games Session 1', start: '09:30', sessionNumber: 1 },
+    ];
+    expect(() => sessionGroups(bad, games)).toThrow(/no end time/i);
+  });
+
+  it('groups the real seeded event without throwing', () => {
+    const groups = sessionGroups(currentEvent.agenda, currentEvent.games);
+    expect(groups.map((g) => g.sessionNumber)).toEqual([1, 2, 3]);
+    expect(groups.flatMap((g) => g.games)).toHaveLength(
+      currentEvent.games.length
+    );
+  });
+});
+
+describe('eventStart / eventEnd', () => {
+  const event = makeEvent({
+    date: '2026-02-07',
+    utcOffset: '+10:30',
+    agenda: [
+      { label: 'Setup', start: '08:00', end: '09:00' },
+      {
+        label: 'Games Session 1',
+        start: '09:30',
+        end: '12:30',
+        sessionNumber: 1,
+      },
+      { label: 'After Party', start: '22:00' },
+    ],
+  });
+
+  it('derives startDate from the first agenda row', () => {
+    expect(eventStart(event)).toBe('2026-02-07T08:00:00+10:30');
+  });
+
+  it('derives endDate from the last agenda row, using its start when open-ended', () => {
+    expect(eventEnd(event)).toBe('2026-02-07T22:00:00+10:30');
+  });
+
+  it('uses the last row’s end when it is present', () => {
+    const closed = makeEvent({
+      date: '2026-02-07',
+      utcOffset: '+10:30',
+      agenda: [
+        {
+          label: 'Games Session 1',
+          start: '09:30',
+          end: '12:30',
+          sessionNumber: 1,
+        },
+        { label: 'Close and Pack Up', start: '21:30', end: '22:00' },
+      ],
+    });
+    expect(eventEnd(closed)).toBe('2026-02-07T22:00:00+10:30');
   });
 });

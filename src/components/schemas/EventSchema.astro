@@ -1,15 +1,13 @@
 ---
 import { site, ogImageUrl } from '../../data/site';
-import { currentEvent } from '../../data/events';
-import { iso } from '../../lib/format';
+import { currentEvent, eventStart, eventEnd } from '../../data/events';
 
-const { venue, date, utcOffset, price } = currentEvent;
+const { venue, price } = currentEvent;
 
-// Clock times remain literal here until the agenda lands in issue 0004, at which
-// point startDate/endDate derive from the first/last agenda rows. The date and
-// offset already come from the event so the calendar day is single-sourced.
-const startDate = iso(date, '09:00', utcOffset);
-const endDate = iso(date, '21:30', utcOffset);
+// startDate/endDate derive from the first and last agenda rows, so structured
+// data can never drift from the timetable the page shows.
+const startDate = eventStart(currentEvent);
+const endDate = eventEnd(currentEvent);
 
 const eventSchema = {
   '@context': 'https://schema.org',
