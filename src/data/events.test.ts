@@ -6,6 +6,7 @@ import {
   pastEvents,
   upcomingEvents,
   assertOneCurrentPerRegion,
+  assertGamesMatchSessions,
   sessionGroups,
   eventStart,
   eventEnd,
@@ -154,6 +155,65 @@ describe('assertOneCurrentPerRegion (build guard)', () => {
       makeEvent({ region: 'Melbourne', status: 'current' }),
     ];
     expect(() => assertOneCurrentPerRegion(all)).not.toThrow();
+  });
+});
+
+describe('assertGamesMatchSessions (build guard)', () => {
+  const agenda: AgendaRow[] = [
+    { label: 'Setup', start: '08:00', end: '09:00' },
+    {
+      label: 'Games Session 1',
+      start: '09:30',
+      end: '12:30',
+      sessionNumber: 1,
+    },
+    {
+      label: 'Games Session 2',
+      start: '14:00',
+      end: '17:00',
+      sessionNumber: 2,
+    },
+  ];
+
+  it('passes when every game maps to an agenda session', () => {
+    const all = [
+      makeEvent({ agenda, games: [makeGame(1, 'A'), makeGame(2, 'B')] }),
+    ];
+    expect(() => assertGamesMatchSessions(all)).not.toThrow();
+  });
+
+  it('throws when a game points at a session the agenda does not define', () => {
+    const all = [
+      makeEvent({ agenda, games: [makeGame(1, 'A'), makeGame(5, 'Stray')] }),
+    ];
+    expect(() => assertGamesMatchSessions(all)).toThrow(
+      /"Stray".*session 5, which no agenda row defines/i
+    );
+  });
+
+  it('checks each event against its own agenda', () => {
+    const all = [
+      makeEvent({ region: 'Adelaide', agenda, games: [makeGame(1, 'A')] }),
+      makeEvent({
+        region: 'Melbourne',
+        agenda: [
+          {
+            label: 'Games Session 1',
+            start: '10:00',
+            end: '13:00',
+            sessionNumber: 1,
+          },
+        ],
+        games: [makeGame(2, 'Wrong')],
+      }),
+    ];
+    expect(() => assertGamesMatchSessions(all)).toThrow(
+      /Melbourne.*session 2/i
+    );
+  });
+
+  it('passes on the real seeded events', () => {
+    expect(() => assertGamesMatchSessions(events)).not.toThrow();
   });
 });
 

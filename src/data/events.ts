@@ -159,8 +159,33 @@ export function assertOneCurrentPerRegion(all: Event[]): void {
   }
 }
 
-// Build-time guard: a duplicate `current` fails the build instead of shipping.
+/** Throws if any game references a `session` number that its event's agenda
+ *  does not define. Because `Game.session` is an unconstrained `number` (so an
+ *  event is not fixed to three sessions), a typo like `session: 5` would
+ *  otherwise compile cleanly and the game would silently vanish from the
+ *  schedule — no section groups it. This turns that into a build failure.
+ *  Exported and pure so it can be unit-tested against a fixture. */
+export function assertGamesMatchSessions(all: Event[]): void {
+  for (const event of all) {
+    const defined = new Set(
+      event.agenda
+        .map((row) => row.sessionNumber)
+        .filter((n): n is number => n !== undefined)
+    );
+    for (const game of event.games) {
+      if (!defined.has(game.session)) {
+        throw new Error(
+          `Game "${game.title}" (${event.region}) has session ${game.session}, which no agenda row defines.`
+        );
+      }
+    }
+  }
+}
+
+// Build-time guards: a duplicate `current`, or a game pointing at a session the
+// agenda does not define, fails the build instead of shipping.
 assertOneCurrentPerRegion(events);
+assertGamesMatchSessions(events);
 
 /** The sole `current` event for a region. Throws if none is set. */
 export function currentEventFor(region: Region, all: Event[] = events): Event {
