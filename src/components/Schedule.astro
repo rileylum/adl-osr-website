@@ -41,7 +41,7 @@ const sessions = sessionGroups(agenda, games);
               agenda.map((row) => (
                 <tr>
                   <td>
-                    {row.sessionNumber !== undefined ? (
+                    {row.sessionNumber !== undefined && games.length > 0 ? (
                       <a
                         href={`#session-${row.sessionNumber}`}
                         class="link link-hover"
@@ -66,21 +66,34 @@ const sessions = sessionGroups(agenda, games);
 
     <div class="space-y-12">
       {
-        sessions.map((session) => (
-          <section id={`session-${session.sessionNumber}`}>
-            <h2 class="text-3xl font-bold mb-6 text-center">
-              Session {session.sessionNumber}{' '}
-              <span class="text-base-content/60 text-xl">
-                ({friendly(session.start)} - {friendly(session.end)})
-              </span>
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {session.games.map((game) => (
-                <GameCard game={game} variant="compact" />
-              ))}
-            </div>
-          </section>
-        ))
+        games.length === 0 ? (
+          <div class="max-w-2xl mx-auto text-center">
+            <h2 class="text-3xl font-bold mb-4">Games To Be Announced</h2>
+            <p class="text-lg mb-6">
+              We're still assembling the lineup for this event. Games will be
+              listed here under each session as they're confirmed.
+            </p>
+            <a href="/gm-submission" class="btn btn-primary">
+              Run a Game
+            </a>
+          </div>
+        ) : (
+          sessions.map((session) => (
+            <section id={`session-${session.sessionNumber}`}>
+              <h2 class="text-3xl font-bold mb-6 text-center">
+                Session {session.sessionNumber}{' '}
+                <span class="text-base-content/60 text-xl">
+                  ({friendly(session.start)} - {friendly(session.end)})
+                </span>
+              </h2>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {session.games.map((game) => (
+                  <GameCard game={game} variant="compact" />
+                ))}
+              </div>
+            </section>
+          ))
+        )
       }
     </div>
   </div>
