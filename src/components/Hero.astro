@@ -2,6 +2,7 @@
 import CalendarIcon from '../assets/calendar.svg?raw';
 import LocationIcon from '../assets/location.svg?raw';
 import DiscordIcon from '../assets/discord.svg?raw';
+import { site } from '../data/site';
 ---
 
 <div class="hero bg-base-200 min-h-screen">
@@ -54,7 +55,7 @@ import DiscordIcon from '../assets/discord.svg?raw';
           Sign Up for Event
         </a>
         <a
-          href="https://discord.gg/BNehJG2xP4"
+          href={site.socials.discord}
           target="_blank"
           rel="noopener noreferrer"
           class="btn btn-primary gap-2"

@@ -3,13 +3,14 @@ import DiscordIcon from '../assets/discord.svg?raw';
 import FacebookIcon from '../assets/facebook.svg?raw';
 import InstagramIcon from '../assets/instagram.svg?raw';
 import BlueskyIcon from '../assets/bluesky.svg?raw';
+import { site } from '../data/site';
 ---
 
 <footer class="footer footer-center bg-base-200 text-base-content p-10">
   <div>
     <div class="flex gap-4">
       <a
-        href="https://discord.gg/BNehJG2xP4"
+        href={site.socials.discord}
         target="_blank"
         rel="noopener noreferrer"
         class="btn btn-circle btn-ghost"
@@ -18,7 +19,7 @@ import BlueskyIcon from '../assets/bluesky.svg?raw';
         <Fragment set:html={DiscordIcon} />
       </a>
       <a
-        href="https://www.facebook.com/profile.php?id=61582507863401"
+        href={site.socials.facebook}
         target="_blank"
         rel="noopener noreferrer"
         class="btn btn-circle btn-ghost"
@@ -27,7 +28,7 @@ import BlueskyIcon from '../assets/bluesky.svg?raw';
         <Fragment set:html={FacebookIcon} />
       </a>
       <a
-        href="https://www.instagram.com/oz.orc"
+        href={site.socials.instagram}
         target="_blank"
         rel="noopener noreferrer"
         class="btn btn-circle btn-ghost"
@@ -36,7 +37,7 @@ import BlueskyIcon from '../assets/bluesky.svg?raw';
         <Fragment set:html={InstagramIcon} />
       </a>
       <a
-        href="https://bsky.app/profile/oz-orc.bsky.social"
+        href={site.socials.bluesky}
         target="_blank"
         rel="noopener noreferrer"
         class="btn btn-circle btn-ghost"
@@ -48,8 +49,8 @@ import BlueskyIcon from '../assets/bluesky.svg?raw';
   </div>
   <div>
     <p class="mb-2">
-      Contact us: <a href="mailto:admin@ozorc.com" class="link link-primary"
-        >admin@ozorc.com</a
+      Contact us: <a href={`mailto:${site.email}`} class="link link-primary"
+        >{site.email}</a
       >
     </p>
     <p>© {new Date().getFullYear()} OZ ORC. All rights reserved.</p>
