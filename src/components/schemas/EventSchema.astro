@@ -1,51 +1,63 @@
 ---
+import { site, ogImageUrl } from '../../data/site';
+import { currentEvent } from '../../data/events';
+import { iso } from '../../lib/format';
+
+const { venue, date, utcOffset, price } = currentEvent;
+
+// Clock times remain literal here until the agenda lands in issue 0004, at which
+// point startDate/endDate derive from the first/last agenda rows. The date and
+// offset already come from the event so the calendar day is single-sourced.
+const startDate = iso(date, '09:00', utcOffset);
+const endDate = iso(date, '21:30', utcOffset);
+
 const eventSchema = {
   '@context': 'https://schema.org',
   '@type': 'Event',
   name: 'OZ ORC 2026',
   description:
     "Adelaide's premier old-school D&D and OSR gaming convention. Experience classic tabletop RPGs with expert GMs, from original-edition D&D to weird sci-fi adventures.",
-  startDate: '2026-02-07T09:00:00+10:30',
-  endDate: '2026-02-07T21:30:00+10:30',
+  startDate,
+  endDate,
   eventStatus: 'https://schema.org/EventScheduled',
   eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
   location: {
     '@type': 'Place',
-    name: 'RSL Colonel Light Gardens Sub Branch Inc',
+    name: venue.schemaName,
     address: {
       '@type': 'PostalAddress',
-      streetAddress: '4 Prince George Parade',
-      addressLocality: 'Colonel Light Gardens',
-      addressRegion: 'SA',
-      postalCode: '5041',
-      addressCountry: 'AU',
+      streetAddress: venue.address.street,
+      addressLocality: venue.schemaLocality,
+      addressRegion: venue.address.region,
+      postalCode: venue.address.postcode,
+      addressCountry: venue.address.country,
     },
     geo: {
       '@type': 'GeoCoordinates',
-      latitude: -34.98605,
-      longitude: 138.597715,
+      latitude: venue.geo.lat,
+      longitude: venue.geo.lng,
     },
   },
   organizer: {
     '@type': 'Organization',
-    name: 'OZ ORC',
-    url: 'https://ozorc.com',
+    name: site.name,
+    url: site.url,
   },
   offers: {
     '@type': 'Offer',
-    price: '15',
-    priceCurrency: 'AUD',
-    url: 'https://ozorc.com',
+    price: price.amount,
+    priceCurrency: price.currency,
+    url: site.url,
     availability: 'https://schema.org/InStock',
     validFrom: '2025-10-21',
   },
   performer: {
     '@type': 'Organization',
-    name: 'OZ ORC',
-    url: 'https://ozorc.com',
+    name: site.name,
+    url: site.url,
   },
-  image: 'https://ozorc.com/images/OZORC_Dungeon.jpg',
-  url: 'https://ozorc.com',
+  image: ogImageUrl,
+  url: site.url,
 };
 ---
 

@@ -1,5 +1,6 @@
 ---
-
+import { currentEvent } from '../data/events';
+import { longDate } from '../lib/format';
 ---
 
 <section class="bg-base-100 py-20">
@@ -21,8 +22,9 @@
           terror.
         </p>
         <p class="mb-6">
-          Join us on February 7th, 2026 at the Colonel Light Gardens RSL for a
-          day of adventure like nothing you've ever seen before, at Adelaide's
+          Join us on {longDate(currentEvent.date)} at the {
+            currentEvent.venue.name
+          } for a day of adventure like nothing you've ever seen before, at Adelaide's
           Premier old-school gaming convention!
         </p>
         <p>
@@ -37,7 +39,7 @@
       </div>
       <div class="text-center mt-8">
         <a
-          href="https://warhorn.net/events/oz-orc-adelaide-feb-2026"
+          href={currentEvent.warhornUrl}
           target="_blank"
           rel="noopener noreferrer"
           class="btn btn-primary btn-lg"

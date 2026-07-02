@@ -1,5 +1,6 @@
 ---
 import { site } from '../data/site';
+import { currentEvent } from '../data/events';
 
 export interface Props {
   title: string;
@@ -22,6 +23,15 @@ const canonicalURL = canonical || new URL(Astro.url.pathname, siteUrl).href;
 const imageUrl = new URL(image, siteUrl).href;
 
 const siteName = site.seoName;
+
+// Geo tags derive from the current event's venue coordinates and the org
+// locality — the coordinates are typed once on the venue. The 6-decimal
+// formatting preserves the existing tag values exactly.
+const { geo } = currentEvent.venue;
+const lat = geo.lat.toFixed(6);
+const lng = geo.lng.toFixed(6);
+const geoRegion = `${site.address.country}-${site.address.region}`;
+const geoPlacename = site.address.locality;
 ---
 
 <!-- Primary Meta Tags -->
@@ -31,10 +41,10 @@ const siteName = site.seoName;
 <link rel="canonical" href={canonicalURL} />
 
 <!-- Geo Meta Tags for Adelaide Local SEO -->
-<meta name="geo.region" content="AU-SA" />
-<meta name="geo.placename" content="Adelaide" />
-<meta name="geo.position" content="-34.986050;138.597715" />
-<meta name="ICBM" content="-34.986050, 138.597715" />
+<meta name="geo.region" content={geoRegion} />
+<meta name="geo.placename" content={geoPlacename} />
+<meta name="geo.position" content={`${lat};${lng}`} />
+<meta name="ICBM" content={`${lat}, ${lng}`} />
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content={type} />
