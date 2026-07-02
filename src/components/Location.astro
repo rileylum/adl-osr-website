@@ -1,5 +1,10 @@
 ---
 import LocationIcon from '../assets/location.svg?raw';
+import { currentEvent } from '../data/events';
+import { address } from '../lib/format';
+
+const { venue } = currentEvent;
+const addressLine = address(venue.address);
 ---
 
 <div class="hero bg-base-200 min-h-screen">
@@ -9,11 +14,9 @@ import LocationIcon from '../assets/location.svg?raw';
       <div class="py-6 flex flex-col items-center justify-center gap-2">
         <div class="flex items-center gap-2">
           <Fragment set:html={LocationIcon} />
-          <span>Colonel Light Gardens RSL</span>
+          <span>{venue.name}</span>
         </div>
-        <span class="text-base-content/70"
-          >4 Prince George Parade, Colonel Light Gardens Adelaide, SA, 5041
-        </span>
+        <span class="text-base-content/70">{addressLine}</span>
       </div>
 
       <div
@@ -21,7 +24,7 @@ import LocationIcon from '../assets/location.svg?raw';
       >
         <div class="w-full aspect-video">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3268.8249211805587!2d138.59771519999998!3d-34.9860499!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ab0cfd4be116b63%3A0x41af81ff8aee1a85!2sRSL%20Colonel%20Light%20Gardens%20Sub%20Branch%20Inc!5e0!3m2!1sen!2sau!4v1760871343157!5m2!1sen!2sau"
+            src={venue.mapEmbedUrl}
             width="100%"
             height="100%"
             style="border:0;"
@@ -31,10 +34,8 @@ import LocationIcon from '../assets/location.svg?raw';
             class="rounded-lg"></iframe>
         </div>
         <div class="mt-4 text-left">
-          <p class="text-lg font-semibold">Colonel Light Gardens RSL</p>
-          <p class="text-base-content/70">
-            4 Prince George Parade, Colonel Light Gardens Adelaide, SA, 5041
-          </p>
+          <p class="text-lg font-semibold">{venue.name}</p>
+          <p class="text-base-content/70">{addressLine}</p>
         </div>
       </div>
 
@@ -79,7 +80,7 @@ import LocationIcon from '../assets/location.svg?raw';
               <h3 class="font-bold text-lg mb-3">Contact Venue</h3>
               <p>
                 For specific parking or accessibility questions, contact the
-                venue directly at (08) 8276 9080
+                venue directly at {venue.phone}
               </p>
             </div>
           </div>

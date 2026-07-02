@@ -1,4 +1,6 @@
 ---
+import { currentEvent } from '../data/events';
+
 const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
@@ -101,7 +103,7 @@ const faqSchema = {
         <div class="collapse-content">
           <p>
             Tickets are $15 AUD per person. You can register and pay through our <a
-              href="https://warhorn.net/events/oz-orc-adelaide-feb-2026"
+              href={currentEvent.warhornUrl}
               target="_blank"
               rel="noopener noreferrer"
               class="link link-primary">Warhorn event page</a

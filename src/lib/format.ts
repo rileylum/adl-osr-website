@@ -39,6 +39,47 @@ export function friendly(time: string): string {
   return `${hour12}:${pad2(minute)}${period}`;
 }
 
+const MONTHS = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+
+/** English ordinal suffix for a day of the month: 1 → "st", 2 → "nd", 3 → "rd",
+ *  4 → "th", 11–13 → "th". */
+function ordinal(day: number): string {
+  const tens = day % 100;
+  if (tens >= 11 && tens <= 13) return 'th';
+  switch (day % 10) {
+    case 1:
+      return 'st';
+    case 2:
+      return 'nd';
+    case 3:
+      return 'rd';
+    default:
+      return 'th';
+  }
+}
+
+/** Friendly long-date form for display headings:
+ *  `longDate("2026-02-07") → "February 7th, 2026"`. Parsed from the canonical
+ *  ISO date parts directly (never `new Date`), so no timezone shift can move
+ *  the day. */
+export function longDate(date: string): string {
+  const [year, month, day] = date.split('-').map(Number);
+  return `${MONTHS[month - 1]} ${day}${ordinal(day)}, ${year}`;
+}
+
 /** schema.org datetime with UTC offset, composed from an event date, a
  *  canonical time, and the region offset:
  *  `iso("2026-02-07", "09:00", "+10:30") → "2026-02-07T09:00:00+10:30"`. */

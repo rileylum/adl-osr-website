@@ -3,6 +3,10 @@ import CalendarIcon from '../assets/calendar.svg?raw';
 import LocationIcon from '../assets/location.svg?raw';
 import DiscordIcon from '../assets/discord.svg?raw';
 import { site } from '../data/site';
+import { currentEvent } from '../data/events';
+import { longDate } from '../lib/format';
+
+const { venue, date, price, warhornUrl } = currentEvent;
 ---
 
 <div class="hero bg-base-200 min-h-screen">
@@ -28,15 +32,17 @@ import { site } from '../data/site';
         <div class="flex flex-wrap items-center justify-center gap-4">
           <div class="flex items-center gap-2">
             <Fragment set:html={CalendarIcon} />
-            <span>February 7th, 2026</span>
+            <span>{longDate(date)}</span>
           </div>
           <div class="flex items-center gap-2">
             <Fragment set:html={LocationIcon} />
-            <span>Colonel Light Gardens RSL</span>
+            <span>{venue.name}</span>
           </div>
         </div>
         <div class="text-lg font-semibold">
-          <span class="text-primary">Tickets: $15 AUD</span>
+          <span class="text-primary"
+            >Tickets: ${price.amount} {price.currency}</span
+          >
         </div>
       </div>
       <div>
@@ -47,7 +53,7 @@ import { site } from '../data/site';
       </div>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
         <a
-          href="https://warhorn.net/events/oz-orc-adelaide-feb-2026"
+          href={warhornUrl}
           target="_blank"
           rel="noopener noreferrer"
           class="btn btn-primary"
