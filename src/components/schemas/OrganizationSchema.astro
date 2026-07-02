@@ -1,22 +1,19 @@
 ---
+import { site, ogImageUrl } from '../../data/site';
+
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'OZ ORC',
-  description:
-    "Adelaide's premier old-school roleplaying convention for OSR and classic D&D gaming",
-  url: 'https://ozorc.com',
-  logo: 'https://ozorc.com/images/OZORC_Dungeon.jpg',
-  sameAs: [
-    'https://discord.gg/BNehJG2xP4',
-    'https://www.facebook.com/profile.php?id=61582507863401',
-    'https://www.instagram.com/oz.orc',
-  ],
+  name: site.name,
+  description: site.description,
+  url: site.url,
+  logo: ogImageUrl,
+  sameAs: [site.socials.discord, site.socials.facebook, site.socials.instagram],
   address: {
     '@type': 'PostalAddress',
-    addressLocality: 'Adelaide',
-    addressRegion: 'SA',
-    addressCountry: 'AU',
+    addressLocality: site.address.locality,
+    addressRegion: site.address.region,
+    addressCountry: site.address.country,
   },
 };
 ---

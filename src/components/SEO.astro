@@ -1,4 +1,6 @@
 ---
+import { site } from '../data/site';
+
 export interface Props {
   title: string;
   description: string;
@@ -10,16 +12,16 @@ export interface Props {
 const {
   title,
   description,
-  image = '/images/OZORC_Dungeon.jpg',
+  image = site.ogImage,
   type = 'website',
   canonical,
 } = Astro.props;
 
-const siteUrl = Astro.site || 'https://ozorc.com';
+const siteUrl = Astro.site || site.url;
 const canonicalURL = canonical || new URL(Astro.url.pathname, siteUrl).href;
 const imageUrl = new URL(image, siteUrl).href;
 
-const siteName = 'OZ ORC - Adelaide OSR Gaming Convention';
+const siteName = site.seoName;
 ---
 
 <!-- Primary Meta Tags -->
