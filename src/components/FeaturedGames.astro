@@ -1,9 +1,11 @@
 ---
-import { games } from '../data/games';
+import { currentEvent } from '../data/events';
 import FeaturedGame from './FeaturedGame.astro';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+
+const { games } = currentEvent;
 ---
 
 <section class="bg-base-100 py-12">

@@ -1,14 +1,14 @@
 // Events module — the single owner of every per-occurrence fact about an OZ ORC
 // convention. Each Event owns the facts that vary per region + date: date, UTC
-// offset, status, venue, ticket price, and Warhorn event URL. Consumers
-// (EventSchema, SEO, Location, Hero, Navbar, About, FAQ, ...) read the sole
-// `currentEvent` so each fact is typed exactly once. See docs/agent/CONTEXT.md
-// (Event, Region, status, currentEvent, Venue).
-//
-// Agenda/session modelling and games-by-reference are deferred to issue 0004;
-// this module carries the event's scalar and venue facts only.
+// offset, status, venue, ticket price, Warhorn event URL, its agenda, and its
+// games (by reference). Consumers (EventSchema, SEO, Location, Hero, Navbar,
+// About, FAQ, Schedule, ...) read the sole `currentEvent` so each fact is typed
+// exactly once. See docs/agent/CONTEXT.md (Event, Region, status, currentEvent,
+// Venue, Agenda, Session).
 
 import type { Address } from '../lib/format';
+import { iso } from '../lib/format';
+import { adelaide2026Games, type Game } from './games';
 
 /** The geographic scope of an event. At most one `current` event per region
  *  (enforced by the build guard below). Adding a region is additive. */
@@ -48,6 +48,28 @@ export interface Venue {
   phone: string;
 }
 
+/** One row of the event's timetable. Times are canonical `"HH:MM"` 24-hour
+ *  strings — every displayed form (military table, friendly heading, ISO
+ *  schema) derives from these, so no time is ever typed twice. A row with a
+ *  `sessionNumber` is a game-bearing **session**; others are Setup/Lunch/etc.
+ *  `end` is omitted for an open-ended row (e.g. an After Party that runs until
+ *  close). */
+export interface AgendaRow {
+  label: string;
+  start: string;
+  end?: string;
+  sessionNumber?: number;
+}
+
+/** A session's games plus its canonical times, derived from the agenda. Drives
+ *  the schedule's session sections. */
+export interface SessionGroup {
+  sessionNumber: number;
+  start: string;
+  end: string;
+  games: Game[];
+}
+
 export interface Event {
   region: Region;
   /** ISO date (`YYYY-MM-DD`) of the occurrence. */
@@ -60,6 +82,11 @@ export interface Event {
   /** Base Warhorn event URL — the navbar, hero, about, and FAQ links build on
    *  this, and each game's per-session URL extends it. */
   warhornUrl: string;
+  /** The ordered timetable — the single source for both the schedule table and
+   *  the session section headings. Any number of rows/sessions is supported. */
+  agenda: AgendaRow[];
+  /** The event's games, held by reference from the games module. */
+  games: Game[];
 }
 
 const adelaide2026: Event = {
@@ -85,6 +112,33 @@ const adelaide2026: Event = {
   },
   price: { amount: '15', currency: 'AUD' },
   warhornUrl: 'https://warhorn.net/events/oz-orc-adelaide-feb-2026',
+  agenda: [
+    { label: 'Setup', start: '08:00', end: '09:00' },
+    { label: 'Meet and Greet, Welcome', start: '09:00', end: '09:30' },
+    {
+      label: 'Games Session 1',
+      start: '09:30',
+      end: '12:30',
+      sessionNumber: 1,
+    },
+    { label: 'Lunch', start: '12:30', end: '14:00' },
+    {
+      label: 'Games Session 2',
+      start: '14:00',
+      end: '17:00',
+      sessionNumber: 2,
+    },
+    { label: 'Dinner', start: '17:00', end: '18:30' },
+    {
+      label: 'Games Session 3',
+      start: '18:30',
+      end: '21:30',
+      sessionNumber: 3,
+    },
+    { label: 'Close and Pack Up', start: '21:30', end: '22:00' },
+    { label: 'After Party', start: '22:00' },
+  ],
+  games: adelaide2026Games,
 };
 
 export const events: Event[] = [adelaide2026];
@@ -105,8 +159,33 @@ export function assertOneCurrentPerRegion(all: Event[]): void {
   }
 }
 
-// Build-time guard: a duplicate `current` fails the build instead of shipping.
+/** Throws if any game references a `session` number that its event's agenda
+ *  does not define. Because `Game.session` is an unconstrained `number` (so an
+ *  event is not fixed to three sessions), a typo like `session: 5` would
+ *  otherwise compile cleanly and the game would silently vanish from the
+ *  schedule — no section groups it. This turns that into a build failure.
+ *  Exported and pure so it can be unit-tested against a fixture. */
+export function assertGamesMatchSessions(all: Event[]): void {
+  for (const event of all) {
+    const defined = new Set(
+      event.agenda
+        .map((row) => row.sessionNumber)
+        .filter((n): n is number => n !== undefined)
+    );
+    for (const game of event.games) {
+      if (!defined.has(game.session)) {
+        throw new Error(
+          `Game "${game.title}" (${event.region}) has session ${game.session}, which no agenda row defines.`
+        );
+      }
+    }
+  }
+}
+
+// Build-time guards: a duplicate `current`, or a game pointing at a session the
+// agenda does not define, fails the build instead of shipping.
 assertOneCurrentPerRegion(events);
+assertGamesMatchSessions(events);
 
 /** The sole `current` event for a region. Throws if none is set. */
 export function currentEventFor(region: Region, all: Event[] = events): Event {
@@ -132,3 +211,46 @@ export function upcomingEvents(all: Event[] = events): Event[] {
 /** The single featured event while OZ ORC runs one region. Nearly every
  *  consumer reads its facts through this. */
 export const currentEvent: Event = currentEventFor('Adelaide');
+
+/** Group games by the agenda's session rows, in agenda order. Pure over an
+ *  `agenda` + `games` set so it is unit-tested independently of any Event.
+ *  Throws if a game-bearing session row has no `end` — a session must have a
+ *  full time range. */
+export function sessionGroups(
+  agenda: AgendaRow[],
+  games: Game[]
+): SessionGroup[] {
+  const groups: SessionGroup[] = [];
+  for (const row of agenda) {
+    if (row.sessionNumber === undefined) continue;
+    if (row.end === undefined) {
+      throw new Error(
+        `Session ${row.sessionNumber} ("${row.label}") has no end time.`
+      );
+    }
+    groups.push({
+      sessionNumber: row.sessionNumber,
+      start: row.start,
+      end: row.end,
+      games: games.filter((game) => game.session === row.sessionNumber),
+    });
+  }
+  return groups;
+}
+
+/** schema.org `startDate` — the first agenda row's start, as ISO+offset. */
+export function eventStart(
+  event: Pick<Event, 'date' | 'utcOffset' | 'agenda'>
+): string {
+  const first = event.agenda[0];
+  return iso(event.date, first.start, event.utcOffset);
+}
+
+/** schema.org `endDate` — the last agenda row's end (its start if open-ended),
+ *  as ISO+offset. */
+export function eventEnd(
+  event: Pick<Event, 'date' | 'utcOffset' | 'agenda'>
+): string {
+  const last = event.agenda[event.agenda.length - 1];
+  return iso(event.date, last.end ?? last.start, event.utcOffset);
+}
