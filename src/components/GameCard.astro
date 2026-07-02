@@ -1,0 +1,114 @@
+---
+import type { Game } from '../data/games';
+
+export interface Props {
+  game: Game;
+  variant?: 'featured' | 'compact';
+}
+
+const { game, variant = 'featured' } = Astro.props;
+const { title, system, image, description, warhornUrl, gm, level, tags } = game;
+
+// Responsive-image srcset rule — the width-suffix naming convention
+// (-400w / -600w / -800w) is defined once, here, and both variants emit it.
+const widthUrl = (w: number) => image.replace('.webp', `-${w}w.webp`);
+const src = widthUrl(400);
+const srcset = `${widthUrl(400)} 400w, ${widthUrl(600)} 600w, ${widthUrl(800)} 800w`;
+const alt = `${title} - ${system} tabletop RPG module cover art for OZ ORC Adelaide`;
+---
+
+{
+  variant === 'featured' ? (
+    <div class="game-card game-card--featured card bg-base-200 shadow-sm h-full flex flex-col">
+      <figure class="aspect-video overflow-hidden">
+        <img
+          src={src}
+          srcset={srcset}
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 400px, 400px"
+          alt={alt}
+          class="w-full h-full object-cover"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+      <div class="card-body flex flex-col flex-1">
+        <h3 class="card-title text-2xl mb-2">{title}</h3>
+        <div class="flex flex-wrap gap-2 mb-3">
+          <div class="badge badge-accent">{system}</div>
+          {level && <div class="badge badge-primary">Level {level}</div>}
+        </div>
+
+        {gm && (
+          <div class="text-sm text-base-content mb-3">
+            <span class="font-semibold">GM:</span> {gm}
+          </div>
+        )}
+
+        <div class="mb-4">
+          <p class="line-clamp-4 text-base-content">{description}</p>
+        </div>
+
+        {tags && tags.length > 0 && (
+          <div class="flex flex-wrap gap-2 mb-4">
+            {tags.map((tag) => (
+              <span class="badge badge-primary">{tag}</span>
+            ))}
+          </div>
+        )}
+
+        <div class="mt-auto">
+          <a
+            href={warhornUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-primary w-full"
+          >
+            Sign Up on Warhorn
+          </a>
+        </div>
+      </div>
+    </div>
+  ) : (
+    <a
+      href={warhornUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="game-card card bg-base-100 shadow-sm hover:shadow-lg transition-shadow"
+    >
+      <figure class="aspect-video overflow-hidden">
+        <img
+          src={src}
+          srcset={srcset}
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          alt={title}
+          class="w-full h-full object-cover"
+          loading="lazy"
+        />
+      </figure>
+      <div class="card-body p-4">
+        <h3 class="card-title text-lg">{title}</h3>
+        <div class="flex flex-wrap gap-2">
+          <span class="badge badge-accent badge-sm">{system}</span>
+          {level && (
+            <span class="badge badge-primary badge-sm">Level {level}</span>
+          )}
+        </div>
+        {gm && <p class="text-sm text-base-content/70">GM: {gm}</p>}
+      </div>
+    </a>
+  )
+}
+
+<style>
+  /* Scoped to the featured card so the compact variant keeps its parity. */
+  @media (max-width: 400px) {
+    .game-card--featured .card-body {
+      padding: 1rem !important;
+    }
+
+    .game-card--featured .card-title {
+      font-size: 1.25rem !important;
+      line-height: 1.75rem !important;
+    }
+  }
+</style>
