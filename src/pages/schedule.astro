@@ -1,11 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Schedule from '../components/Schedule.astro';
+import { currentEvent } from '../data/events';
+import { longDate } from '../lib/format';
 ---
 
 <Layout
-  title="Event Schedule - OZ ORC 2026 | Adelaide OSR Gaming Convention"
-  description="Full schedule for OZ ORC 2026 on February 7th at Colonel Light Gardens RSL. Three gaming sessions, lunch, dinner, and after-party. Setup starts at 8am, games run until 9:30pm."
+  title="Event Schedule - OZ ORC | Adelaide OSR Gaming Convention"
+  description={`Full schedule for OZ ORC on ${longDate(currentEvent.date)} at ${currentEvent.venue.name}. Three gaming sessions with lunch and dinner breaks — doors open 8:30am, games run 9am to 8pm.`}
 >
   <Schedule />
 </Layout>

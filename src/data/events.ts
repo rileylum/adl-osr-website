@@ -89,27 +89,32 @@ export interface Event {
   games: Game[];
 }
 
+// The venue is shared across both Adelaide events, so it is defined once and
+// referenced by each — no fact typed twice, even across occurrences.
+const colonelLightGardens: Venue = {
+  name: 'Colonel Light Gardens RSL',
+  schemaName: 'RSL Colonel Light Gardens Sub Branch Inc',
+  address: {
+    street: '4 Prince George Parade',
+    suburb: 'Colonel Light Gardens Adelaide',
+    region: 'SA',
+    postcode: '5041',
+    country: 'AU',
+  },
+  schemaLocality: 'Colonel Light Gardens',
+  geo: { lat: -34.98605, lng: 138.597715 },
+  mapEmbedUrl:
+    'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3268.8249211805587!2d138.59771519999998!3d-34.9860499!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ab0cfd4be116b63%3A0x41af81ff8aee1a85!2sRSL%20Colonel%20Light%20Gardens%20Sub%20Branch%20Inc!5e0!3m2!1sen!2sau!4v1760871343157!5m2!1sen!2sau',
+  phone: '(08) 8276 9080',
+};
+
+// Adelaide Feb 2026 — archived. Retains its games so the past event stays whole.
 const adelaide2026: Event = {
   region: 'Adelaide',
   date: '2026-02-07',
   utcOffset: '+10:30',
-  status: 'current',
-  venue: {
-    name: 'Colonel Light Gardens RSL',
-    schemaName: 'RSL Colonel Light Gardens Sub Branch Inc',
-    address: {
-      street: '4 Prince George Parade',
-      suburb: 'Colonel Light Gardens Adelaide',
-      region: 'SA',
-      postcode: '5041',
-      country: 'AU',
-    },
-    schemaLocality: 'Colonel Light Gardens',
-    geo: { lat: -34.98605, lng: 138.597715 },
-    mapEmbedUrl:
-      'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3268.8249211805587!2d138.59771519999998!3d-34.9860499!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ab0cfd4be116b63%3A0x41af81ff8aee1a85!2sRSL%20Colonel%20Light%20Gardens%20Sub%20Branch%20Inc!5e0!3m2!1sen!2sau!4v1760871343157!5m2!1sen!2sau',
-    phone: '(08) 8276 9080',
-  },
+  status: 'past',
+  venue: colonelLightGardens,
   price: { amount: '15', currency: 'AUD' },
   warhornUrl: 'https://warhorn.net/events/oz-orc-adelaide-feb-2026',
   agenda: [
@@ -141,7 +146,46 @@ const adelaide2026: Event = {
   games: adelaide2026Games,
 };
 
-export const events: Event[] = [adelaide2026];
+// Adelaide Sep 2026 — the current event. Games are not yet confirmed (recruiting
+// GMs) and Warhorn is not set up, so an empty `games` and empty `warhornUrl`
+// drive the site's "call for GMs" / pre-registration state.
+const adelaideSep2026: Event = {
+  region: 'Adelaide',
+  date: '2026-09-12',
+  // September is ACST (standard time) — a full hour off Feb's +10:30 ACDT.
+  utcOffset: '+09:30',
+  status: 'current',
+  venue: colonelLightGardens,
+  price: { amount: '15', currency: 'AUD' },
+  warhornUrl: '',
+  agenda: [
+    { label: 'Doors Open', start: '08:30', end: '09:00' },
+    {
+      label: 'Games Session 1',
+      start: '09:00',
+      end: '12:00',
+      sessionNumber: 1,
+    },
+    { label: 'Lunch', start: '12:00', end: '13:00' },
+    {
+      label: 'Games Session 2',
+      start: '13:00',
+      end: '16:00',
+      sessionNumber: 2,
+    },
+    { label: 'Dinner', start: '16:00', end: '17:00' },
+    {
+      label: 'Games Session 3',
+      start: '17:00',
+      end: '20:00',
+      sessionNumber: 3,
+    },
+    { label: 'Close and Pack Up', start: '20:00', end: '20:30' },
+  ],
+  games: [],
+};
+
+export const events: Event[] = [adelaide2026, adelaideSep2026];
 
 /** Throws if any region has more than one `current` event. Exported and pure so
  *  it can be unit-tested against a fixture; called at module load below as the

@@ -1,0 +1,33 @@
+---
+// Homepage panel shown while the current event has no confirmed games yet.
+// Replaces the games carousel and funnels visitors to the GM signup (run a
+// game) and Discord (stay in the loop) until the lineup is locked in.
+import DiscordIcon from '../assets/discord.svg?raw';
+import { site } from '../data/site';
+---
+
+<section class="bg-base-100 py-16">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 text-center">
+    <h2 class="text-3xl sm:text-4xl font-bold mb-4">GMS WANTED</h2>
+    <p class="text-lg mb-3">
+      The game lineup is being assembled right now. We're recruiting Game
+      Masters to run old-school and OSR games across our three sessions.
+    </p>
+    <p class="text-lg mb-8">
+      Want to run a table? Submit your game below — confirmed games will appear
+      here as they're locked in.
+    </p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="/gm-submission" class="btn btn-primary btn-lg">Run a Game</a>
+      <a
+        href={site.socials.discord}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn btn-outline btn-lg gap-2"
+      >
+        <Fragment set:html={DiscordIcon} />
+        Join our Discord
+      </a>
+    </div>
+  </div>
+</section>

@@ -47,18 +47,28 @@ const { venue, date, price, warhornUrl } = currentEvent;
       </div>
       <div>
         <p class="text-lg mb-3">
-          Ready to join Adelaide's premier old-school gaming convention?
+          {
+            warhornUrl
+              ? "Ready to join Adelaide's premier old-school gaming convention?"
+              : "Adelaide's premier old-school gaming convention returns — and we're recruiting GMs now."
+          }
         </p>
-        <p class="text-lg mb-5">Sign up now or join our Discord community!</p>
+        <p class="text-lg mb-5">
+          {
+            warhornUrl
+              ? 'Sign up now or join our Discord community!'
+              : 'Run a game, or join our Discord to hear when tickets open!'
+          }
+        </p>
       </div>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
         <a
-          href={warhornUrl}
-          target="_blank"
-          rel="noopener noreferrer"
+          href={warhornUrl || '/gm-submission'}
+          target={warhornUrl ? '_blank' : undefined}
+          rel={warhornUrl ? 'noopener noreferrer' : undefined}
           class="btn btn-primary"
         >
-          Sign Up for Event
+          {warhornUrl ? 'Sign Up for Event' : 'Run a Game'}
         </a>
         <a
           href={site.socials.discord}

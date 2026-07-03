@@ -1,5 +1,6 @@
 ---
 import { currentEvent } from '../data/events';
+import { site } from '../data/site';
 import { longDate } from '../lib/format';
 ---
 
@@ -38,14 +39,27 @@ import { longDate } from '../lib/format';
         </p>
       </div>
       <div class="text-center mt-8">
-        <a
-          href={currentEvent.warhornUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="btn btn-primary btn-lg"
-        >
-          Register Now
-        </a>
+        {
+          currentEvent.warhornUrl ? (
+            <a
+              href={currentEvent.warhornUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn btn-primary btn-lg"
+            >
+              Register Now
+            </a>
+          ) : (
+            <a
+              href={site.socials.discord}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn btn-primary btn-lg"
+            >
+              Join our Discord
+            </a>
+          )
+        }
       </div>
     </div>
   </div>

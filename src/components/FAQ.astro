@@ -1,5 +1,15 @@
 ---
 import { currentEvent } from '../data/events';
+import { site } from '../data/site';
+
+const { price, warhornUrl } = currentEvent;
+const priceText = `$${price.amount} ${price.currency}`;
+
+// Registration runs through Warhorn once it is live; until then the price answer
+// points visitors at Discord to be notified when tickets open.
+const registrationText = warhornUrl
+  ? 'You can register and pay through our Warhorn event page.'
+  : 'Registration opens closer to the event — join our Discord to be the first to know.';
 
 const faqSchema = {
   '@context': 'https://schema.org',
@@ -18,7 +28,7 @@ const faqSchema = {
       name: 'How much does it cost?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Tickets are $15 AUD per person. You can register and pay through our Warhorn event page.',
+        text: `Tickets are ${priceText} per person. ${registrationText}`,
       },
     },
     {
@@ -58,7 +68,7 @@ const faqSchema = {
       name: 'Can I run a game as a GM?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Yes! We welcome GMs of all experience levels. GM spaces for OZ ORC 2026 are almost full, but we are also accepting submissions for reserves or future events. Check out the Game Submission page to submit your game proposal.',
+        text: 'Yes! We welcome GMs of all experience levels and are currently recruiting GMs for our next event. Check out the Game Submission page to submit your game proposal.',
       },
     },
   ],
@@ -102,12 +112,36 @@ const faqSchema = {
         </div>
         <div class="collapse-content">
           <p>
-            Tickets are $15 AUD per person. You can register and pay through our <a
-              href={currentEvent.warhornUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="link link-primary">Warhorn event page</a
-            >.
+            Tickets are {priceText} per person.{' '}
+            {
+              warhornUrl ? (
+                <Fragment>
+                  You can register and pay through our{' '}
+                  <a
+                    href={warhornUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="link link-primary"
+                  >
+                    Warhorn event page
+                  </a>
+                  .
+                </Fragment>
+              ) : (
+                <Fragment>
+                  Registration opens closer to the event —{' '}
+                  <a
+                    href={site.socials.discord}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="link link-primary"
+                  >
+                    join our Discord
+                  </a>{' '}
+                  to be the first to know.
+                </Fragment>
+              )
+            }
           </p>
         </div>
       </div>
@@ -208,9 +242,8 @@ const faqSchema = {
         </div>
         <div class="collapse-content">
           <p>
-            Yes! We welcome GMs of all experience levels. GM spaces for OZ ORC
-            2026 are almost full, but we are also accepting submissions for
-            reserves or future events. Check out the <a
+            Yes! We welcome GMs of all experience levels and are currently
+            recruiting GMs for our next event. Check out the <a
               href="/gm-submission"
               class="link link-primary">Game Submission</a
             > page to submit your game proposal.

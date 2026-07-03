@@ -65,10 +65,14 @@ function makeGame(session: number, title: string): Game {
 }
 
 describe('currentEvent', () => {
-  it('resolves the Adelaide Feb 2026 event', () => {
+  it('resolves the Adelaide Sep 2026 event, with no games and no Warhorn yet', () => {
     expect(currentEvent.region).toBe('Adelaide');
-    expect(currentEvent.date).toBe('2026-02-07');
+    expect(currentEvent.date).toBe('2026-09-12');
     expect(currentEvent.status).toBe('current');
+    // September is standard time — a full hour off Feb's +10:30.
+    expect(currentEvent.utcOffset).toBe('+09:30');
+    expect(currentEvent.games).toEqual([]);
+    expect(currentEvent.warhornUrl).toBe('');
   });
 
   it('is the current event returned by the seeded events list', () => {
@@ -119,8 +123,10 @@ describe('pastEvents / upcomingEvents', () => {
     expect(result[0].status).toBe('upcoming');
   });
 
-  it('the seeded list has no past or upcoming events yet', () => {
-    expect(pastEvents()).toEqual([]);
+  it('the seeded list has one archived event (Feb 2026) and none upcoming', () => {
+    const past = pastEvents();
+    expect(past).toHaveLength(1);
+    expect(past[0].date).toBe('2026-02-07');
     expect(upcomingEvents()).toEqual([]);
   });
 });
