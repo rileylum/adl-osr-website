@@ -2,11 +2,12 @@
 import CalendarIcon from '../assets/calendar.svg?raw';
 import LocationIcon from '../assets/location.svg?raw';
 import DiscordIcon from '../assets/discord.svg?raw';
+import FacebookIcon from '../assets/facebook.svg?raw';
 import { site } from '../data/site';
 import { currentEvent } from '../data/events';
 import { longDate } from '../lib/format';
 
-const { venue, date, price, warhornUrl } = currentEvent;
+const { venue, date, price, warhornUrl, facebookEventUrl } = currentEvent;
 ---
 
 <div class="hero bg-base-200 min-h-screen">
@@ -79,6 +80,19 @@ const { venue, date, price, warhornUrl } = currentEvent;
           <Fragment set:html={DiscordIcon} />
           Join Discord
         </a>
+        {
+          facebookEventUrl && (
+            <a
+              href={facebookEventUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn btn-primary gap-2"
+            >
+              <Fragment set:html={FacebookIcon} />
+              Follow on Facebook
+            </a>
+          )
+        }
       </div>
     </div>
   </div>

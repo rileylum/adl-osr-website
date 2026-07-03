@@ -82,6 +82,9 @@ export interface Event {
   /** Base Warhorn event URL — the navbar, hero, about, and FAQ links build on
    *  this, and each game's per-session URL extends it. */
   warhornUrl: string;
+  /** Facebook Event URL for this occurrence, if one exists — a funnel while
+   *  registration builds. Optional; not every event has one. */
+  facebookEventUrl?: string;
   /** The ordered timetable — the single source for both the schedule table and
    *  the session section headings. Any number of rows/sessions is supported. */
   agenda: AgendaRow[];
@@ -158,6 +161,7 @@ const adelaideSep2026: Event = {
   venue: colonelLightGardens,
   price: { amount: '15', currency: 'AUD' },
   warhornUrl: '',
+  facebookEventUrl: 'https://www.facebook.com/share/1HQ8CNDTai/',
   agenda: [
     { label: 'Doors Open', start: '08:30', end: '09:00' },
     {
