@@ -45,7 +45,7 @@ export const site: Site = {
   ogImage: '/images/OZORC_Dungeon.jpg',
   email: 'convention@ozorc.com',
   socials: {
-    discord: 'https://discord.gg/BNehJG2xP4',
+    discord: 'https://discord.gg/vVqQNBtFbZ',
     facebook: 'https://www.facebook.com/profile.php?id=61582507863401',
     instagram: 'https://www.instagram.com/oz.orc',
     bluesky: 'https://bsky.app/profile/oz-orc.bsky.social',
