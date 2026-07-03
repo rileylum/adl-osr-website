@@ -290,6 +290,8 @@ describe('sessionGroups', () => {
 });
 
 describe('eventStart / eventEnd', () => {
+  // Non-session rows (Setup, After Party) bracket the sessions; the public
+  // schema window must derive from the first/last SESSION rows, not these.
   const event = makeEvent({
     date: '2026-02-07',
     utcOffset: '+10:30',
@@ -301,32 +303,46 @@ describe('eventStart / eventEnd', () => {
         end: '12:30',
         sessionNumber: 1,
       },
+      {
+        label: 'Games Session 2',
+        start: '14:00',
+        end: '17:00',
+        sessionNumber: 2,
+      },
       { label: 'After Party', start: '22:00' },
     ],
   });
 
-  it('derives startDate from the first agenda row', () => {
-    expect(eventStart(event)).toBe('2026-02-07T08:00:00+10:30');
+  it('derives startDate from the first session row, not the Setup row', () => {
+    expect(eventStart(event)).toBe('2026-02-07T09:30:00+10:30');
   });
 
-  it('derives endDate from the last agenda row, using its start when open-ended', () => {
-    expect(eventEnd(event)).toBe('2026-02-07T22:00:00+10:30');
+  it('derives endDate from the last session row, not the After Party row', () => {
+    expect(eventEnd(event)).toBe('2026-02-07T17:00:00+10:30');
   });
 
-  it('uses the last row’s end when it is present', () => {
-    const closed = makeEvent({
+  it('falls back to the literal first/last rows when an event has no sessions', () => {
+    const noSessions = makeEvent({
       date: '2026-02-07',
       utcOffset: '+10:30',
       agenda: [
-        {
-          label: 'Games Session 1',
-          start: '09:30',
-          end: '12:30',
-          sessionNumber: 1,
-        },
-        { label: 'Close and Pack Up', start: '21:30', end: '22:00' },
+        { label: 'Doors', start: '09:00', end: '10:00' },
+        { label: 'Talk', start: '10:00', end: '11:00' },
       ],
     });
-    expect(eventEnd(closed)).toBe('2026-02-07T22:00:00+10:30');
+    expect(eventStart(noSessions)).toBe('2026-02-07T09:00:00+10:30');
+    expect(eventEnd(noSessions)).toBe('2026-02-07T11:00:00+10:30');
+  });
+
+  it('uses the last row’s start when a no-session event ends open-ended', () => {
+    const openEnded = makeEvent({
+      date: '2026-02-07',
+      utcOffset: '+10:30',
+      agenda: [
+        { label: 'Doors', start: '09:00', end: '10:00' },
+        { label: 'Mingle', start: '10:00' },
+      ],
+    });
+    expect(eventEnd(openEnded)).toBe('2026-02-07T10:00:00+10:30');
   });
 });

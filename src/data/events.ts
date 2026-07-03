@@ -282,19 +282,32 @@ export function sessionGroups(
   return groups;
 }
 
-/** schema.org `startDate` — the first agenda row's start, as ISO+offset. */
+/** schema.org `startDate` — the first game-bearing **session** row's start, as
+ *  ISO+offset. Deriving from sessions (not the literal first agenda row) keeps
+ *  internal rows like Setup / Doors out of the public window search engines and
+ *  calendars advertise. Falls back to the first agenda row if an event defines
+ *  no sessions. */
 export function eventStart(
   event: Pick<Event, 'date' | 'utcOffset' | 'agenda'>
 ): string {
-  const first = event.agenda[0];
+  const sessions = event.agenda.filter(
+    (row) => row.sessionNumber !== undefined
+  );
+  const first = sessions[0] ?? event.agenda[0];
   return iso(event.date, first.start, event.utcOffset);
 }
 
-/** schema.org `endDate` — the last agenda row's end (its start if open-ended),
- *  as ISO+offset. */
+/** schema.org `endDate` — the last **session** row's end (its start if
+ *  open-ended), as ISO+offset. Deriving from sessions excludes trailing rows
+ *  like Pack Up / After Party from the public window. Falls back to the last
+ *  agenda row if an event defines no sessions. */
 export function eventEnd(
   event: Pick<Event, 'date' | 'utcOffset' | 'agenda'>
 ): string {
-  const last = event.agenda[event.agenda.length - 1];
+  const sessions = event.agenda.filter(
+    (row) => row.sessionNumber !== undefined
+  );
+  const last =
+    sessions[sessions.length - 1] ?? event.agenda[event.agenda.length - 1];
   return iso(event.date, last.end ?? last.start, event.utcOffset);
 }

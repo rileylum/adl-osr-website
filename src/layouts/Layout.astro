@@ -63,7 +63,7 @@ const {
           ['ml', '__ml__initialized', 'ml_guid'].forEach(function (k) {
             try {
               delete w[k];
-            } catch (e) {
+            } catch {
               w[k] = undefined;
             }
           });
