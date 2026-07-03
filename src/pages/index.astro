@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import FeaturedGames from '../components/FeaturedGames.astro';
 import CallForGames from '../components/CallForGames.astro';
+import RegisterInterest from '../components/RegisterInterest.astro';
 import About from '../components/About.astro';
 import WhatToBring from '../components/WhatToBring.astro';
 import Testimonials from '../components/Testimonials.astro';
@@ -23,6 +24,7 @@ const hasGames = currentEvent.games.length > 0;
 >
   <Hero />
   {hasGames ? <FeaturedGames /> : <CallForGames />}
+  <RegisterInterest />
   <About />
   <WhatToBring />
   <Testimonials />

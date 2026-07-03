@@ -38,6 +38,57 @@ const {
     <meta name="generator" content={Astro.generator} />
     <SEO title={title} description={description} image={image} type={type} />
     <ViewTransitions />
+    <!-- MailerLite Universal — account loader, required on every page. Astro's
+         view transitions swap the document and drop universal.js's injected
+         script, so instead of loading once we (re)load it on every
+         astro:page-load whenever a .ml-embedded form on the page is still
+         unrendered. A loading flag prevents concurrent injects and the watcher
+         is registered once. See RegisterInterest.astro. -->
+    <script is:inline>
+      (function () {
+        var w = window,
+          d = document;
+        function renderMailerLite() {
+          var el = d.querySelector('.ml-embedded');
+          if (!el || el.children.length) return; // nothing to do / already rendered
+          if (w.__mlLoading) return; // a load is already in flight
+          w.__mlLoading = true;
+          // universal.js short-circuits when its own globals persist (it sets
+          // __ml__initialized), so after a view transition it won't render the
+          // freshly swapped-in embed. Clear its init globals and the prior script
+          // so the reload fully re-initialises and renders the current
+          // .ml-embedded.
+          // Keep ml_jQuery (the loaded jQuery) so in-flight webforms code does
+          // not throw; only clear what makes universal.js re-init and re-render.
+          ['ml', '__ml__initialized', 'ml_guid'].forEach(function (k) {
+            try {
+              delete w[k];
+            } catch (e) {
+              w[k] = undefined;
+            }
+          });
+          var old = d.getElementById('ml-universal');
+          if (old) old.remove();
+          w.ml = function () {
+            (w.ml.q = w.ml.q || []).push(arguments);
+          };
+          var s = d.createElement('script');
+          s.id = 'ml-universal';
+          s.async = 1;
+          s.src = 'https://assets.mailerlite.com/js/universal.js';
+          s.onload = s.onerror = function () {
+            w.__mlLoading = false;
+          };
+          d.head.appendChild(s);
+          w.ml('account', '2486872');
+        }
+        if (!w.__mlWatcher) {
+          w.__mlWatcher = 1;
+          d.addEventListener('astro:page-load', renderMailerLite);
+        }
+        renderMailerLite();
+      })();
+    </script>
   </head>
   <body>
     <Navbar showLogo={showLogo} />
