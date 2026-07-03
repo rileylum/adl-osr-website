@@ -1,0 +1,37 @@
+---
+// Register-interest / newsletter capture — MailerLite Universal embed (form
+// B6FVva). The account loader lives once in Layout's <head> per MailerLite's
+// guidance; universal.js renders this form into the .ml-embedded div and owns
+// its styling, validation, reCAPTCHA and double opt-in. Edit the form's copy,
+// fields and success message in the MailerLite dashboard, not here.
+---
+
+<section id="register" class="bg-base-200 py-16">
+  <div class="max-w-md mx-auto px-4">
+    <div class="ml-embedded" data-form="B6FVva"></div>
+  </div>
+</section>
+
+<style is:global>
+  /* daisyUI ships a `.checkbox` component class. MailerLite's embedded form
+     wraps its consent row in <label class="checkbox">, so daisyUI styles that
+     label as a small square box (appearance:none, border, fixed size, noise
+     background) — shrinking it and collapsing the consent text to one word per
+     line. Neutralise daisyUI's box styling on the embed's labels only;
+     MailerLite draws its own checkbox via the label's padding + pseudo-elements,
+     and real daisyUI checkboxes elsewhere on the site are untouched. */
+  .ml-embedded label.checkbox {
+    width: auto;
+    height: auto;
+    border: 0;
+    border-radius: 0;
+    /* daisyUI's .checkbox adds an inset box-shadow that, on the full-width
+       label, draws a 1px line across the top — clear it too. */
+    box-shadow: none;
+    background-image: none;
+    -webkit-appearance: none;
+    appearance: none;
+    flex-shrink: 1;
+    vertical-align: baseline;
+  }
+</style>
