@@ -2,7 +2,7 @@
 import { site, ogImageUrl } from '../../data/site';
 import { currentEvent, eventStart, eventEnd } from '../../data/events';
 
-const { venue, price } = currentEvent;
+const { venue, price, warhornUrl } = currentEvent;
 
 // startDate/endDate derive from the first and last agenda rows, so structured
 // data can never drift from the timetable the page shows.
@@ -45,9 +45,12 @@ const eventSchema = {
     '@type': 'Offer',
     price: price.amount,
     priceCurrency: price.currency,
-    url: site.url,
-    availability: 'https://schema.org/InStock',
-    validFrom: '2025-10-21',
+    // Point at Warhorn once it exists; until then registration is not open, so
+    // advertise PreOrder rather than InStock and link to the site.
+    url: warhornUrl || site.url,
+    availability: warhornUrl
+      ? 'https://schema.org/InStock'
+      : 'https://schema.org/PreOrder',
   },
   performer: {
     '@type': 'Organization',
