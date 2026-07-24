@@ -193,3 +193,164 @@ export const adelaide2026Games: Game[] = [
     session: 3,
   },
 ];
+
+export const adelaideSep2026Games: Game[] = [
+  {
+    title: 'Another Bug Hunt',
+    system: 'Mothership RPG',
+    image: '/images/games/another-bug-hunt.webp',
+    description:
+      'Mothership is a horror sci-fi game that can evoke the style of Alien, Dead Space, The Thing and the like. Another Bug Hunt is the introductory pre-written scenario for Mothership. The characters get the job to investigate a research base on a remote planet. When they arrive they find some bugs that need hunting.',
+    warhornUrl:
+      'https://warhorn.net/events/ozorc-adelaide-september-2026/schedule/sessions/adc70f25-cc1b-4705-aaa0-b1f22fbb9d6c',
+    gm: 'Max Weeden',
+    session: 1,
+  },
+  {
+    title: 'Mörk Råtta',
+    system: 'Mörk Råtta (Mörk Borg hack)',
+    image: '/images/games/mork-ratta.webp',
+    description:
+      'In Mörk Råtta, you are a rat venturing into the lightless depths of an endless sewer. Navigate twisting tunnels, brave forgotten places, and outwit the strange horrors lurking beneath the streets. Every journey promises new dangers, hidden wonders, and the chance to survive another day in the darkness.',
+    warhornUrl:
+      'https://warhorn.net/events/ozorc-adelaide-september-2026/schedule/sessions/5834ed6c-09b6-490a-9f59-918bdaf0c6b2',
+    gm: 'Charlie',
+    session: 1,
+  },
+  {
+    title: 'Secret Wars II',
+    system: 'Marvel Super Heroes',
+    image: '/images/games/secret-wars-ii.webp',
+    description:
+      'This is a battle royale game where you can play various marvel heroes as they were in 1985 who have come to Los Angeles seeking the Beyonder. It is a simply intuitive game with sample characters provided. If you go down take another hero. Spot instant karma awards for good roleplaying and bold deeds that reflect your character.',
+    warhornUrl:
+      'https://warhorn.net/events/ozorc-adelaide-september-2026/schedule/sessions/a466e839-56ad-4619-a9b7-704fe31d8afa',
+    gm: 'Chris Tamm',
+    session: 1,
+  },
+  {
+    title: 'The Treachery of the Bishop',
+    system: 'Basic Fantasy Role-Playing Game',
+    image: '/images/games/the-treachery-of-the-bishop.webp',
+    description:
+      "A treacherous bishop has dosed you all with a poison that will kill you in three hours, and says that he will only grant the antidote if you retrieve the skull of an ancient 'saint' from the tomb he's locked you into. The only way out is through; can you retrieve the skull and survive to get your revenge?",
+    warhornUrl:
+      'https://warhorn.net/events/ozorc-adelaide-september-2026/schedule/sessions/a6275250-fd95-4fd2-b600-fb8fb3688599',
+    gm: 'James',
+    session: 1,
+  },
+  {
+    title: 'Urmalk the Boundless',
+    system: 'Original Dungeons & Dragons',
+    level: '3-5',
+    image: '/images/games/urmalk-the-boundless.webp',
+    description:
+      'The necropolis on the hill next to the city-state of Pentastadion is timeless: it has been welcoming the dead since time immemorial, and many dangers and treasures are hidden in its dilapidated crypts. Among them is Urmalk the Boundless, who is known to have been one of the richest magnates of the city – although they say his treasures are easier to see than reach, and easier to reach than obtain. After a few cups of wine too many and an irresponsible bet, YOU may be the next to try!',
+    warhornUrl:
+      'https://warhorn.net/events/ozorc-adelaide-september-2026/schedule/sessions/260aee80-4eb9-4e15-b65a-55ed3ccfb7f4',
+    gm: 'Riley Lum',
+    session: 1,
+  },
+  {
+    title: 'Doom of the Savage Kings',
+    system: 'Dungeon Crawl Classics RPG',
+    level: '1',
+    image: '/images/games/doom-of-the-savage-kings.webp',
+    description:
+      'High above the windswept moors and darksome woods, the village of Hirot is under siege. Each night, as the sun sinks beneath the western mountains and the candles burn low, a devil-hound stalks the village streets, unleashing its savage fury on the living. This is a small sandbox adventure by Harley Stroh, designed for first level characters.',
+    warhornUrl:
+      'https://warhorn.net/events/ozorc-adelaide-september-2026/schedule/sessions/85d4faa4-256c-4a31-afc3-17bfdb510b43',
+    gm: 'Jeremy Watkinson',
+    session: 2,
+  },
+  {
+    title: 'Goatquest 2',
+    system: 'Elfmaids & Octopi',
+    image: '/images/games/goatquest-2.webp',
+    description:
+      "A sequel to my last Goatquest con game. You play magical talking goats disguised among normal farm animals. Nanny Binx made you smart and taught you got magic so you can be alert for the threat of the dreaded Anti-Goat and its dreadful chaos goat minions. Protect your village from evil cults and don't let humans know your secrets.",
+    warhornUrl:
+      'https://warhorn.net/events/ozorc-adelaide-september-2026/schedule/sessions/239b2878-f210-40b3-85db-83738f7588d5',
+    gm: 'Chris Tamm',
+    session: 2,
+  },
+  {
+    title: 'N1: Against the Cult of the Reptile God: The Swamp Dungeon',
+    system: 'Basic Fantasy Role-Playing Game',
+    level: '1-3',
+    image: '/images/games/n1-against-the-cult-of-the-reptile-god.webp',
+    description:
+      "The village of Orlane has been suffering under the oppressive presence of a secret cult dedicated to the hideous 'Reptile God'. This hidden evil has been discovered by the aged wizard Ramne, who lies dying after living a magically prolonged life. You have accepted his mission to find and destroy this 'Reptile God' once and for all... in the evil cult's swamp stronghold!",
+    warhornUrl:
+      'https://warhorn.net/events/ozorc-adelaide-september-2026/schedule/sessions/6de2ef7d-94f2-464f-9d80-58b6cdc05bea',
+    gm: 'Doug Irwin',
+    session: 2,
+  },
+  {
+    title: 'Trial of the Slime Lord',
+    system: 'ShadowDark',
+    image: '/images/games/trial-of-the-slime-lord.webp',
+    description:
+      "'Trial of the Slime Lord' is a much-loved gauntlet adventure for zero-level Shadowdark characters. This cursed dungeon serves as a sort of crucible for an ooze-worshiping cult. Those who survive are granted a boon from the Slime Lord. Those who do not, wander the halls as the unquiet dead, doomed to serve the ooze for eternity. The player characters have just been kidnapped from their village and thrown in a pit to face the Trial of the Slime Lord.",
+    warhornUrl:
+      'https://warhorn.net/events/ozorc-adelaide-september-2026/schedule/sessions/d99e42b6-d9f4-4918-8231-4d5e49945a3f',
+    gm: 'Roy Ananda',
+    session: 2,
+  },
+  {
+    title: 'Wormjuice',
+    system: 'Cairn',
+    image: '/images/games/wormjuice.webp',
+    description:
+      "Your head hurts. It's dark and stinks in here. You're bound to the other lost souls in this cell... and something big is feeding in the room below you. Come on over to the little hut deep in Dankwood... maybe you can get out, but then you have to get home. Exploration, deadly combat, and competitive factions will be found in the damp, soggy forest of Dankwood.",
+    warhornUrl:
+      'https://warhorn.net/events/ozorc-adelaide-september-2026/schedule/sessions/14e43bfc-2f59-4d3a-8036-7c39c8168139',
+    gm: 'Stuart',
+    session: 2,
+  },
+  {
+    title: 'B1: In Search of the Unknown',
+    system: 'ShadowDark',
+    level: '2-3',
+    image: '/images/games/b1-in-search-of-the-unknown.webp',
+    description:
+      'The Caverns of Quasqueton is a dungeon complex that was excavated and settled by the legendary heroes Zelligar and Rogahn. These two heroes disappeared nearly 30 years ago. There have been reports of strange goings on in the vicinity of the caverns in the past month. Now the Duke sends brave and skilled adventurers to more fully investigate the Caverns of Quasqueton.',
+    warhornUrl:
+      'https://warhorn.net/events/ozorc-adelaide-september-2026/schedule/sessions/69c335d5-f4c2-4d29-8032-9c72ed7ab9fe',
+    gm: 'Garry Hale',
+    session: 3,
+  },
+  {
+    title: 'Cult of the Maw',
+    system: "Hero's Gambit",
+    image: '/images/games/cult-of-the-maw.webp',
+    description:
+      "Master Orven, a merchant from Dunwarren, is desperate for news of his daughter, Elira. Weeks ago she travelled to visit a new Druidic temple and there has been no word since. Did she even make it to the temple? Has she joined their cult? Or is she their prisoner? The story begins with the party approaching the temple's entrance...",
+    warhornUrl:
+      'https://warhorn.net/events/ozorc-adelaide-september-2026/schedule/sessions/45cbea91-1b4c-46f4-95f4-1ebf03a89718',
+    gm: 'Steven Pemberton',
+    session: 3,
+  },
+  {
+    title: 'Down Into the Long Stairs',
+    system: 'Elfmaids & Octopi',
+    image: '/images/games/down-into-the-long-stairs.webp',
+    description:
+      'The Long Stairs was a shared fan setting developed on forums 20 years ago. You play modern Australian military special forces and civilian specialists versus ultra-terrestrial dungeon entities from beyond. Through a portal in an underground base in Emu Flats, the other side is a dreadful eternal self-aware dungeon dimension. Gather intelligence on the hostile xenoforms found within...',
+    warhornUrl:
+      'https://warhorn.net/events/ozorc-adelaide-september-2026/schedule/sessions/903f22b5-c95d-4d34-b439-1f7e432bbcf7',
+    gm: 'Chris Tamm',
+    session: 3,
+  },
+  {
+    title: 'Technu',
+    system: 'Cthulhu Now',
+    image: '/images/games/technu-sep2026.webp',
+    description:
+      "The new social media App 'Technu' has, in your opinion (after careful investigation) – been responsible for the recent epidemic of mental illness breaking out in cities in America, Europe, and other parts of the world. Your team of investigators, ICT technicians, mental health experts, and security specialists have tracked down the App developer's location. It's time to raid the site and stop them before they upload the promised 'upgrade'...",
+    warhornUrl:
+      'https://warhorn.net/events/ozorc-adelaide-september-2026/schedule/sessions/de3e2f76-2c77-444b-98e3-addc32f06783',
+    gm: 'Marcus Smith',
+    session: 3,
+  },
+];

@@ -65,14 +65,16 @@ function makeGame(session: number, title: string): Game {
 }
 
 describe('currentEvent', () => {
-  it('resolves the Adelaide Sep 2026 event, with no games and no Warhorn yet', () => {
+  it('resolves the Adelaide Sep 2026 event, live with its confirmed games and Warhorn URL', () => {
     expect(currentEvent.region).toBe('Adelaide');
     expect(currentEvent.date).toBe('2026-09-12');
     expect(currentEvent.status).toBe('current');
     // September is standard time — a full hour off Feb's +10:30.
     expect(currentEvent.utcOffset).toBe('+09:30');
-    expect(currentEvent.games).toEqual([]);
-    expect(currentEvent.warhornUrl).toBe('');
+    expect(currentEvent.games).toHaveLength(14);
+    expect(currentEvent.warhornUrl).toBe(
+      'https://warhorn.net/events/ozorc-adelaide-september-2026'
+    );
   });
 
   it('is the current event returned by the seeded events list', () => {
