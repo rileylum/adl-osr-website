@@ -8,7 +8,7 @@
 
 import type { Address } from '../lib/format';
 import { iso } from '../lib/format';
-import { adelaide2026Games, type Game } from './games';
+import { adelaide2026Games, adelaideSep2026Games, type Game } from './games';
 
 /** The geographic scope of an event. At most one `current` event per region
  *  (enforced by the build guard below). Adding a region is additive. */
@@ -149,9 +149,8 @@ const adelaide2026: Event = {
   games: adelaide2026Games,
 };
 
-// Adelaide Sep 2026 — the current event. Games are not yet confirmed (recruiting
-// GMs) and Warhorn is not set up, so an empty `games` and empty `warhornUrl`
-// drive the site's "call for GMs" / pre-registration state.
+// Adelaide Sep 2026 — the current event, now live with its confirmed games
+// and Warhorn registration.
 const adelaideSep2026: Event = {
   region: 'Adelaide',
   date: '2026-09-12',
@@ -160,7 +159,7 @@ const adelaideSep2026: Event = {
   status: 'current',
   venue: colonelLightGardens,
   price: { amount: '15', currency: 'AUD' },
-  warhornUrl: '',
+  warhornUrl: 'https://warhorn.net/events/ozorc-adelaide-september-2026',
   facebookEventUrl: 'https://www.facebook.com/share/1HQ8CNDTai/',
   agenda: [
     { label: 'Doors Open', start: '08:30', end: '09:00' },
@@ -186,7 +185,7 @@ const adelaideSep2026: Event = {
     },
     { label: 'Close and Pack Up', start: '20:00', end: '20:30' },
   ],
-  games: [],
+  games: adelaideSep2026Games,
 };
 
 export const events: Event[] = [adelaide2026, adelaideSep2026];
