@@ -108,36 +108,30 @@ there is no hardcoded date, venue, price, or URL in any component.
 
 ## Deployment
 
-The site is a **static build** — no SSR adapter, no server runtime. Publishing is
-"build, then serve `dist/`".
+The site is a **static build** — no SSR adapter, no server runtime.
+
+The repo is checked out on the VPS at **`/var/www/ozorc`**, and the webserver
+serves the build output from it directly. **The build is the deploy** — there is
+no copy, sync, or upload step.
 
 ```bash
+cd /var/www/ozorc
 git pull
 npm ci            # or `npm install` if you're not on a clean checkout
 npm test          # guards + formatters — catches bad event/game data
-npm run build     # outputs to ./dist/
+npm run build     # outputs to ./dist/ — this is what goes live
 ```
 
-`npm run build` writes the entire site to `./dist/`. Nothing else needs moving:
-game images live in `public/` and are committed, so a `git pull` brings them and
-the build copies them into `dist/`.
+Game images live in `public/` and are committed, so `git pull` brings them and
+the build copies them into `dist/`. Nothing needs moving by hand.
 
-### Publishing `dist/` on the VPS
+**Run `npm test` before `npm run build`.** The build guards (one `current` event
+per region; every game's `session` matching an agenda row) will fail the build
+anyway, but the tests tell you _what_ is wrong in a fraction of the time.
 
-<!-- TODO: fill in the real docroot / server block for ozorc.com. -->
-
-Two setups are possible; use whichever matches this server:
-
-- **Docroot points directly at the repo's `dist/`** — then the build _is_ the
-  deploy and there is nothing further to do.
-- **Docroot is elsewhere** (e.g. `/var/www/ozorc.com`) — sync after building:
-
-  ```bash
-  rsync -a --delete dist/ /var/www/ozorc.com/
-  ```
-
-  The `--delete` matters: without it, pages and images removed since the last
-  release linger and keep getting served.
+> **Note:** because the served directory is rewritten in place, the site can
+> serve incomplete content for the few seconds `npm run build` is running. That
+> is fine for a low-traffic site — just don't build while pointing someone at it.
 
 ### After publishing
 
