@@ -343,6 +343,18 @@ export const adelaideSep2026Games: Game[] = [
     session: 3,
   },
   {
+    title: 'S1: Tomb of Horrors',
+    system: 'Basic Fantasy Role-Playing Game',
+    level: '10-14',
+    image: '/images/games/s1-tomb-of-horrors.webp',
+    description:
+      'Beneath a desolate hill in the far wilds of the world hides the labyrinthine vault of the demilich Acererak. Guarded by merciless traps, false doors and insidious magic, it stands as the ultimate testing ground for adventurers who believe they have mastered the art of defeating dungeons. This high-speed tournament run applies the lean 1975 typescript to the iconic S1 module — an unforgiving meat grinder where survival depends on player skill, not character stats.',
+    warhornUrl:
+      'https://warhorn.net/events/ozorc-adelaide-september-2026/schedule/sessions/29202987-03db-4103-b5e8-5f3a67404f2f',
+    gm: 'Doug Irwin',
+    session: 3,
+  },
+  {
     title: 'Technu',
     system: 'Cthulhu Now',
     image: '/images/games/technu-sep2026.webp',
@@ -351,6 +363,18 @@ export const adelaideSep2026Games: Game[] = [
     warhornUrl:
       'https://warhorn.net/events/ozorc-adelaide-september-2026/schedule/sessions/de3e2f76-2c77-444b-98e3-addc32f06783',
     gm: 'Marcus Smith',
+    session: 3,
+  },
+  {
+    title: 'Veiled Vaults of the Onyx Queen',
+    system: 'Dungeon Crawl Classics RPG',
+    level: '0',
+    image: '/images/games/veiled-vaults-of-the-onyx-queen.webp',
+    description:
+      "Queen Yoros' Onyx Jubilee is fast approaching, and royal courtiers have combed the realm for subjects of uncommon skill to ply their talents at the palace in preparation for the great celebration. The game begins in media res as you — a gaggle of hapless peasants — attempt to escape the clutches of a demonic cult. Experience the awe and terror of the signature Dungeon Crawl Classics 0-level funnel; pre-generated characters will be provided.",
+    warhornUrl:
+      'https://warhorn.net/events/ozorc-adelaide-september-2026/schedule/sessions/e6815d2e-be33-4231-a5d9-3c252fbaf624',
+    gm: 'Jeremy Watkinson',
     session: 3,
   },
 ];
