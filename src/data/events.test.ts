@@ -71,7 +71,7 @@ describe('currentEvent', () => {
     expect(currentEvent.status).toBe('current');
     // September is standard time — a full hour off Feb's +10:30.
     expect(currentEvent.utcOffset).toBe('+09:30');
-    expect(currentEvent.games).toHaveLength(14);
+    expect(currentEvent.games).toHaveLength(16);
     expect(currentEvent.warhornUrl).toBe(
       'https://warhorn.net/events/ozorc-adelaide-september-2026'
     );
