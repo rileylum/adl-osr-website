@@ -252,6 +252,18 @@ export const adelaideSep2026Games: Game[] = [
     session: 1,
   },
   {
+    title: 'Bank Robbery',
+    system: 'Cowpunchers Reloaded',
+    level: '1',
+    image: '/images/games/bank-robbery.webp',
+    description:
+      "The town of Steeptrail is under attack by bandits! They are robbing the bank! They have taken hostages! Are you a bad enough Cowboy to take on Quickgun's gang of no-good rustlers? Or maybe your gang is out to steal Steeptrail's riches, too. Ye haw. Cowpunchers is a rules-light game that uses a d6 dicepool system and features deadly combat where every character acts at the same time.",
+    warhornUrl:
+      'https://warhorn.net/events/ozorc-adelaide-september-2026/schedule/sessions/8ebda2c2-df5d-4caf-8e49-6fbc3cd11c81',
+    gm: 'Alex',
+    session: 2,
+  },
+  {
     title: 'Doom of the Savage Kings',
     system: 'Dungeon Crawl Classics RPG',
     level: '1',
