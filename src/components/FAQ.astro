@@ -5,10 +5,10 @@ import { site } from '../data/site';
 const { price, warhornUrl } = currentEvent;
 const priceText = `$${price.amount} ${price.currency}`;
 
-// Registration runs through Warhorn once it is live; until then the price answer
-// points visitors at Discord to be notified when tickets open.
+// Warhorn handles seat booking only — there is no online payment, so the answer
+// has to say cash at the door or people turn up expecting to have paid already.
 const registrationText = warhornUrl
-  ? 'You can register and pay through our Warhorn event page.'
+  ? 'Book your seats on our Warhorn event page, then pay cash at the door on the day.'
   : 'Registration opens closer to the event — join our Discord to be the first to know.';
 
 const faqSchema = {
@@ -116,7 +116,7 @@ const faqSchema = {
             {
               warhornUrl ? (
                 <Fragment>
-                  You can register and pay through our{' '}
+                  Book your seats on our{' '}
                   <a
                     href={warhornUrl}
                     target="_blank"
@@ -125,7 +125,7 @@ const faqSchema = {
                   >
                     Warhorn event page
                   </a>
-                  .
+                  , then pay cash at the door on the day.
                 </Fragment>
               ) : (
                 <Fragment>
