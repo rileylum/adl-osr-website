@@ -28,23 +28,39 @@ const [title, description] = !currentEvent
 ---
 
 <Layout title={title} description={description} showLogo={false}>
-  <Hero />
-  {
-    currentEvent ? (
-      <Fragment>
-        {hasGames ? <FeaturedGames /> : <CallForGames />}
-        <RegisterInterest />
-      </Fragment>
-    ) : (
-      <Fragment>
-        <RegisterInterest />
-        <CallForGames />
-      </Fragment>
-    )
-  }
-  <About />
-  <WhatToBring />
-  <Testimonials />
-  <FAQ />
+  <div class="alternating-sections">
+    <Hero />
+    {
+      currentEvent ? (
+        <Fragment>
+          {hasGames ? <FeaturedGames /> : <CallForGames />}
+          <RegisterInterest />
+        </Fragment>
+      ) : (
+        <Fragment>
+          <RegisterInterest />
+          <CallForGames />
+        </Fragment>
+      )
+    }
+    <About />
+    <WhatToBring />
+    <Testimonials />
+    <FAQ />
+  </div>
   {currentEvent && <EventSchema />}
 </Layout>
+
+<style is:global>
+  /* Which sections render depends on the event state, so a colour hardcoded
+     per section can put two of the same shade side by side. Alternate by
+     position instead. `of :not(script)` skips the inline JSON-LD and module
+     scripts some sections emit as siblings — plain :nth-child would count
+     them and break the pattern. Sections must not set their own bg-base-*. */
+  .alternating-sections > :nth-child(odd of :not(script)) {
+    background-color: var(--color-base-200);
+  }
+  .alternating-sections > :nth-child(even of :not(script)) {
+    background-color: var(--color-base-100);
+  }
+</style>
