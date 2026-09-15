@@ -1,9 +1,13 @@
 ---
 import LocationIcon from '../assets/location.svg?raw';
-import { currentEvent } from '../data/events';
+import type { Event } from '../data/events';
 import { address } from '../lib/format';
 
-const { venue } = currentEvent;
+interface Props {
+  event: Event;
+}
+
+const { venue } = Astro.props.event;
 const addressLine = address(venue.address);
 ---
 
@@ -62,8 +66,8 @@ const addressLine = address(venue.address);
                 <li class="flex items-start gap-2">
                   <span class="text-primary">→</span>
                   <span
-                    ><strong>Bus:</strong> Routes 631, G10, G20, G21, 200, 200B,
-                    200C service Colonel Light Gardens</span
+                    ><strong>Bus:</strong> Routes 631, G10, G20, G21, 200, 200B, 200C
+                    service Colonel Light Gardens</span
                   >
                 </li>
                 <li class="flex items-start gap-2">

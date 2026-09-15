@@ -1,40 +1,148 @@
 ---
-const galleryImages = [
+interface Photo {
+  src: string;
+  alt: string;
+}
+
+interface GallerySection {
+  title: string;
+  photos: Photo[];
+}
+
+// Newest event first. The mini con ran before the OZ ORC branding. Sep 2026 photos keep the order of the Facebook posts they
+// were sorted into (con-prep/con-photos/posts); file names are <post>-<nn>.
+const sep = (name: string, alt: string): Photo => ({
+  src: `/images/gallery/sep-2026/${name}.webp`,
+  alt,
+});
+const feb = (n: number, alt: string): Photo => ({
+  src: `/images/gallery/feb-2026/${String(n).padStart(2, '0')}.webp`,
+  alt,
+});
+const miniCon = (n: number, alt: string): Photo => ({
+  src: `/images/gallery/mini-con/${n}.webp`,
+  alt,
+});
+
+const sections: GallerySection[] = [
   {
-    src: '/images/gallery/1.webp',
-    alt: 'Players enjoying old-school D&D gaming at OZ ORC Adelaide convention',
+    title: 'OZ ORC 2 — September 2026',
+    photos: [
+      sep(
+        'wrap-up-01',
+        'Wide view of the hall at OZ ORC, with players at tables between partition screens'
+      ),
+      sep(
+        'wrap-up-02',
+        'A game master in an OZ ORC shirt gives two thumbs up beside a table'
+      ),
+      sep('wrap-up-03', 'A smiling table of players takes a selfie mid-game'),
+      sep(
+        'wrap-up-04',
+        'A game master in a top hat runs a crowded table of players'
+      ),
+      sep(
+        'wrap-up-05',
+        'Players gathered around a table covered in maps and terrain'
+      ),
+      sep(
+        'wrap-up-06',
+        'A game master in a wizard hat leads a table of players'
+      ),
+      sep('wrap-up-07', 'A full table of players around a GM screen'),
+      sep(
+        'wrap-up-08',
+        'Players around a table with a hand-drawn map and figures'
+      ),
+      sep('wrap-up-09', 'A small table of players in a corner of the hall'),
+      sep(
+        'at-the-tables-01',
+        'Players racing toy cars around a road-map play mat at OZ ORC'
+      ),
+      sep(
+        'at-the-tables-02',
+        'Close-up of toy cars and flame effects on a road-map battle mat'
+      ),
+      sep(
+        'at-the-tables-03',
+        'Top-down view of a road-map game board covered in toy cars'
+      ),
+      sep(
+        'at-the-tables-04',
+        'Painted red-robed cultist miniatures among stone ruins on a grid mat'
+      ),
+      sep(
+        'at-the-tables-05',
+        'Painted miniatures fighting inside stone wall terrain on a grid mat'
+      ),
+      sep(
+        'at-the-tables-06',
+        'Painted beast-folk adventurer miniatures on a grid mat'
+      ),
+      sep(
+        'at-the-tables-07',
+        'A game master behind a painted GM screen at Table 3'
+      ),
+      sep(
+        'at-the-tables-08',
+        'Two players study their notes over a table of miniatures and terrain'
+      ),
+      sep(
+        'at-the-tables-09',
+        'A battle mat, GM screen and character sheets set out before play'
+      ),
+      sep(
+        'at-the-tables-10',
+        'A table set with a hand-drawn map, clipboards and character sheets'
+      ),
+    ],
   },
   {
-    src: '/images/gallery/2.webp',
-    alt: 'Game master running OSR tabletop RPG session at OZ ORC',
+    title: 'OZ ORC 1 — February 2026',
+    photos: [
+      feb(
+        1,
+        'A game master in an OZ ORC shirt explains the adventure to a table of players, one in a wizard hat'
+      ),
+      feb(2, 'Players around a table near the doorway of the hall'),
+      feb(
+        3,
+        'Close-up of painted wizard and warrior miniatures beside a stone well on a grid mat'
+      ),
+      feb(4, 'A player in a wizard hat at a table mid-game'),
+      feb(
+        5,
+        'A smiling table of players, one in a wizard hat, turns to the camera'
+      ),
+      feb(6, 'Attendees mingling in the hall between sessions'),
+      feb(
+        7,
+        'A table of players poses behind a GM screen and their gaming gear'
+      ),
+    ],
   },
   {
-    src: '/images/gallery/3.webp',
-    alt: 'Attendees playing classic tabletop games at Adelaide OSR convention',
-  },
-  {
-    src: '/images/gallery/4.webp',
-    alt: 'Gaming tables setup at OZ ORC old-school gaming event',
-  },
-  {
-    src: '/images/gallery/5.webp',
-    alt: 'Dice and character sheets during OSR game session at OZ ORC',
-  },
-  {
-    src: '/images/gallery/6.webp',
-    alt: 'Community gathering at OZ ORC Adelaide tabletop gaming convention',
-  },
-  {
-    src: '/images/gallery/7.webp',
-    alt: 'Players engaged in dungeon crawl at OZ ORC OSR event',
-  },
-  {
-    src: '/images/gallery/8.webp',
-    alt: 'Tabletop RPG gaming atmosphere at OZ ORC Adelaide',
-  },
-  {
-    src: '/images/gallery/9.webp',
-    alt: 'Old-school D&D enthusiasts at OZ ORC gaming convention',
+    title: 'Adelaide OSR/NSR Mini Con',
+    photos: [
+      miniCon(
+        1,
+        'Players enjoying old-school D&D gaming at OZ ORC Adelaide convention'
+      ),
+      miniCon(2, 'Game master running OSR tabletop RPG session at OZ ORC'),
+      miniCon(
+        3,
+        'Attendees playing classic tabletop games at Adelaide OSR convention'
+      ),
+      miniCon(4, 'Gaming tables setup at OZ ORC old-school gaming event'),
+      miniCon(5, 'Dice and character sheets during OSR game session at OZ ORC'),
+      miniCon(
+        6,
+        'Community gathering at OZ ORC Adelaide tabletop gaming convention'
+      ),
+      miniCon(7, 'Players engaged in dungeon crawl at OZ ORC OSR event'),
+      miniCon(8, 'Tabletop RPG gaming atmosphere at OZ ORC Adelaide'),
+      miniCon(9, 'Old-school D&D enthusiasts at OZ ORC gaming convention'),
+    ],
   },
 ];
 ---
@@ -48,27 +156,39 @@ const galleryImages = [
       </p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {
-        galleryImages.map((image) => (
-          <div class="card bg-base-100 shadow-sm overflow-hidden">
-            <figure class="aspect-square">
-              <img
-                src={image.src}
-                alt={image.alt}
-                width="959"
-                height="722"
-                loading="lazy"
-                decoding="async"
-                class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-              />
-            </figure>
+    {
+      sections.map((section) => (
+        <div class="mb-16">
+          <h2 class="text-3xl font-bold text-center mb-8">{section.title}</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {section.photos.map((photo) => (
+              <a
+                href={photo.src}
+                target="_blank"
+                rel="noopener"
+                class="card bg-base-100 shadow-sm overflow-hidden"
+              >
+                {/* The square crop cuts off people at the edges, so the tile
+                    links to the full photo. */}
+                <figure class="aspect-square">
+                  <img
+                    src={photo.src}
+                    alt={photo.alt}
+                    width="959"
+                    height="722"
+                    loading="lazy"
+                    decoding="async"
+                    class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                  />
+                </figure>
+              </a>
+            ))}
           </div>
-        ))
-      }
-    </div>
+        </div>
+      ))
+    }
 
-    <div class="text-center mt-12">
+    <div class="text-center">
       <a href="/" class="btn btn-primary">Back to Main Page</a>
     </div>
   </div>

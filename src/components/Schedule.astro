@@ -1,11 +1,15 @@
 ---
 import CalendarIcon from '../assets/calendar.svg?raw';
 import LocationIcon from '../assets/location.svg?raw';
-import { currentEvent, sessionGroups } from '../data/events';
+import { sessionGroups, type Event } from '../data/events';
 import { mil, friendly, longDate } from '../lib/format';
 import GameCard from './GameCard.astro';
 
-const { agenda, games, venue, date } = currentEvent;
+interface Props {
+  event: Event;
+}
+
+const { agenda, games, venue, date } = Astro.props.event;
 const sessions = sessionGroups(agenda, games);
 ---
 

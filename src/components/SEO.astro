@@ -1,6 +1,6 @@
 ---
 import { site } from '../data/site';
-import { currentEvent } from '../data/events';
+import { latestEvent } from '../data/events';
 
 export interface Props {
   title: string;
@@ -24,10 +24,10 @@ const imageUrl = new URL(image, siteUrl).href;
 
 const siteName = site.seoName;
 
-// Geo tags derive from the current event's venue coordinates and the org
-// locality — the coordinates are typed once on the venue. The 6-decimal
-// formatting preserves the existing tag values exactly.
-const { geo } = currentEvent.venue;
+// Geo tags derive from the latest event's venue coordinates (the current one,
+// else the last venue used, so off-season pages keep local SEO) and the org
+// locality. The 6-decimal formatting preserves the existing tag values exactly.
+const { geo } = latestEvent.venue;
 const lat = geo.lat.toFixed(6);
 const lng = geo.lng.toFixed(6);
 const geoRegion = `${site.address.country}-${site.address.region}`;

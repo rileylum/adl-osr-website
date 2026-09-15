@@ -1,28 +1,67 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import DiscordIcon from '../assets/discord.svg?raw';
+import { site } from '../data/site';
+import { currentEvent, nextEventWindow } from '../data/events';
 ---
 
 <Layout
-  title="Submit Your Game - OZ ORC 2026 GM Applications | Adelaide OSR"
-  description="Run a game at OZ ORC 2026! Submit your OSR or old-school D&D game for Adelaide's premier tabletop gaming convention. All experience levels welcome."
+  title="Submit Your Game - OZ ORC GM Applications | Adelaide OSR"
+  description={currentEvent
+    ? "Run a game at OZ ORC! Submit your OSR or old-school D&D game for Adelaide's premier tabletop gaming convention. All experience levels welcome."
+    : `Run a game at OZ ORC ${nextEventWindow}! GM submissions open once the date is set — join our Discord to register your interest. All experience levels welcome.`}
 >
-  <div class="min-h-screen bg-base-200 py-8">
+  <div class="flex-1 bg-base-200 py-8">
     <div class="max-w-4xl mx-auto px-4">
       <h1 class="text-4xl font-bold text-center mb-8">Game Submission</h1>
-      <div class="bg-base-100 rounded-lg shadow-lg p-4">
-        <iframe
-          src="https://docs.google.com/forms/d/e/1FAIpQLSd5AF02FWxv8WawxTKIFv49PlxVOxbqbSPJmvAjk9_At-jHhg/viewform?embedded=true"
-          width="100%"
-          height="1200"
-          frameborder="0"
-          marginheight="0"
-          marginwidth="0"
-          class="w-full"
-          style="max-height: 80vh;"
-        >
-          Loading…
-        </iframe>
-      </div>
+      {
+        !currentEvent && (
+          <div class="card bg-base-100 shadow-lg max-w-2xl mx-auto">
+            <div class="card-body text-center">
+              <h2 class="text-2xl font-bold mb-2">
+                Submissions for {nextEventWindow} aren't open yet
+              </h2>
+              <p class="text-lg mb-6">
+                We'll open game submissions once the date is set. Join our
+                Discord and tell us what you'd like to run, or join the mailing
+                list to hear when submissions open.
+              </p>
+              <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a
+                  href={site.socials.discord}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-primary gap-2"
+                >
+                  <Fragment set:html={DiscordIcon} />
+                  Join our Discord
+                </a>
+                <a href="/#register" class="btn btn-outline">
+                  Join the Mailing List
+                </a>
+              </div>
+            </div>
+          </div>
+        )
+      }
+      {
+        currentEvent && (
+          <div class="bg-base-100 rounded-lg shadow-lg p-4">
+            <iframe
+              src="https://docs.google.com/forms/d/e/1FAIpQLSd5AF02FWxv8WawxTKIFv49PlxVOxbqbSPJmvAjk9_At-jHhg/viewform?embedded=true"
+              width="100%"
+              height="1200"
+              frameborder="0"
+              marginheight="0"
+              marginwidth="0"
+              class="w-full"
+              style="max-height: 80vh;"
+            >
+              Loading…
+            </iframe>
+          </div>
+        )
+      }
     </div>
   </div>
 </Layout>

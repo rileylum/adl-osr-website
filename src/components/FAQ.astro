@@ -1,15 +1,24 @@
 ---
-import { currentEvent } from '../data/events';
+import { currentEvent, latestEvent } from '../data/events';
 import { site } from '../data/site';
 
-const { price, warhornUrl } = currentEvent;
+// Off-season there's no current price, so quote the last event's and say so.
+const { price } = latestEvent;
+const warhornUrl = currentEvent?.warhornUrl;
 const priceText = `$${price.amount} ${price.currency}`;
+const priceLead = currentEvent
+  ? `Tickets are ${priceText} per person.`
+  : `Tickets for our last event were ${priceText} per person.`;
 
 // Warhorn handles seat booking only — there is no online payment, so the answer
 // has to say cash at the door or people turn up expecting to have paid already.
 const registrationText = warhornUrl
   ? 'Book your seats on our Warhorn event page, then pay cash at the door on the day.'
   : 'Registration opens closer to the event — join our Discord to be the first to know.';
+
+const gmText = currentEvent
+  ? 'Yes! We welcome GMs of all experience levels and are currently recruiting GMs for our next event. Check out the Game Submission page to submit your game proposal.'
+  : "Yes! We welcome GMs of all experience levels. Game submissions for our next event open once the date is set — join our Discord and let us know what you'd like to run.";
 
 const faqSchema = {
   '@context': 'https://schema.org',
@@ -28,7 +37,7 @@ const faqSchema = {
       name: 'How much does it cost?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: `Tickets are ${priceText} per person. ${registrationText}`,
+        text: `${priceLead} ${registrationText}`,
       },
     },
     {
@@ -37,14 +46,6 @@ const faqSchema = {
       acceptedAnswer: {
         '@type': 'Answer',
         text: "Absolutely! Our GMs are experienced at welcoming new players. You don't need to know the rules or bring a character - just bring yourself and a willingness to explore strange worlds.",
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Is food provided?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Please bring your own food and drinks (non-alcoholic). There are many places nearby to get food during scheduled breaks. A bar will also be open in the afternoon for those who wish to purchase refreshments.',
       },
     },
     {
@@ -68,7 +69,7 @@ const faqSchema = {
       name: 'Can I run a game as a GM?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Yes! We welcome GMs of all experience levels and are currently recruiting GMs for our next event. Check out the Game Submission page to submit your game proposal.',
+        text: gmText,
       },
     },
   ],
@@ -112,7 +113,7 @@ const faqSchema = {
         </div>
         <div class="collapse-content">
           <p>
-            Tickets are {priceText} per person.{' '}
+            {priceLead}{' '}
             {
               warhornUrl ? (
                 <Fragment>
@@ -183,23 +184,6 @@ const faqSchema = {
         <input
           type="radio"
           name="faq-accordion"
-          aria-label="Is food provided?"
-        />
-        <div class="collapse-title text-xl font-medium">Is food provided?</div>
-        <div class="collapse-content">
-          <p>
-            Please bring your own food and drinks (non-alcoholic). There are
-            many places nearby to get food during scheduled breaks. A bar will
-            also be open in the afternoon for those who wish to purchase
-            refreshments.
-          </p>
-        </div>
-      </div>
-
-      <div class="collapse collapse-plus bg-base-100">
-        <input
-          type="radio"
-          name="faq-accordion"
           aria-label="Is there a minimum age to attend?"
         />
         <div class="collapse-title text-xl font-medium">
@@ -241,13 +225,32 @@ const faqSchema = {
           Can I run a game as a GM?
         </div>
         <div class="collapse-content">
-          <p>
-            Yes! We welcome GMs of all experience levels and are currently
-            recruiting GMs for our next event. Check out the <a
-              href="/gm-submission"
-              class="link link-primary">Game Submission</a
-            > page to submit your game proposal.
-          </p>
+          {
+            currentEvent ? (
+              <p>
+                Yes! We welcome GMs of all experience levels and are currently
+                recruiting GMs for our next event. Check out the{' '}
+                <a href="/gm-submission" class="link link-primary">
+                  Game Submission
+                </a>{' '}
+                page to submit your game proposal.
+              </p>
+            ) : (
+              <p>
+                Yes! We welcome GMs of all experience levels. Game submissions
+                for our next event open once the date is set —{' '}
+                <a
+                  href={site.socials.discord}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="link link-primary"
+                >
+                  join our Discord
+                </a>{' '}
+                and let us know what you'd like to run.
+              </p>
+            )
+          }
         </div>
       </div>
     </div>

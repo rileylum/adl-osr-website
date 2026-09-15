@@ -1,5 +1,5 @@
 ---
-import { currentEvent } from '../data/events';
+import { currentEvent, nextEventWindow } from '../data/events';
 import { site } from '../data/site';
 import { longDate } from '../lib/format';
 ---
@@ -22,12 +22,24 @@ import { longDate } from '../lib/format';
           to the hobby, we will have a game that will fill you with awe and
           terror.
         </p>
-        <p class="mb-6">
-          Join us on {longDate(currentEvent.date)} at the {
-            currentEvent.venue.name
-          } for a day of adventure like nothing you've ever seen before, at Adelaide's
-          Premier old-school gaming convention!
-        </p>
+        {
+          currentEvent ? (
+            <p class="mb-6">
+              Join us on {longDate(currentEvent.date)} at the{' '}
+              {currentEvent.venue.name} for a day of adventure like nothing
+              you've ever seen before, at Adelaide's Premier old-school gaming
+              convention!
+            </p>
+          ) : (
+            <p class="mb-6">
+              Our next convention is planned for {nextEventWindow}. Join the{' '}
+              <a href="#register" class="link link-primary">
+                mailing list
+              </a>{' '}
+              to hear first when the date and games are announced.
+            </p>
+          )
+        }
         <p>
           We've started OZ ORC as a chance to bring the old-school and its
           glories to everyone in Adelaide. Everyone is welcome to bring dice,
@@ -40,7 +52,7 @@ import { longDate } from '../lib/format';
       </div>
       <div class="text-center mt-8">
         {
-          currentEvent.warhornUrl ? (
+          currentEvent?.warhornUrl ? (
             <a
               href={currentEvent.warhornUrl}
               target="_blank"

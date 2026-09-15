@@ -9,25 +9,42 @@ import WhatToBring from '../components/WhatToBring.astro';
 import Testimonials from '../components/Testimonials.astro';
 import FAQ from '../components/FAQ.astro';
 import EventSchema from '../components/schemas/EventSchema.astro';
-import { currentEvent } from '../data/events';
+import { currentEvent, nextEventWindow } from '../data/events';
 import { longDate } from '../lib/format';
 
-const hasGames = currentEvent.games.length > 0;
+const hasGames = (currentEvent?.games.length ?? 0) > 0;
+
+const [title, description] = !currentEvent
+  ? [
+      `OZ ORC - Adelaide D&D & OSR Convention | Returning ${nextEventWindow}`,
+      `Adelaide's premier old-school D&D, OSR and NSR gaming convention returns in ${nextEventWindow}. Join the mailing list and our Discord to hear first when dates and games are announced.`,
+    ]
+  : [
+      `OZ ORC - Adelaide D&D & OSR Convention | ${longDate(currentEvent.date)}`,
+      hasGames
+        ? `Adelaide's premier old-school D&D, OSR and NSR gaming convention — ${longDate(currentEvent.date)} at ${currentEvent.venue.name}. Classic tabletop RPGs with expert GMs.`
+        : `Adelaide's premier old-school D&D and OSR gaming convention returns ${longDate(currentEvent.date)} at ${currentEvent.venue.name}. GMs wanted — submit a game to run.`,
+    ];
 ---
 
-<Layout
-  title={`OZ ORC - Adelaide D&D & OSR Convention | ${longDate(currentEvent.date)}`}
-  description={hasGames
-    ? `Adelaide's premier old-school D&D, OSR and NSR gaming convention — ${longDate(currentEvent.date)} at ${currentEvent.venue.name}. Classic tabletop RPGs with expert GMs.`
-    : `Adelaide's premier old-school D&D and OSR gaming convention returns ${longDate(currentEvent.date)} at ${currentEvent.venue.name}. GMs wanted — submit a game to run.`}
-  showLogo={false}
->
+<Layout title={title} description={description} showLogo={false}>
   <Hero />
-  {hasGames ? <FeaturedGames /> : <CallForGames />}
-  <RegisterInterest />
+  {
+    currentEvent ? (
+      <Fragment>
+        {hasGames ? <FeaturedGames /> : <CallForGames />}
+        <RegisterInterest />
+      </Fragment>
+    ) : (
+      <Fragment>
+        <RegisterInterest />
+        <CallForGames />
+      </Fragment>
+    )
+  }
   <About />
   <WhatToBring />
   <Testimonials />
   <FAQ />
-  <EventSchema />
+  {currentEvent && <EventSchema />}
 </Layout>
