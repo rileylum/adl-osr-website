@@ -2,6 +2,11 @@
 import { site, ogImageUrl } from '../../data/site';
 import { currentEvent, eventStart, eventEnd } from '../../data/events';
 
+// Render only while an event is current: schema.org Event requires a
+// startDate, which the off-season doesn't have.
+if (!currentEvent) {
+  throw new Error('EventSchema rendered with no current event.');
+}
 const { venue, price, warhornUrl } = currentEvent;
 
 // startDate/endDate derive from the first and last agenda rows, so structured

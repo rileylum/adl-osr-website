@@ -5,7 +5,8 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-const { games } = currentEvent;
+// index.astro renders this only while the current event has games.
+const games = currentEvent?.games ?? [];
 ---
 
 <section class="bg-base-100 py-12">

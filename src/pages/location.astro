@@ -1,11 +1,27 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Location from '../components/Location.astro';
+import ComingSoon from '../components/ComingSoon.astro';
+import { currentEvent, nextEventWindow } from '../data/events';
+import { address } from '../lib/format';
 ---
 
 <Layout
-  title="Venue & Location - OZ ORC | Colonel Light Gardens RSL, Adelaide"
-  description="OZ ORC 2026 takes place at the Colonel Light Gardens RSL, 4 Prince George Parade, Colonel Light Gardens Adelaide, SA, 5041. View map, directions, and venue information."
+  title={currentEvent
+    ? `Venue & Location - OZ ORC | ${currentEvent.venue.name}, Adelaide`
+    : 'Venue & Location - OZ ORC | Adelaide OSR Gaming Convention'}
+  description={currentEvent
+    ? `OZ ORC takes place at the ${currentEvent.venue.name}, ${address(currentEvent.venue.address)}. View map, directions, and venue information.`
+    : `The venue for OZ ORC ${nextEventWindow} will be announced once it's confirmed. Join the mailing list to hear first.`}
 >
-  <Location />
+  {
+    currentEvent ? (
+      <Location event={currentEvent} />
+    ) : (
+      <ComingSoon title="LOCATION">
+        The venue for OZ ORC {nextEventWindow} will be posted here once it's
+        confirmed.
+      </ComingSoon>
+    )
+  }
 </Layout>

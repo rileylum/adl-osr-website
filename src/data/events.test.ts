@@ -3,6 +3,8 @@ import {
   events,
   currentEvent,
   currentEventFor,
+  latestEvent,
+  latestEventFor,
   pastEvents,
   upcomingEvents,
   assertOneCurrentPerRegion,
@@ -64,21 +66,41 @@ function makeGame(session: number, title: string): Game {
   };
 }
 
-describe('currentEvent', () => {
-  it('resolves the Adelaide Sep 2026 event, live with its confirmed games and Warhorn URL', () => {
-    expect(currentEvent.region).toBe('Adelaide');
-    expect(currentEvent.date).toBe('2026-09-12');
-    expect(currentEvent.status).toBe('current');
-    // September is standard time — a full hour off Feb's +10:30.
-    expect(currentEvent.utcOffset).toBe('+09:30');
-    expect(currentEvent.games).toHaveLength(17);
-    expect(currentEvent.warhornUrl).toBe(
-      'https://warhorn.net/events/ozorc-adelaide-september-2026'
-    );
+describe('currentEvent / latestEvent', () => {
+  it('is undefined in the off-season after Sep 2026', () => {
+    expect(currentEvent).toBeUndefined();
   });
 
-  it('is the current event returned by the seeded events list', () => {
-    expect(currentEvent).toBe(events.find((e) => e.status === 'current'));
+  it('latestEvent falls back to the archived Sep 2026 event with its games', () => {
+    expect(latestEvent.date).toBe('2026-09-12');
+    expect(latestEvent.status).toBe('past');
+    // September is standard time — a full hour off Feb's +10:30.
+    expect(latestEvent.utcOffset).toBe('+09:30');
+    expect(latestEvent.games).toHaveLength(17);
+  });
+});
+
+describe('latestEventFor', () => {
+  it('prefers the current event over a later-dated past one', () => {
+    const current = makeEvent({ date: '2026-01-01', status: 'current' });
+    const past = makeEvent({ date: '2026-06-01', status: 'past' });
+    expect(latestEventFor('Adelaide', [past, current])).toBe(current);
+  });
+
+  it('returns the most recent past event in the region when none is current', () => {
+    const older = makeEvent({ date: '2026-02-07', status: 'past' });
+    const newer = makeEvent({ date: '2026-09-12', status: 'past' });
+    const otherRegion = makeEvent({
+      region: 'Melbourne',
+      date: '2027-01-01',
+      status: 'past',
+    });
+    expect(latestEventFor('Adelaide', [newer, otherRegion, older])).toBe(newer);
+  });
+
+  it('ignores upcoming events and returns undefined when nothing qualifies', () => {
+    const upcoming = makeEvent({ status: 'upcoming' });
+    expect(latestEventFor('Adelaide', [upcoming])).toBeUndefined();
   });
 });
 
@@ -97,11 +119,9 @@ describe('currentEventFor', () => {
     expect(currentEventFor('Adelaide', [past, current])).toBe(current);
   });
 
-  it('throws when a region has no current event', () => {
+  it('returns undefined when a region has no current event', () => {
     const upcoming = makeEvent({ region: 'Melbourne', status: 'upcoming' });
-    expect(() => currentEventFor('Melbourne', [upcoming])).toThrow(
-      /no current event/i
-    );
+    expect(currentEventFor('Melbourne', [upcoming])).toBeUndefined();
   });
 });
 
@@ -125,10 +145,9 @@ describe('pastEvents / upcomingEvents', () => {
     expect(result[0].status).toBe('upcoming');
   });
 
-  it('the seeded list has one archived event (Feb 2026) and none upcoming', () => {
+  it('the seeded list has two archived events (Feb + Sep 2026) and none upcoming', () => {
     const past = pastEvents();
-    expect(past).toHaveLength(1);
-    expect(past[0].date).toBe('2026-02-07');
+    expect(past.map((e) => e.date)).toEqual(['2026-02-07', '2026-09-12']);
     expect(upcomingEvents()).toEqual([]);
   });
 });
@@ -283,10 +302,10 @@ describe('sessionGroups', () => {
   });
 
   it('groups the real seeded event without throwing', () => {
-    const groups = sessionGroups(currentEvent.agenda, currentEvent.games);
+    const groups = sessionGroups(latestEvent.agenda, latestEvent.games);
     expect(groups.map((g) => g.sessionNumber)).toEqual([1, 2, 3]);
     expect(groups.flatMap((g) => g.games)).toHaveLength(
-      currentEvent.games.length
+      latestEvent.games.length
     );
   });
 });

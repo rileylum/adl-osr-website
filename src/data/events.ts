@@ -149,14 +149,13 @@ const adelaide2026: Event = {
   games: adelaide2026Games,
 };
 
-// Adelaide Sep 2026 — the current event, now live with its confirmed games
-// and Warhorn registration.
+// Adelaide Sep 2026 — archived. Retains its games so the past event stays whole.
 const adelaideSep2026: Event = {
   region: 'Adelaide',
   date: '2026-09-12',
   // September is ACST (standard time) — a full hour off Feb's +10:30 ACDT.
   utcOffset: '+09:30',
-  status: 'current',
+  status: 'past',
   venue: colonelLightGardens,
   price: { amount: '15', currency: 'AUD' },
   warhornUrl: 'https://warhorn.net/events/ozorc-adelaide-september-2026',
@@ -234,15 +233,31 @@ export function assertGamesMatchSessions(all: Event[]): void {
 assertOneCurrentPerRegion(events);
 assertGamesMatchSessions(events);
 
-/** The sole `current` event for a region. Throws if none is set. */
-export function currentEventFor(region: Region, all: Event[] = events): Event {
-  const match = all.find(
+/** The sole `current` event for a region, or `undefined` in the off-season —
+ *  between an event being archived and the next one getting a date. */
+export function currentEventFor(
+  region: Region,
+  all: Event[] = events
+): Event | undefined {
+  return all.find(
     (event) => event.region === region && event.status === 'current'
   );
-  if (!match) {
-    throw new Error(`No current event for region "${region}".`);
-  }
-  return match;
+}
+
+/** The current event for a region, else its most recent past one. Off-season
+ *  pages still need a venue and price to show (Location, SEO geo tags, FAQ),
+ *  and the last event's are the best guess until the next is confirmed. */
+export function latestEventFor(
+  region: Region,
+  all: Event[] = events
+): Event | undefined {
+  return (
+    currentEventFor(region, all) ??
+    pastEvents(all)
+      .filter((event) => event.region === region)
+      .sort((a, b) => a.date.localeCompare(b.date))
+      .at(-1)
+  );
 }
 
 /** All archived events. */
@@ -255,9 +270,20 @@ export function upcomingEvents(all: Event[] = events): Event[] {
   return all.filter((event) => event.status === 'upcoming');
 }
 
-/** The single featured event while OZ ORC runs one region. Nearly every
- *  consumer reads its facts through this. */
-export const currentEvent: Event = currentEventFor('Adelaide');
+/** The single featured event while OZ ORC runs one region, or `undefined` in
+ *  the off-season. Consumers branch on it: an event shows its date, games and
+ *  signup; the off-season funnels to the mailing list and Discord. */
+export const currentEvent: Event | undefined = currentEventFor('Adelaide');
+
+const latest = latestEventFor('Adelaide');
+if (!latest) throw new Error('No current or past Adelaide event to show.');
+/** The current event, else the most recent past one. Never `undefined`. */
+export const latestEvent: Event = latest;
+
+/** When the next Adelaide event is planned, shown while no event is current.
+ *  Free text because it predates a confirmed date. Once the date is set, add
+ *  the event as `current` — this string then goes unused. */
+export const nextEventWindow = 'February 2027';
 
 /** Group games by the agenda's session rows, in agenda order. Pure over an
  *  `agenda` + `games` set so it is unit-tested independently of any Event.

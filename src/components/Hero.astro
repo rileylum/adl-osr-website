@@ -4,10 +4,30 @@ import LocationIcon from '../assets/location.svg?raw';
 import DiscordIcon from '../assets/discord.svg?raw';
 import FacebookIcon from '../assets/facebook.svg?raw';
 import { site } from '../data/site';
-import { currentEvent } from '../data/events';
+import { currentEvent, nextEventWindow } from '../data/events';
 import { longDate } from '../lib/format';
 
-const { venue, date, price, warhornUrl, facebookEventUrl } = currentEvent;
+const event = currentEvent;
+const warhornUrl = event?.warhornUrl;
+
+// Three states: registration open, event announced but not open, off-season.
+const [lead, sub, primaryLabel] = warhornUrl
+  ? [
+      "Ready to join Adelaide's premier old-school gaming convention?",
+      'Sign up now or join our Discord community!',
+      'Sign Up for Event',
+    ]
+  : event
+    ? [
+        "Adelaide's premier old-school gaming convention returns — and we're recruiting GMs now.",
+        'Register your interest below, or join our Discord to stay in the loop!',
+        'Register Your Interest',
+      ]
+    : [
+        `Adelaide's premier old-school gaming convention returns in ${nextEventWindow}.`,
+        'Join the mailing list to hear first when the date and games are announced, and come hang out on our Discord in the meantime.',
+        'Join the Mailing List',
+      ];
 ---
 
 <div class="hero bg-base-200 min-h-screen">
@@ -26,41 +46,40 @@ const { venue, date, price, warhornUrl, facebookEventUrl } = currentEvent;
         />
       </div>
       <h1 class="text-5xl font-bold mb-4">
-        OZ ORC: Adelaide's <span class="whitespace-nowrap">Old-School</span> D&D
-        & OSR Convention 2026
+        OZ ORC: Adelaide's <span class="whitespace-nowrap">Old-School</span> D&D &
+        OSR Convention{event ? ` ${event.date.slice(0, 4)}` : ''}
       </h1>
       <div class="py-4 flex flex-col items-center justify-center gap-2">
-        <div class="flex flex-wrap items-center justify-center gap-4">
-          <div class="flex items-center gap-2">
-            <Fragment set:html={CalendarIcon} />
-            <span>{longDate(date)}</span>
-          </div>
-          <div class="flex items-center gap-2">
-            <Fragment set:html={LocationIcon} />
-            <span>{venue.name}</span>
-          </div>
-        </div>
-        <div class="text-lg font-semibold">
-          <span class="text-primary"
-            >Tickets: ${price.amount} {price.currency}</span
-          >
-        </div>
+        {
+          event ? (
+            <Fragment>
+              <div class="flex flex-wrap items-center justify-center gap-4">
+                <div class="flex items-center gap-2">
+                  <Fragment set:html={CalendarIcon} />
+                  <span>{longDate(event.date)}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <Fragment set:html={LocationIcon} />
+                  <span>{event.venue.name}</span>
+                </div>
+              </div>
+              <div class="text-lg font-semibold">
+                <span class="text-primary">
+                  Tickets: ${event.price.amount} {event.price.currency}
+                </span>
+              </div>
+            </Fragment>
+          ) : (
+            <div class="flex items-center gap-2">
+              <Fragment set:html={CalendarIcon} />
+              <span>Next event: {nextEventWindow} — date TBC</span>
+            </div>
+          )
+        }
       </div>
       <div>
-        <p class="text-lg mb-3">
-          {
-            warhornUrl
-              ? "Ready to join Adelaide's premier old-school gaming convention?"
-              : "Adelaide's premier old-school gaming convention returns — and we're recruiting GMs now."
-          }
-        </p>
-        <p class="text-lg mb-5">
-          {
-            warhornUrl
-              ? 'Sign up now or join our Discord community!'
-              : 'Register your interest below, or join our Discord to stay in the loop!'
-          }
-        </p>
+        <p class="text-lg mb-3">{lead}</p>
+        <p class="text-lg mb-5">{sub}</p>
       </div>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
         <a
@@ -69,7 +88,7 @@ const { venue, date, price, warhornUrl, facebookEventUrl } = currentEvent;
           rel={warhornUrl ? 'noopener noreferrer' : undefined}
           class="btn btn-primary"
         >
-          {warhornUrl ? 'Sign Up for Event' : 'Register Your Interest'}
+          {primaryLabel}
         </a>
         <a
           href={site.socials.discord}
@@ -81,9 +100,9 @@ const { venue, date, price, warhornUrl, facebookEventUrl } = currentEvent;
           Join Discord
         </a>
         {
-          facebookEventUrl && (
+          event?.facebookEventUrl && (
             <a
-              href={facebookEventUrl}
+              href={event.facebookEventUrl}
               target="_blank"
               rel="noopener noreferrer"
               class="btn btn-primary gap-2"

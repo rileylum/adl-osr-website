@@ -1,13 +1,25 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Schedule from '../components/Schedule.astro';
-import { currentEvent } from '../data/events';
+import ComingSoon from '../components/ComingSoon.astro';
+import { currentEvent, nextEventWindow } from '../data/events';
 import { longDate } from '../lib/format';
 ---
 
 <Layout
   title="Event Schedule - OZ ORC | Adelaide OSR Gaming Convention"
-  description={`Full schedule for OZ ORC on ${longDate(currentEvent.date)} at ${currentEvent.venue.name}. Three gaming sessions with lunch and dinner breaks — doors open 8:30am, games run 9am to 8pm.`}
+  description={currentEvent
+    ? `Full schedule for OZ ORC on ${longDate(currentEvent.date)} at ${currentEvent.venue.name}. Three gaming sessions with lunch and dinner breaks — doors open 8:30am, games run 9am to 8pm.`
+    : `The schedule for OZ ORC ${nextEventWindow} will be posted once the date and games are set. Join the mailing list to hear first.`}
 >
-  <Schedule />
+  {
+    currentEvent ? (
+      <Schedule event={currentEvent} />
+    ) : (
+      <ComingSoon title="OZ ORC SCHEDULE">
+        The schedule for OZ ORC {nextEventWindow} will be posted here once the
+        date and games are set.
+      </ComingSoon>
+    )
+  }
 </Layout>
