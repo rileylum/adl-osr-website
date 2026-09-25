@@ -1,5 +1,6 @@
 ---
-import { currentEvent, latestEvent } from '../data/events';
+import { currentEvent, gmApplications, latestEvent } from '../data/events';
+import { longDate } from '../lib/format';
 import { site } from '../data/site';
 
 // Off-season there's no current price, so quote the last event's and say so.
@@ -13,11 +14,11 @@ const priceLead = currentEvent
 // Warhorn handles seat booking only — there is no online payment, so the answer
 // has to say cash at the door or people turn up expecting to have paid already.
 const registrationText = warhornUrl
-  ? 'Book your seats on our Warhorn event page, then pay cash at the door on the day.'
+  ? 'Book your seats on our Warhorn event page and pay cash at the door on the day.'
   : 'Registration opens closer to the event — join our Discord to be the first to know.';
 
-const gmText = currentEvent
-  ? 'Yes! We welcome GMs of all experience levels and are currently recruiting GMs for our next event. Check out the Game Submission page to submit your game proposal.'
+const gmText = gmApplications
+  ? `Yes! We welcome GMs of all experience levels and are currently recruiting GMs for our next event. Applications close ${longDate(gmApplications.closes)} — check out the Game Submission page to submit your game proposal.`
   : "Yes! We welcome GMs of all experience levels. Game submissions for our next event open once the date is set — join our Discord and let us know what you'd like to run.";
 
 const faqSchema = {
@@ -125,8 +126,8 @@ const faqSchema = {
                     class="link link-primary"
                   >
                     Warhorn event page
-                  </a>
-                  , then pay cash at the door on the day.
+                  </a>{' '}
+                  and pay cash at the door on the day.
                 </Fragment>
               ) : (
                 <Fragment>
@@ -226,10 +227,11 @@ const faqSchema = {
         </div>
         <div class="collapse-content">
           {
-            currentEvent ? (
+            gmApplications ? (
               <p>
                 Yes! We welcome GMs of all experience levels and are currently
-                recruiting GMs for our next event. Check out the{' '}
+                recruiting GMs for our next event. Applications close{' '}
+                {longDate(gmApplications.closes)} — check out the{' '}
                 <a href="/gm-submission" class="link link-primary">
                   Game Submission
                 </a>{' '}

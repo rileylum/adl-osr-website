@@ -285,6 +285,26 @@ export const latestEvent: Event = latest;
  *  the event as `current` — this string then goes unused. */
 export const nextEventWindow = 'February 2027';
 
+/** An open call for GMs. Kept apart from `Event` because recruiting starts
+ *  before the date, venue and sign-ups exist, so it can't wait for a `current`
+ *  event. */
+export interface GmApplications {
+  /** Google Form embed URL — the published `…/viewform?embedded=true` link. */
+  formUrl: string;
+  /** ISO date (`YYYY-MM-DD`) applications close. Display only: the site is
+   *  static, so closing takes setting `gmApplications` to `undefined`. */
+  closes: string;
+}
+
+/** The open call for GMs, or `undefined` when applications are closed. Drives
+ *  the submission form, the homepage call for GMs, the hero button and the
+ *  GM FAQ answers. */
+export const gmApplications: GmApplications | undefined = {
+  formUrl:
+    'https://docs.google.com/forms/d/e/1FAIpQLSfLKquyXIrU_HT2nr1_483mmVKR-xlWAHnaDA-wP4_homwWJQ/viewform?embedded=true',
+  closes: '2026-11-30',
+};
+
 /** Group games by the agenda's session rows, in agenda order. Pure over an
  *  `agenda` + `games` set so it is unit-tested independently of any Event.
  *  Throws if a game-bearing session row has no `end` — a session must have a

@@ -1,11 +1,12 @@
 ---
 // Homepage panel shown while there are no games to feature: either the current
 // event has no confirmed games yet, or it is the off-season. Replaces the games
-// carousel and funnels GMs to the submission form (event announced) or to
-// Discord (off-season, submissions not open yet).
+// carousel and funnels GMs to the submission form while applications are
+// open, otherwise to Discord.
 import DiscordIcon from '../assets/discord.svg?raw';
 import { site } from '../data/site';
-import { currentEvent, nextEventWindow } from '../data/events';
+import { currentEvent, gmApplications, nextEventWindow } from '../data/events';
+import { longDate } from '../lib/format';
 ---
 
 <section class="py-16">
@@ -23,6 +24,18 @@ import { currentEvent, nextEventWindow } from '../data/events';
             appear here as they're locked in.
           </p>
         </Fragment>
+      ) : gmApplications ? (
+        <Fragment>
+          <p class="text-lg mb-3">
+            Want to run a table at OZ ORC in {nextEventWindow}? We welcome GMs
+            of every experience level.
+          </p>
+          <p class="text-lg mb-8">
+            GM applications are open until {longDate(gmApplications.closes)}.
+            Submit your game below, or join our Discord if you'd like to chat it
+            over first.
+          </p>
+        </Fragment>
       ) : (
         <Fragment>
           <p class="text-lg mb-3">
@@ -38,7 +51,7 @@ import { currentEvent, nextEventWindow } from '../data/events';
     }
     <div class="flex flex-col sm:flex-row gap-4 justify-center">
       <a href="/gm-submission" class="btn btn-primary btn-lg">
-        {currentEvent ? 'Run a Game' : 'GM Submissions'}
+        {currentEvent || gmApplications ? 'Run a Game' : 'GM Submissions'}
       </a>
       <a
         href={site.socials.discord}
