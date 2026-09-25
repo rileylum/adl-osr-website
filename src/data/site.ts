@@ -32,6 +32,8 @@ export interface Site {
   ogImage: string;
   /** Contact email for organizers. */
   email: string;
+  /** Contact email for the GM team — GM questions and the GM mailing list. */
+  gmEmail: string;
   socials: Socials;
   address: OrgAddress;
 }
@@ -44,6 +46,7 @@ export const site: Site = {
   url: 'https://ozorc.com',
   ogImage: '/images/OZORC_Dungeon.jpg',
   email: 'convention@ozorc.com',
+  gmEmail: 'gm-team@ozorc.com',
   socials: {
     discord: 'https://discord.gg/vVqQNBtFbZ',
     facebook: 'https://www.facebook.com/profile.php?id=61582507863401',

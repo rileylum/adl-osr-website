@@ -4,7 +4,7 @@ import LocationIcon from '../assets/location.svg?raw';
 import DiscordIcon from '../assets/discord.svg?raw';
 import FacebookIcon from '../assets/facebook.svg?raw';
 import { site } from '../data/site';
-import { currentEvent, nextEventWindow } from '../data/events';
+import { currentEvent, gmApplications, nextEventWindow } from '../data/events';
 import { longDate } from '../lib/format';
 
 const event = currentEvent;
@@ -113,6 +113,16 @@ const [lead, sub, primaryLabel] = warhornUrl
           )
         }
       </div>
+      {
+        gmApplications && (
+          <div class="mt-6">
+            <a href="/gm-submission" class="btn btn-primary">
+              GMs Wanted: Apply by{' '}
+              {longDate(gmApplications.closes).split(',')[0]}
+            </a>
+          </div>
+        )
+      }
     </div>
   </div>
 </div>

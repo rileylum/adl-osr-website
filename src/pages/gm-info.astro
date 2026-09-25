@@ -1,6 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { site } from '../data/site';
+import { gmApplications, nextEventWindow } from '../data/events';
+import { longDate } from '../lib/format';
 ---
 
 <Layout
@@ -81,6 +83,185 @@ import { site } from '../data/site';
                   {site.email}
                 </a>
               </p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="text-2xl font-bold mb-4">GM FAQ</h2>
+
+          <div class="space-y-4">
+            <div class="collapse collapse-plus bg-base-100">
+              <input
+                type="radio"
+                name="gm-faq-accordion"
+                checked
+                aria-label="When and where is the next event?"
+              />
+              <div class="collapse-title text-xl font-medium">
+                When and where is the next event?
+              </div>
+              <div class="collapse-content">
+                <p>
+                  Adelaide, {nextEventWindow}. The exact date, venue and game
+                  slot times are still being confirmed. We'll share them with
+                  the GM mailing list and on our{' '}
+                  <a
+                    href={site.socials.discord}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="link link-primary"
+                  >
+                    Discord
+                  </a>{' '}
+                  as soon as they're locked in.
+                  {
+                    gmApplications &&
+                      ` GM applications close ${longDate(gmApplications.closes)}.`
+                  }
+                </p>
+              </div>
+            </div>
+
+            <div class="collapse collapse-plus bg-base-100">
+              <input
+                type="radio"
+                name="gm-faq-accordion"
+                aria-label="Do GMs get free entry?"
+              />
+              <div class="collapse-title text-xl font-medium">
+                Do GMs get free entry?
+              </div>
+              <div class="collapse-content">
+                <p>Yes! GMs get free entry to the convention.</p>
+              </div>
+            </div>
+
+            <div class="collapse collapse-plus bg-base-100">
+              <input
+                type="radio"
+                name="gm-faq-accordion"
+                aria-label="What do I need to prepare?"
+              />
+              <div class="collapse-title text-xl font-medium">
+                What do I need to prepare?
+              </div>
+              <div class="collapse-content">
+                <p>
+                  Your scenario, plus anything else you need to run it. The
+                  standard is that GMs provide pre-generated characters. If your
+                  game needs something different, such as players rolling up
+                  characters at the table, tell us in the Description of your
+                  application.
+                </p>
+              </div>
+            </div>
+
+            <div class="collapse collapse-plus bg-base-100">
+              <input
+                type="radio"
+                name="gm-faq-accordion"
+                aria-label="How many applications should I submit?"
+              />
+              <div class="collapse-title text-xl font-medium">
+                How many applications should I submit?
+              </div>
+              <div class="collapse-content">
+                <p>
+                  One for each session you'd like to run. In each application,
+                  tick every game slot you'd be happy to run that session in,
+                  and we'll confirm which one you get. If you'd like to run the
+                  same game twice, submit two applications.
+                </p>
+              </div>
+            </div>
+
+            <div class="collapse collapse-plus bg-base-100">
+              <input
+                type="radio"
+                name="gm-faq-accordion"
+                aria-label="Can I be a standby GM?"
+              />
+              <div class="collapse-title text-xl font-medium">
+                Can I be a "standby" GM?
+              </div>
+              <div class="collapse-content">
+                <p>
+                  Definitely! Fill in a{' '}
+                  <a href="/gm-submission" class="link link-primary">
+                    game application
+                  </a>{' '}
+                  and select "Standby" for your game slot. Standby games are called
+                  up if we get extra players or a GM has to pull out late.
+                </p>
+              </div>
+            </div>
+
+            <div class="collapse collapse-plus bg-base-100">
+              <input
+                type="radio"
+                name="gm-faq-accordion"
+                aria-label="I don't have a name for my session but I have an idea. Can I still apply?"
+              />
+              <div class="collapse-title text-xl font-medium">
+                I don't have a name for my session but I have an idea. Can I
+                still apply?
+              </div>
+              <div class="collapse-content">
+                <p>
+                  Yes! Put "TBA" in the Scenario field and tell us about your
+                  idea in the Description.
+                </p>
+              </div>
+            </div>
+
+            <div class="collapse collapse-plus bg-base-100">
+              <input
+                type="radio"
+                name="gm-faq-accordion"
+                aria-label="I don't know what to put for Content Warnings. Can I still apply?"
+              />
+              <div class="collapse-title text-xl font-medium">
+                I don't know what to put for "Content Warnings". Can I still
+                apply?
+              </div>
+              <div class="collapse-content">
+                <p>
+                  You sure can. Put "Unsure" and our friendly team will help you
+                  work it out.
+                </p>
+              </div>
+            </div>
+
+            <div class="collapse collapse-plus bg-base-100">
+              <input
+                type="radio"
+                name="gm-faq-accordion"
+                aria-label="I'm a GM who's unsure about running a game at OZ ORC. What should I do?"
+              />
+              <div class="collapse-title text-xl font-medium">
+                I'm a GM who's unsure about running a game at OZ ORC. What
+                should I do?
+              </div>
+              <div class="collapse-content">
+                <p>
+                  Join our{' '}
+                  <a
+                    href={site.socials.discord}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="link link-primary"
+                  >
+                    Discord
+                  </a>{' '}
+                  and get talking with the community, or email{' '}
+                  <a href={`mailto:${site.gmEmail}`} class="link link-primary">
+                    {site.gmEmail}
+                  </a>{' '}
+                  to join the GM mailing list. We're very friendly and would love
+                  to help you figure out what's the best fit for you.
+                </p>
+              </div>
             </div>
           </div>
         </div>

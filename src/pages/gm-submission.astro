@@ -2,29 +2,29 @@
 import Layout from '../layouts/Layout.astro';
 import DiscordIcon from '../assets/discord.svg?raw';
 import { site } from '../data/site';
-import { currentEvent, nextEventWindow } from '../data/events';
+import { gmApplications, nextEventWindow } from '../data/events';
+import { longDate } from '../lib/format';
 ---
 
 <Layout
   title="Submit Your Game - OZ ORC GM Applications | Adelaide OSR"
-  description={currentEvent
-    ? "Run a game at OZ ORC! Submit your OSR or old-school D&D game for Adelaide's premier tabletop gaming convention. All experience levels welcome."
-    : `Run a game at OZ ORC ${nextEventWindow}! GM submissions open once the date is set — join our Discord to register your interest. All experience levels welcome.`}
+  description={gmApplications
+    ? `Run a game at OZ ORC ${nextEventWindow}! GM applications are open until ${longDate(gmApplications.closes)} — submit your OSR or old-school D&D game. All experience levels welcome.`
+    : `Run a game at OZ ORC ${nextEventWindow}! GM submissions aren't open yet — join our Discord to register your interest. All experience levels welcome.`}
 >
   <div class="flex-1 bg-base-200 py-8">
     <div class="max-w-4xl mx-auto px-4">
       <h1 class="text-4xl font-bold text-center mb-8">Game Submission</h1>
       {
-        !currentEvent && (
+        !gmApplications && (
           <div class="card bg-base-100 shadow-lg max-w-2xl mx-auto">
             <div class="card-body text-center">
               <h2 class="text-2xl font-bold mb-2">
                 Submissions for {nextEventWindow} aren't open yet
               </h2>
               <p class="text-lg mb-6">
-                We'll open game submissions once the date is set. Join our
-                Discord and tell us what you'd like to run, or join the mailing
-                list to hear when submissions open.
+                Join our Discord and tell us what you'd like to run, or join the
+                mailing list to hear when submissions open.
               </p>
               <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
@@ -45,10 +45,13 @@ import { currentEvent, nextEventWindow } from '../data/events';
         )
       }
       {
-        currentEvent && (
+        gmApplications && (
           <div class="bg-base-100 rounded-lg shadow-lg p-4">
+            <p class="text-lg text-center mb-4">
+              Applications close {longDate(gmApplications.closes)}.
+            </p>
             <iframe
-              src="https://docs.google.com/forms/d/e/1FAIpQLSd5AF02FWxv8WawxTKIFv49PlxVOxbqbSPJmvAjk9_At-jHhg/viewform?embedded=true"
+              src={gmApplications.formUrl}
               width="100%"
               height="1200"
               frameborder="0"
