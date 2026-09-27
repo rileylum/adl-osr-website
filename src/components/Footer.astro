@@ -3,48 +3,47 @@ import DiscordIcon from '../assets/discord.svg?raw';
 import FacebookIcon from '../assets/facebook.svg?raw';
 import InstagramIcon from '../assets/instagram.svg?raw';
 import BlueskyIcon from '../assets/bluesky.svg?raw';
+import ExternalLink from './ui/ExternalLink.astro';
 import { site } from '../data/site';
 ---
 
-<footer class="footer footer-center bg-base-200 text-base-content p-10">
+<!-- daisyUI 5's modifier names read backwards with footer-center:
+     footer-horizontal stacks the two blocks, footer-vertical puts them side by
+     side. Phones stack them — side by side, the icons plus the email are wider
+     than a 390px screen and the whole page scrolls sideways. -->
+<footer
+  class="footer footer-center footer-horizontal sm:footer-vertical bg-base-200 text-base-content p-10"
+>
   <div>
     <div class="flex gap-4">
-      <a
+      <ExternalLink
         href={site.socials.discord}
-        target="_blank"
-        rel="noopener noreferrer"
         class="btn btn-circle btn-ghost"
         aria-label="Join our Discord"
       >
         <Fragment set:html={DiscordIcon} />
-      </a>
-      <a
+      </ExternalLink>
+      <ExternalLink
         href={site.socials.facebook}
-        target="_blank"
-        rel="noopener noreferrer"
         class="btn btn-circle btn-ghost"
         aria-label="Follow us on Facebook"
       >
         <Fragment set:html={FacebookIcon} />
-      </a>
-      <a
+      </ExternalLink>
+      <ExternalLink
         href={site.socials.instagram}
-        target="_blank"
-        rel="noopener noreferrer"
         class="btn btn-circle btn-ghost"
         aria-label="Follow us on Instagram"
       >
         <Fragment set:html={InstagramIcon} />
-      </a>
-      <a
+      </ExternalLink>
+      <ExternalLink
         href={site.socials.bluesky}
-        target="_blank"
-        rel="noopener noreferrer"
         class="btn btn-circle btn-ghost"
         aria-label="Follow us on Bluesky"
       >
         <Fragment set:html={BlueskyIcon} />
-      </a>
+      </ExternalLink>
     </div>
   </div>
   <div>

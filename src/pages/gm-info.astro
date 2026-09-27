@@ -1,5 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Section from '../components/ui/Section.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import Card from '../components/ui/Card.astro';
+import IconList from '../components/ui/IconList.astro';
+import ExternalLink from '../components/ui/ExternalLink.astro';
+import FaqItem from '../components/ui/FaqItem.astro';
 import { site } from '../data/site';
 import { gmApplications, nextEventWindow } from '../data/events';
 import { longDate } from '../lib/format';
@@ -9,269 +15,172 @@ import { longDate } from '../lib/format';
   title="GM Information - OZ ORC Adelaide | Resources for Game Masters"
   description="Essential information for Game Masters running games at OZ ORC. Find resources, safety tools, and what to bring to Adelaide's premier OSR gaming convention."
 >
-  <section class="bg-base-200 py-20">
-    <div class="max-w-4xl mx-auto px-6">
-      <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold mb-6">GM INFORMATION</h1>
-        <p class="text-lg">
-          Resources and guidelines for Game Masters at OZ ORC
-        </p>
-      </div>
+  <Section page>
+    <SectionHeading
+      as="h1"
+      title="GM INFORMATION"
+      subtitle="Resources and guidelines for Game Masters at OZ ORC"
+    />
 
-      <div class="space-y-8">
-        <div class="card bg-base-100 shadow-sm">
-          <div class="card-body">
-            <h2 class="card-title text-2xl mb-4">Support & Resources</h2>
-
-            <div class="mb-6">
-              <h3 class="font-bold text-lg mb-3">Safety Tools</h3>
-              <p class="mb-4">
-                In a convention environment, GMs will often be running games for
-                strangers with varied backgrounds and experiences. If you're
-                interested in learning about tools to help facilitate games in
-                these situations, here are some excellent resources:
-              </p>
-              <ul class="space-y-2">
-                <li class="flex items-start gap-2">
-                  <span class="text-primary">→</span>
-                  <a href="/code-of-conduct" class="link link-primary">
-                    OZ ORC Code of Conduct
-                  </a>
-                </li>
-                <li class="flex items-start gap-2">
-                  <span class="text-primary">→</span>
-                  <a
-                    href="https://ttrpgsafetytoolkit.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="link link-primary"
-                  >
-                    TTRPG Safety Toolkit
-                  </a>
-                </li>
-                <li class="flex items-start gap-2">
-                  <span class="text-primary">→</span>
-                  <a
-                    href="https://slyflourish.com/safety_tools.html"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="link link-primary"
-                  >
-                    Sly Flourish's Guide to Safety Tools
-                  </a>
-                </li>
-                <li class="flex items-start gap-2">
-                  <span class="text-primary">→</span>
-                  <a
-                    href="https://montecookgames.com/consent-in-gaming/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="link link-primary"
-                  >
-                    Monte Cook Games: Consent in Gaming
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 class="font-bold text-lg mb-3">Contact</h3>
-              <p>
-                If you have any questions or need assistance, please reach out
-                to the organizers at{' '}
-                <a href={`mailto:${site.email}`} class="link link-primary">
-                  {site.email}
-                </a>
-              </p>
-            </div>
-          </div>
+    <div class="space-y-8">
+      <Card title="Support & Resources">
+        <div class="mb-6">
+          <h3 class="title-group mb-3">Safety Tools</h3>
+          <p class="mb-4">
+            In a convention environment, GMs will often be running games for
+            strangers with varied backgrounds and experiences. If you're
+            interested in learning about tools to help facilitate games in these
+            situations, here are some excellent resources:
+          </p>
+          <IconList marker="arrow">
+            <li>
+              <a href="/code-of-conduct" class="link link-primary">
+                OZ ORC Code of Conduct
+              </a>
+            </li>
+            <li>
+              <ExternalLink href="https://ttrpgsafetytoolkit.com">
+                TTRPG Safety Toolkit
+              </ExternalLink>
+            </li>
+            <li>
+              <ExternalLink href="https://slyflourish.com/safety_tools.html">
+                Sly Flourish's Guide to Safety Tools
+              </ExternalLink>
+            </li>
+            <li>
+              <ExternalLink
+                href="https://montecookgames.com/consent-in-gaming/"
+              >
+                Monte Cook Games: Consent in Gaming
+              </ExternalLink>
+            </li>
+          </IconList>
         </div>
 
         <div>
-          <h2 class="text-2xl font-bold mb-4">GM FAQ</h2>
-
-          <div class="space-y-4">
-            <div class="collapse collapse-plus bg-base-100">
-              <input
-                type="radio"
-                name="gm-faq-accordion"
-                checked
-                aria-label="When and where is the next event?"
-              />
-              <div class="collapse-title text-xl font-medium">
-                When and where is the next event?
-              </div>
-              <div class="collapse-content">
-                <p>
-                  Adelaide, {nextEventWindow}. The exact date, venue and game
-                  slot times are still being confirmed. We'll share them with
-                  the GM mailing list and on our{' '}
-                  <a
-                    href={site.socials.discord}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="link link-primary"
-                  >
-                    Discord
-                  </a>{' '}
-                  as soon as they're locked in.
-                  {
-                    gmApplications &&
-                      ` GM applications close ${longDate(gmApplications.closes)}.`
-                  }
-                </p>
-              </div>
-            </div>
-
-            <div class="collapse collapse-plus bg-base-100">
-              <input
-                type="radio"
-                name="gm-faq-accordion"
-                aria-label="Do GMs get free entry?"
-              />
-              <div class="collapse-title text-xl font-medium">
-                Do GMs get free entry?
-              </div>
-              <div class="collapse-content">
-                <p>Yes! GMs get free entry to the convention.</p>
-              </div>
-            </div>
-
-            <div class="collapse collapse-plus bg-base-100">
-              <input
-                type="radio"
-                name="gm-faq-accordion"
-                aria-label="What do I need to prepare?"
-              />
-              <div class="collapse-title text-xl font-medium">
-                What do I need to prepare?
-              </div>
-              <div class="collapse-content">
-                <p>
-                  Your scenario, plus anything else you need to run it. The
-                  standard is that GMs provide pre-generated characters. If your
-                  game needs something different, such as players rolling up
-                  characters at the table, tell us in the Description of your
-                  application.
-                </p>
-              </div>
-            </div>
-
-            <div class="collapse collapse-plus bg-base-100">
-              <input
-                type="radio"
-                name="gm-faq-accordion"
-                aria-label="How many applications should I submit?"
-              />
-              <div class="collapse-title text-xl font-medium">
-                How many applications should I submit?
-              </div>
-              <div class="collapse-content">
-                <p>
-                  One for each session you'd like to run. In each application,
-                  tick every game slot you'd be happy to run that session in,
-                  and we'll confirm which one you get. If you'd like to run the
-                  same game twice, submit two applications.
-                </p>
-              </div>
-            </div>
-
-            <div class="collapse collapse-plus bg-base-100">
-              <input
-                type="radio"
-                name="gm-faq-accordion"
-                aria-label="Can I be a standby GM?"
-              />
-              <div class="collapse-title text-xl font-medium">
-                Can I be a "standby" GM?
-              </div>
-              <div class="collapse-content">
-                <p>
-                  Definitely! Fill in a{' '}
-                  <a href="/gm-submission" class="link link-primary">
-                    game application
-                  </a>{' '}
-                  and select "Standby" for your game slot. Standby games are called
-                  up if we get extra players or a GM has to pull out late.
-                </p>
-              </div>
-            </div>
-
-            <div class="collapse collapse-plus bg-base-100">
-              <input
-                type="radio"
-                name="gm-faq-accordion"
-                aria-label="I don't have a name for my session but I have an idea. Can I still apply?"
-              />
-              <div class="collapse-title text-xl font-medium">
-                I don't have a name for my session but I have an idea. Can I
-                still apply?
-              </div>
-              <div class="collapse-content">
-                <p>
-                  Yes! Put "TBA" in the Scenario field and tell us about your
-                  idea in the Description.
-                </p>
-              </div>
-            </div>
-
-            <div class="collapse collapse-plus bg-base-100">
-              <input
-                type="radio"
-                name="gm-faq-accordion"
-                aria-label="I don't know what to put for Content Warnings. Can I still apply?"
-              />
-              <div class="collapse-title text-xl font-medium">
-                I don't know what to put for "Content Warnings". Can I still
-                apply?
-              </div>
-              <div class="collapse-content">
-                <p>
-                  You sure can. Put "Unsure" and our friendly team will help you
-                  work it out.
-                </p>
-              </div>
-            </div>
-
-            <div class="collapse collapse-plus bg-base-100">
-              <input
-                type="radio"
-                name="gm-faq-accordion"
-                aria-label="I'm a GM who's unsure about running a game at OZ ORC. What should I do?"
-              />
-              <div class="collapse-title text-xl font-medium">
-                I'm a GM who's unsure about running a game at OZ ORC. What
-                should I do?
-              </div>
-              <div class="collapse-content">
-                <p>
-                  Join our{' '}
-                  <a
-                    href={site.socials.discord}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="link link-primary"
-                  >
-                    Discord
-                  </a>{' '}
-                  and get talking with the community, or email{' '}
-                  <a href={`mailto:${site.gmEmail}`} class="link link-primary">
-                    {site.gmEmail}
-                  </a>{' '}
-                  to join the GM mailing list. We're very friendly and would love
-                  to help you figure out what's the best fit for you.
-                </p>
-              </div>
-            </div>
-          </div>
+          <h3 class="title-group mb-3">Contact</h3>
+          <p>
+            If you have any questions or need assistance, please reach out to
+            the organizers at{' '}
+            <a href={`mailto:${site.email}`} class="link link-primary">
+              {site.email}
+            </a>
+          </p>
         </div>
+      </Card>
 
-        <div class="text-center mt-8">
-          <a href="/gm-submission" class="btn btn-primary btn-lg">
-            Submit Your Game
-          </a>
+      <div>
+        <h2 class="title-card mb-4">GM FAQ</h2>
+
+        <div class="space-y-4">
+          <FaqItem
+            question="When and where is the next event?"
+            group="gm-faq-accordion"
+            open
+          >
+            <p>
+              Adelaide, {nextEventWindow}. The exact date, venue and game slot
+              times are still being confirmed. We'll share them with the GM
+              mailing list and on our{' '}
+              <ExternalLink href={site.socials.discord}>Discord</ExternalLink>{
+                ' '
+              }
+              as soon as they're locked in.
+              {
+                gmApplications &&
+                  ` GM applications close ${longDate(gmApplications.closes)}.`
+              }
+            </p>
+          </FaqItem>
+
+          <FaqItem question="Do GMs get free entry?" group="gm-faq-accordion">
+            <p>Yes! GMs get free entry to the convention.</p>
+          </FaqItem>
+
+          <FaqItem
+            question="What do I need to prepare?"
+            group="gm-faq-accordion"
+          >
+            <p>
+              Your scenario, plus anything else you need to run it. The standard
+              is that GMs provide pre-generated characters. If your game needs
+              something different, such as players rolling up characters at the
+              table, tell us in the Description of your application.
+            </p>
+          </FaqItem>
+
+          <FaqItem
+            question="How many applications should I submit?"
+            group="gm-faq-accordion"
+          >
+            <p>
+              One for each session you'd like to run. In each application, tick
+              every game slot you'd be happy to run that session in, and we'll
+              confirm which one you get. If you'd like to run the same game
+              twice, submit two applications.
+            </p>
+          </FaqItem>
+
+          <FaqItem
+            question={'Can I be a "standby" GM?'}
+            group="gm-faq-accordion"
+          >
+            <p>
+              Definitely! Fill in a{' '}
+              <a href="/gm-submission" class="link link-primary">
+                game application
+              </a>{' '}
+              and select "Standby" for your game slot. Standby games are called up
+              if we get extra players or a GM has to pull out late.
+            </p>
+          </FaqItem>
+
+          <FaqItem
+            question="I don't have a name for my session but I have an idea. Can I still apply?"
+            group="gm-faq-accordion"
+          >
+            <p>
+              Yes! Put "TBA" in the Scenario field and tell us about your idea
+              in the Description.
+            </p>
+          </FaqItem>
+
+          <FaqItem
+            question={'I don\'t know what to put for "Content Warnings". Can I still apply?'}
+            group="gm-faq-accordion"
+          >
+            <p>
+              You sure can. Put "Unsure" and our friendly team will help you
+              work it out.
+            </p>
+          </FaqItem>
+
+          <FaqItem
+            question="I'm a GM who's unsure about running a game at OZ ORC. What should I do?"
+            group="gm-faq-accordion"
+          >
+            <p>
+              Join our{' '}
+              <ExternalLink href={site.socials.discord}>Discord</ExternalLink>{
+                ' '
+              }
+              and get talking with the community, or email{' '}
+              <a href={`mailto:${site.gmEmail}`} class="link link-primary">
+                {site.gmEmail}
+              </a>{' '}
+              to join the GM mailing list. We're very friendly and would love to help
+              you figure out what's the best fit for you.
+            </p>
+          </FaqItem>
         </div>
       </div>
+
+      <div class="text-center mt-8">
+        <a href="/gm-submission" class="btn btn-primary btn-lg">
+          Submit Your Game
+        </a>
+      </div>
     </div>
-  </section>
+  </Section>
 </Layout>

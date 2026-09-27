@@ -1,5 +1,9 @@
 ---
 import LocationIcon from '../assets/location.svg?raw';
+import Section from './ui/Section.astro';
+import SectionHeading from './ui/SectionHeading.astro';
+import Card from './ui/Card.astro';
+import IconList from './ui/IconList.astro';
 import type { Event } from '../data/events';
 import { address } from '../lib/format';
 
@@ -11,85 +15,70 @@ const { venue } = Astro.props.event;
 const addressLine = address(venue.address);
 ---
 
-<div class="hero bg-base-200 min-h-screen">
-  <div class="hero-content w-full">
-    <div class="max-w-4xl w-full px-4">
-      <h1 class="text-5xl font-bold text-center">LOCATION</h1>
-      <div class="py-6 flex flex-col items-center justify-center gap-2">
-        <div class="flex items-center gap-2">
-          <Fragment set:html={LocationIcon} />
-          <span>{venue.name}</span>
-        </div>
-        <span class="text-base-content/70">{addressLine}</span>
+<Section page>
+  <SectionHeading as="h1" title="LOCATION">
+    <div class="flex flex-col items-center justify-center gap-2">
+      <div class="flex items-center gap-2">
+        <Fragment set:html={LocationIcon} />
+        <span>{venue.name}</span>
       </div>
+      <span class="text-base-content/70">{addressLine}</span>
+    </div>
+  </SectionHeading>
 
-      <div
-        class="rounded-box overflow-hidden border border-base-content/5 bg-base-100 p-4"
-      >
-        <div class="w-full aspect-video">
-          <iframe
-            src={venue.mapEmbedUrl}
-            width="100%"
-            height="100%"
-            style="border:0;"
-            allowfullscreen=""
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-            class="rounded-lg"></iframe>
-        </div>
-        <div class="mt-4 text-left">
-          <p class="text-lg font-semibold">{venue.name}</p>
-          <p class="text-base-content/70">{addressLine}</p>
-        </div>
-      </div>
-
-      <div class="mt-8 space-y-6">
-        <div class="card bg-base-100 shadow-sm">
-          <div class="card-body">
-            <h2 class="card-title text-2xl mb-4">Getting Here</h2>
-
-            <div class="mb-6">
-              <h3 class="font-bold text-lg mb-3">Parking</h3>
-              <p>
-                Street parking is available in the surrounding streets of
-                Colonel Light Gardens.
-              </p>
-            </div>
-
-            <div class="mb-6">
-              <h3 class="font-bold text-lg mb-3">Public Transport</h3>
-              <p class="mb-2">
-                The venue is approximately 7km south of Adelaide CBD and is
-                accessible by public transport:
-              </p>
-              <ul class="space-y-2">
-                <li class="flex items-start gap-2">
-                  <span class="text-primary">→</span>
-                  <span
-                    ><strong>Bus:</strong> Routes 631, G10, G20, G21, 200, 200B, 200C
-                    service Colonel Light Gardens</span
-                  >
-                </li>
-                <li class="flex items-start gap-2">
-                  <span class="text-primary">→</span>
-                  <span
-                    ><strong>Train:</strong> Nearest stations are Mitcham and Torrens
-                    Park on the Belair line</span
-                  >
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 class="font-bold text-lg mb-3">Contact Venue</h3>
-              <p>
-                For specific parking or accessibility questions, contact the
-                venue directly at {venue.phone}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+  <div
+    class="rounded-box overflow-hidden border border-base-content/5 bg-raised p-4"
+  >
+    <div class="w-full aspect-video">
+      <iframe
+        src={venue.mapEmbedUrl}
+        width="100%"
+        height="100%"
+        style="border:0;"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        class="rounded-lg"></iframe>
+    </div>
+    <div class="mt-4 text-left">
+      <p class="text-lg font-semibold">{venue.name}</p>
+      <p class="text-base-content/70">{addressLine}</p>
     </div>
   </div>
-</div>
+
+  <Card title="Getting Here" class="mt-8">
+    <div class="mb-6">
+      <h3 class="title-group mb-3">Parking</h3>
+      <p>
+        Street parking is available in the surrounding streets of Colonel Light
+        Gardens.
+      </p>
+    </div>
+
+    <div class="mb-6">
+      <h3 class="title-group mb-3">Public Transport</h3>
+      <p class="mb-2">
+        The venue is approximately 7km south of Adelaide CBD and is accessible
+        by public transport:
+      </p>
+      <IconList marker="arrow">
+        <li>
+          <strong>Bus:</strong> Routes 631, G10, G20, G21, 200, 200B, 200C service
+          Colonel Light Gardens
+        </li>
+        <li>
+          <strong>Train:</strong> Nearest stations are Mitcham and Torrens Park on
+          the Belair line
+        </li>
+      </IconList>
+    </div>
+
+    <div>
+      <h3 class="title-group mb-3">Contact Venue</h3>
+      <p>
+        For specific parking or accessibility questions, contact the venue
+        directly at {venue.phone}
+      </p>
+    </div>
+  </Card>
+</Section>

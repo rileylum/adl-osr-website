@@ -4,13 +4,12 @@
 // guidance; universal.js renders this form into the .ml-embedded div and owns
 // its styling, validation, reCAPTCHA and double opt-in. Edit the form's copy,
 // fields and success message in the MailerLite dashboard, not here.
+import Section from './ui/Section.astro';
 ---
 
-<section id="register" class="py-16">
-  <div class="max-w-md mx-auto px-4">
-    <div class="ml-embedded" data-form="B6FVva"></div>
-  </div>
-</section>
+<Section id="register" width="narrow">
+  <div class="ml-embedded" data-form="B6FVva"></div>
+</Section>
 
 <style is:global>
   /* daisyUI ships a `.checkbox` component class. MailerLite's embedded form

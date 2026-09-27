@@ -1,49 +1,44 @@
 ---
+import Section from './ui/Section.astro';
+import SectionHeading from './ui/SectionHeading.astro';
+import Card from './ui/Card.astro';
 import { site } from '../data/site';
 ---
 
-<section class="bg-base-200 min-h-screen py-20">
-  <div class="max-w-4xl mx-auto px-6">
-    <div class="text-center mb-12">
-      <h1 class="text-5xl font-bold mb-6">CODE OF CONDUCT</h1>
-      <p class="text-lg text-base-content/70">
-        Everyone is welcome at the table
-      </p>
+<Section page>
+  <SectionHeading
+    as="h1"
+    title="CODE OF CONDUCT"
+    subtitle="Everyone is welcome at the table"
+  />
+
+  <Card>
+    <p class="text-lg leading-relaxed mb-6">
+      OZ ORC exists to bring the glories of old-school gaming to everyone in
+      Adelaide. Whether you're a grizzled grognard or entirely new to the hobby,
+      everyone is welcome to bring their dice, snacks, and wits to test
+      themselves against the dangers of the deepest delves.
+    </p>
+
+    <p class="text-lg leading-relaxed mb-6">
+      We are committed to creating a welcoming and inclusive environment for all
+      attendees, no matter their background or experience level. Our goal is to
+      grow the hobby by ensuring everyone feels safe, respected, and excited to
+      play.
+    </p>
+
+    <p class="text-lg leading-relaxed">
+      Harassment, discrimination, or behavior that makes others feel unwelcome
+      has no place at OZ ORC. If you experience or witness any issues, please
+      speak to an organizer immediately. We will address all concerns seriously
+      and take appropriate action, including removal from the event if
+      necessary. Let's make this a day of adventure and camaraderie for all.
+    </p>
+
+    <div class="mt-8 text-center">
+      <a href={`mailto:${site.email}`} class="btn btn-primary">
+        Contact Organizers
+      </a>
     </div>
-
-    <div class="prose prose-lg max-w-none">
-      <div class="card bg-base-100 shadow-sm">
-        <div class="card-body">
-          <p class="text-lg leading-relaxed mb-6">
-            OZ ORC exists to bring the glories of old-school gaming to everyone
-            in Adelaide. Whether you're a grizzled grognard or entirely new to
-            the hobby, everyone is welcome to bring their dice, snacks, and wits
-            to test themselves against the dangers of the deepest delves.
-          </p>
-
-          <p class="text-lg leading-relaxed mb-6">
-            We are committed to creating a welcoming and inclusive environment
-            for all attendees, no matter their background or experience level.
-            Our goal is to grow the hobby by ensuring everyone feels safe,
-            respected, and excited to play.
-          </p>
-
-          <p class="text-lg leading-relaxed">
-            Harassment, discrimination, or behavior that makes others feel
-            unwelcome has no place at OZ ORC. If you experience or witness any
-            issues, please speak to an organizer immediately. We will address
-            all concerns seriously and take appropriate action, including
-            removal from the event if necessary. Let's make this a day of
-            adventure and camaraderie for all.
-          </p>
-
-          <div class="mt-8 text-center">
-            <a href={`mailto:${site.email}`} class="btn btn-primary">
-              Contact Organizers
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+  </Card>
+</Section>

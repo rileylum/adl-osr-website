@@ -1,0 +1,25 @@
+---
+// Renders an answer from data (text runs and links) as inline markup.
+import ExternalLink from './ExternalLink.astro';
+import type { Inline } from '../../data/faq';
+
+interface Props {
+  parts: Inline[];
+}
+
+const { parts } = Astro.props;
+---
+
+{
+  parts.map((part) =>
+    typeof part === 'string' ? (
+      part
+    ) : part.href.startsWith('http') ? (
+      <ExternalLink href={part.href}>{part.text}</ExternalLink>
+    ) : (
+      <a href={part.href} class="link link-primary">
+        {part.text}
+      </a>
+    )
+  )
+}

@@ -1,78 +1,59 @@
 ---
+import Section from './ui/Section.astro';
+import SectionHeading from './ui/SectionHeading.astro';
+import ExternalLink from './ui/ExternalLink.astro';
 import { currentEvent, nextEventWindow } from '../data/events';
 import { site } from '../data/site';
 import { longDate } from '../lib/format';
 ---
 
-<section class="py-20">
-  <div class="max-w-4xl mx-auto px-6">
-    <div class="text-center mb-12">
-      <h2 class="text-4xl font-bold mb-6">ABOUT OZ ORC</h2>
-      <div class="prose prose-lg mx-auto text-left">
+<Section>
+  <SectionHeading title="ABOUT OZ ORC" />
+  <div>
+    <p class="mb-6">
+      OZ ORC is a day of the finest in old-school D&D and OSR gaming. We've dug
+      up TTRPGs from throughout the OSR scene, from weird-punk sci-fi
+      post-apocalypse to classic D&D and original-edition Dungeons & Dragons.
+      We've gathered together a dozen of Adelaide's most experienced and capable
+      GMs to take you through worlds of exploration, treasure, and death.
+    </p>
+    <p class="mb-6">
+      No matter if you are the most grizzled grognard or you're entirely new to
+      the hobby, we will have a game that will fill you with awe and terror.
+    </p>
+    {
+      currentEvent ? (
         <p class="mb-6">
-          OZ ORC is a day of the finest in old-school D&D and OSR gaming. We've
-          dug up TTRPGs from throughout the OSR scene, from weird-punk sci-fi
-          post-apocalypse to classic D&D and original-edition Dungeons &
-          Dragons. We've gathered together a dozen of Adelaide's most
-          experienced and capable GMs to take you through worlds of exploration,
-          treasure, and death.
+          Join us on {longDate(currentEvent.date)} at the{' '}
+          {currentEvent.venue.name} for a day of adventure like nothing you've
+          ever seen before, at Adelaide's Premier old-school gaming convention!
         </p>
+      ) : (
         <p class="mb-6">
-          No matter if you are the most grizzled grognard or you're entirely new
-          to the hobby, we will have a game that will fill you with awe and
-          terror.
+          Our next convention is planned for {nextEventWindow}. Join the{' '}
+          <a href="#register" class="link link-primary">
+            mailing list
+          </a>{' '}
+          to hear first when the date and games are announced.
         </p>
-        {
-          currentEvent ? (
-            <p class="mb-6">
-              Join us on {longDate(currentEvent.date)} at the{' '}
-              {currentEvent.venue.name} for a day of adventure like nothing
-              you've ever seen before, at Adelaide's Premier old-school gaming
-              convention!
-            </p>
-          ) : (
-            <p class="mb-6">
-              Our next convention is planned for {nextEventWindow}. Join the{' '}
-              <a href="#register" class="link link-primary">
-                mailing list
-              </a>{' '}
-              to hear first when the date and games are announced.
-            </p>
-          )
-        }
-        <p>
-          We've started OZ ORC as a chance to bring the old-school and its
-          glories to everyone in Adelaide. Everyone is welcome to bring dice,
-          snacks, and their wits with them and test themselves against the
-          dangers of the deepest delves. Read our <a
-            href="/code-of-conduct"
-            class="link link-primary">Code of Conduct</a
-          > to learn more about our commitment to creating a welcoming environment.
-        </p>
-      </div>
-      <div class="text-center mt-8">
-        {
-          currentEvent?.warhornUrl ? (
-            <a
-              href={currentEvent.warhornUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="btn btn-primary btn-lg"
-            >
-              Register Now
-            </a>
-          ) : (
-            <a
-              href={site.socials.discord}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="btn btn-primary btn-lg"
-            >
-              Join our Discord
-            </a>
-          )
-        }
-      </div>
-    </div>
+      )
+    }
+    <p>
+      We've started OZ ORC as a chance to bring the old-school and its glories
+      to everyone in Adelaide. Everyone is welcome to bring dice, snacks, and
+      their wits with them and test themselves against the dangers of the
+      deepest delves. Read our <a
+        href="/code-of-conduct"
+        class="link link-primary">Code of Conduct</a
+      > to learn more about our commitment to creating a welcoming environment.
+    </p>
   </div>
-</section>
+  <div class="text-center mt-8">
+    <ExternalLink
+      href={currentEvent?.warhornUrl ?? site.socials.discord}
+      class="btn btn-primary btn-lg"
+    >
+      {currentEvent?.warhornUrl ? 'Register Now' : 'Join our Discord'}
+    </ExternalLink>
+  </div>
+</Section>

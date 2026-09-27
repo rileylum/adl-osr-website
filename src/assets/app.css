@@ -1,10 +1,151 @@
 @import 'tailwindcss';
-@plugin "daisyui";
 
-/* Override base-content color for light mode to meet WCAG AA contrast requirements */
-@layer theme {
-  :root,
-  [data-theme='light'] {
-    --color-base-content: oklch(15% 0.006 285.885);
+/* The site's own themes replace daisyUI's built-ins, so every colour, radius
+   and depth decision lives in the two blocks below. They currently match
+   daisyUI's stock light/dark; restyle the site by editing them, not by adding
+   colour utilities in components. */
+@plugin "daisyui" {
+  themes: false;
+}
+
+@plugin "daisyui/theme" {
+  name: 'ozorc';
+  default: true;
+  color-scheme: light;
+  --color-base-100: oklch(100% 0 0);
+  --color-base-200: oklch(98% 0 0);
+  --color-base-300: oklch(95% 0 0);
+  /* Darker than daisyUI's stock 21% to meet WCAG AA on base-200. */
+  --color-base-content: oklch(15% 0.006 285.885);
+  --color-primary: oklch(45% 0.24 277.023);
+  --color-primary-content: oklch(93% 0.034 272.788);
+  --color-secondary: oklch(65% 0.241 354.308);
+  --color-secondary-content: oklch(94% 0.028 342.258);
+  --color-accent: oklch(77% 0.152 181.912);
+  --color-accent-content: oklch(38% 0.063 188.416);
+  --color-neutral: oklch(14% 0.005 285.823);
+  --color-neutral-content: oklch(92% 0.004 286.32);
+  --color-info: oklch(74% 0.16 232.661);
+  --color-info-content: oklch(29% 0.066 243.157);
+  --color-success: oklch(76% 0.177 163.223);
+  --color-success-content: oklch(37% 0.077 168.94);
+  --color-warning: oklch(82% 0.189 84.429);
+  --color-warning-content: oklch(41% 0.112 45.904);
+  --color-error: oklch(71% 0.194 13.428);
+  --color-error-content: oklch(27% 0.105 12.094);
+  --radius-selector: 0.5rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
+  /* The logo artwork is black line art; the dark theme inverts it. */
+  --logo-filter: none;
+}
+
+@plugin "daisyui/theme" {
+  name: 'ozorc-dark';
+  prefersdark: true;
+  color-scheme: dark;
+  --color-base-100: oklch(25.33% 0.016 252.42);
+  --color-base-200: oklch(23.26% 0.014 253.1);
+  --color-base-300: oklch(21.15% 0.012 254.09);
+  --color-base-content: oklch(97.807% 0.029 256.847);
+  --color-primary: oklch(58% 0.233 277.117);
+  --color-primary-content: oklch(96% 0.018 272.314);
+  --color-secondary: oklch(65% 0.241 354.308);
+  --color-secondary-content: oklch(94% 0.028 342.258);
+  --color-accent: oklch(77% 0.152 181.912);
+  --color-accent-content: oklch(38% 0.063 188.416);
+  --color-neutral: oklch(14% 0.005 285.823);
+  --color-neutral-content: oklch(92% 0.004 286.32);
+  --color-info: oklch(74% 0.16 232.661);
+  --color-info-content: oklch(29% 0.066 243.157);
+  --color-success: oklch(76% 0.177 163.223);
+  --color-success-content: oklch(37% 0.077 168.94);
+  --color-warning: oklch(82% 0.189 84.429);
+  --color-warning-content: oklch(41% 0.112 45.904);
+  --color-error: oklch(71% 0.194 13.428);
+  --color-error-content: oklch(27% 0.105 12.094);
+  --radius-selector: 0.5rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
+  --logo-filter: invert(1);
+}
+
+@theme {
+  /* Body text uses Tailwind's --font-sans; headings use --font-display. Both
+     are the system stack until the redesign picks typefaces. */
+  --font-display: var(--font-sans);
+
+  /* Vertical padding of every page and homepage section (`py-section`). */
+  --spacing-section: 5rem;
+}
+
+/* A raised surface (card, FAQ item, table box) sits on a section and must
+   contrast with it. Sections that change their background also flip
+   --surface-raised; `inline` makes bg-raised read the nearest value rather
+   than the one resolved at :root. */
+@theme inline {
+  --color-raised: var(--surface-raised);
+}
+
+@layer base {
+  :root {
+    --surface-raised: var(--color-base-100);
   }
+}
+
+/* Type scale. Each role sets family, size and weight only — spacing belongs to
+   the layout around it. */
+/* Steps down on phones: at 5xl a single long word ("INFORMATION") is wider
+   than a 320px screen and the page scrolls sideways. */
+@utility title-page {
+  font-family: var(--font-display);
+  font-size: var(--text-4xl);
+  line-height: var(--text-4xl--line-height);
+  font-weight: var(--font-weight-bold);
+
+  @media (width >= 40rem) {
+    font-size: var(--text-5xl);
+    line-height: var(--text-5xl--line-height);
+  }
+}
+
+@utility title-section {
+  font-family: var(--font-display);
+  font-size: var(--text-4xl);
+  line-height: var(--text-4xl--line-height);
+  font-weight: var(--font-weight-bold);
+}
+
+@utility title-subsection {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  line-height: var(--text-3xl--line-height);
+  font-weight: var(--font-weight-bold);
+}
+
+@utility title-card {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  line-height: var(--text-2xl--line-height);
+  font-weight: var(--font-weight-bold);
+}
+
+@utility title-group {
+  font-size: var(--text-lg);
+  line-height: var(--text-lg--line-height);
+  font-weight: var(--font-weight-bold);
+}
+
+@utility logo-ink {
+  filter: var(--logo-filter);
 }

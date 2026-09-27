@@ -12,19 +12,28 @@ const { showLogo = true } = Astro.props;
 
 <div class="navbar bg-base-100 shadow-sm">
   <div class="max-w-7xl mx-auto w-full flex items-center">
-    <div class="flex-1">
+    <!-- Below sm the title, logo and both menus don't fit in 320px, so the
+         title slot goes and the logo, now first, is the home link. The
+         homepage hides the logo too (the hero shows it), leaving no home link
+         there, which it doesn't need. -->
+    <div class="hidden sm:block flex-1">
       <a href="/" class="btn btn-ghost text-xl">ADL OSR - OZ ORC</a>
     </div>
     {
       showLogo && (
         <div class="flex-none">
-          <a href="/" class="block px-4">
+          <a
+            href="/"
+            class="block px-4 rounded-box focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          >
+            {/* Alt names where the link goes, not what the image looks like:
+                on phones this is the only home link. */}
             <img
               src="/images/OZORC_Dungeon.svg"
-              alt="OZ ORC Logo"
+              alt="OZ ORC home"
               width="5000"
               height="2500"
-              class="h-12 navbar-logo"
+              class="h-12 w-auto logo-ink"
             />
           </a>
         </div>
@@ -52,21 +61,3 @@ const { showLogo = true } = Astro.props;
     </div>
   </div>
 </div>
-
-<style>
-  .navbar-logo {
-    width: auto;
-  }
-
-  /* Invert the SVG colors in dark mode */
-  @media (prefers-color-scheme: dark) {
-    .navbar-logo {
-      filter: invert(1);
-    }
-  }
-
-  /* For DaisyUI dark theme */
-  [data-theme='dark'] .navbar-logo {
-    filter: invert(1);
-  }
-</style>

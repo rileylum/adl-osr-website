@@ -1,262 +1,37 @@
 ---
+import Section from './ui/Section.astro';
+import SectionHeading from './ui/SectionHeading.astro';
+import FaqItem from './ui/FaqItem.astro';
+import RichText from './ui/RichText.astro';
 import { currentEvent, gmApplications, latestEvent } from '../data/events';
-import { longDate } from '../lib/format';
 import { site } from '../data/site';
+import { homeFaqs, faqPageSchema } from '../data/faq';
 
-// Off-season there's no current price, so quote the last event's and say so.
-const { price } = latestEvent;
-const warhornUrl = currentEvent?.warhornUrl;
-const priceText = `$${price.amount} ${price.currency}`;
-const priceLead = currentEvent
-  ? `Tickets are ${priceText} per person.`
-  : `Tickets for our last event were ${priceText} per person.`;
-
-// Warhorn handles seat booking only — there is no online payment, so the answer
-// has to say cash at the door or people turn up expecting to have paid already.
-const registrationText = warhornUrl
-  ? 'Book your seats on our Warhorn event page and pay cash at the door on the day.'
-  : 'Registration opens closer to the event — join our Discord to be the first to know.';
-
-const gmText = gmApplications
-  ? `Yes! We welcome GMs of all experience levels and are currently recruiting GMs for our next event. Applications close ${longDate(gmApplications.closes)} — check out the Game Submission page to submit your game proposal.`
-  : "Yes! We welcome GMs of all experience levels. Game submissions for our next event open once the date is set — join our Discord and let us know what you'd like to run.";
-
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: [
-    {
-      '@type': 'Question',
-      name: 'What is OSR?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'OSR stands for "Old-School Renaissance" or "Old-School Revival". It\'s a style of tabletop RPG gaming inspired by classic D&D and early Dungeons & Dragons editions. OSR games emphasize exploration, player creativity, and challenge, featuring high stakes, meaningful choices, and a focus on problem-solving.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'How much does it cost?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: `${priceLead} ${registrationText}`,
-      },
-    },
-    {
-      '@type': 'Question',
-      name: "I'm new to tabletop RPGs. Can I still attend?",
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: "Absolutely! Our GMs are experienced at welcoming new players. You don't need to know the rules or bring a character - just bring yourself and a willingness to explore strange worlds.",
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Is there a minimum age to attend?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Attendees under 18 are welcome but must be accompanied by a parent or guardian throughout the event, as the venue is licensed.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: "What if I don't know anyone? Can I attend alone?",
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: "Absolutely! Many attendees come solo and make new friends through gaming. You'll be seated with other players who share your love of old-school gaming.",
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Can I run a game as a GM?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: gmText,
-      },
-    },
-  ],
-};
+const faqs = homeFaqs({
+  currentEvent,
+  latestEvent,
+  gmApplications,
+  discordUrl: site.socials.discord,
+});
 ---
 
-<section class="py-20">
-  <div class="max-w-4xl mx-auto px-6">
-    <div class="text-center mb-12">
-      <h2 class="text-4xl font-bold mb-6">FREQUENTLY ASKED QUESTIONS</h2>
-    </div>
+<Section>
+  <SectionHeading title="FREQUENTLY ASKED QUESTIONS" />
 
-    <div class="space-y-4">
-      <div class="collapse collapse-plus bg-base-100">
-        <input
-          type="radio"
-          name="faq-accordion"
-          checked
-          aria-label="What is OSR?"
-        />
-        <div class="collapse-title text-xl font-medium">What is OSR?</div>
-        <div class="collapse-content">
+  <div class="space-y-4">
+    {
+      faqs.map((faq, i) => (
+        <FaqItem question={faq.question} group="faq-accordion" open={i === 0}>
           <p>
-            OSR stands for "Old-School Renaissance" or "Old-School Revival".
-            It's a style of tabletop RPG gaming inspired by classic D&D and
-            early Dungeons & Dragons editions. OSR games emphasize exploration,
-            player creativity, and challenge, featuring high stakes, meaningful
-            choices, and a focus on problem-solving.
+            <RichText parts={faq.answer} />
           </p>
-        </div>
-      </div>
-
-      <div class="collapse collapse-plus bg-base-100">
-        <input
-          type="radio"
-          name="faq-accordion"
-          aria-label="How much does it cost?"
-        />
-        <div class="collapse-title text-xl font-medium">
-          How much does it cost?
-        </div>
-        <div class="collapse-content">
-          <p>
-            {priceLead}{' '}
-            {
-              warhornUrl ? (
-                <Fragment>
-                  Book your seats on our{' '}
-                  <a
-                    href={warhornUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="link link-primary"
-                  >
-                    Warhorn event page
-                  </a>{' '}
-                  and pay cash at the door on the day.
-                </Fragment>
-              ) : (
-                <Fragment>
-                  Registration opens closer to the event —{' '}
-                  <a
-                    href={site.socials.discord}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="link link-primary"
-                  >
-                    join our Discord
-                  </a>{' '}
-                  to be the first to know.
-                </Fragment>
-              )
-            }
-          </p>
-        </div>
-      </div>
-
-      <div class="collapse collapse-plus bg-base-100">
-        <input
-          type="radio"
-          name="faq-accordion"
-          aria-label="I'm new to tabletop RPGs. Can I still attend?"
-        />
-        <div class="collapse-title text-xl font-medium">
-          I'm new to tabletop RPGs. Can I still attend?
-        </div>
-        <div class="collapse-content">
-          <p>
-            Absolutely! Our GMs are experienced at welcoming new players. You
-            don't need to know the rules or bring a character - just bring
-            yourself and a willingness to explore strange worlds.
-          </p>
-        </div>
-      </div>
-
-      <!-- <div class="collapse collapse-plus bg-base-100"> -->
-      <!--   <input type="radio" name="faq-accordion" /> -->
-      <!--   <div class="collapse-title text-xl font-medium"> -->
-      <!--     Do I need to bring my own character? -->
-      <!--   </div> -->
-      <!--   <div class="collapse-content"> -->
-      <!--     <p> -->
-      <!--       No! Pre-generated characters will be provided for all games. You can -->
-      <!--       jump right in and start playing. Of course, if you'd like to bring -->
-      <!--       your own character, check with your GM first to see if it fits the -->
-      <!--       game. -->
-      <!--     </p> -->
-      <!--   </div> -->
-      <!-- </div> -->
-
-      <div class="collapse collapse-plus bg-base-100">
-        <input
-          type="radio"
-          name="faq-accordion"
-          aria-label="Is there a minimum age to attend?"
-        />
-        <div class="collapse-title text-xl font-medium">
-          Is there a minimum age to attend?
-        </div>
-        <div class="collapse-content">
-          <p>
-            Attendees under 18 are welcome but must be accompanied by a parent
-            or guardian throughout the event, as the venue is licensed.
-          </p>
-        </div>
-      </div>
-
-      <div class="collapse collapse-plus bg-base-100">
-        <input
-          type="radio"
-          name="faq-accordion"
-          aria-label="What if I don't know anyone? Can I attend alone?"
-        />
-        <div class="collapse-title text-xl font-medium">
-          What if I don't know anyone? Can I attend alone?
-        </div>
-        <div class="collapse-content">
-          <p>
-            Absolutely! Many attendees come solo and make new friends through
-            gaming. You'll be seated with other players who share your love of
-            old-school gaming.
-          </p>
-        </div>
-      </div>
-
-      <div class="collapse collapse-plus bg-base-100">
-        <input
-          type="radio"
-          name="faq-accordion"
-          aria-label="Can I run a game as a GM?"
-        />
-        <div class="collapse-title text-xl font-medium">
-          Can I run a game as a GM?
-        </div>
-        <div class="collapse-content">
-          {
-            gmApplications ? (
-              <p>
-                Yes! We welcome GMs of all experience levels and are currently
-                recruiting GMs for our next event. Applications close{' '}
-                {longDate(gmApplications.closes)} — check out the{' '}
-                <a href="/gm-submission" class="link link-primary">
-                  Game Submission
-                </a>{' '}
-                page to submit your game proposal.
-              </p>
-            ) : (
-              <p>
-                Yes! We welcome GMs of all experience levels. Game submissions
-                for our next event open once the date is set —{' '}
-                <a
-                  href={site.socials.discord}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="link link-primary"
-                >
-                  join our Discord
-                </a>{' '}
-                and let us know what you'd like to run.
-              </p>
-            )
-          }
-        </div>
-      </div>
-    </div>
+        </FaqItem>
+      ))
+    }
   </div>
-</section>
+</Section>
 
-<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+<script
+  type="application/ld+json"
+  set:html={JSON.stringify(faqPageSchema(faqs))}
+/>

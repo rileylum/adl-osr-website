@@ -1,4 +1,5 @@
 ---
+import ExternalLink from './ui/ExternalLink.astro';
 import type { Game } from '../data/games';
 
 export interface Props {
@@ -19,7 +20,7 @@ const alt = `${title} - ${system} tabletop RPG module cover art for OZ ORC Adela
 
 {
   variant === 'featured' ? (
-    <div class="game-card game-card--featured card bg-base-200 shadow-sm h-full flex flex-col">
+    <div class="card bg-raised shadow-sm h-full flex flex-col">
       <figure class="aspect-video overflow-hidden">
         <img
           src={src}
@@ -31,8 +32,8 @@ const alt = `${title} - ${system} tabletop RPG module cover art for OZ ORC Adela
           decoding="async"
         />
       </figure>
-      <div class="card-body flex flex-col flex-1">
-        <h3 class="card-title text-2xl mb-2">{title}</h3>
+      <div class="card-body flex flex-col flex-1 max-[400px]:p-4">
+        <h3 class="card-title text-2xl max-[400px]:text-xl mb-2">{title}</h3>
         <div class="flex flex-wrap gap-2 mb-3">
           <div class="badge badge-accent">{system}</div>
           {level && <div class="badge badge-primary">Level {level}</div>}
@@ -57,23 +58,16 @@ const alt = `${title} - ${system} tabletop RPG module cover art for OZ ORC Adela
         )}
 
         <div class="mt-auto">
-          <a
-            href={warhornUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn btn-primary w-full"
-          >
+          <ExternalLink href={warhornUrl} class="btn btn-primary w-full">
             Sign Up on Warhorn
-          </a>
+          </ExternalLink>
         </div>
       </div>
     </div>
   ) : (
-    <a
+    <ExternalLink
       href={warhornUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      class="game-card card bg-base-100 shadow-sm hover:shadow-lg transition-shadow"
+      class="card bg-raised shadow-sm hover:shadow-lg transition-shadow"
     >
       <figure class="aspect-video overflow-hidden">
         <img
@@ -95,20 +89,6 @@ const alt = `${title} - ${system} tabletop RPG module cover art for OZ ORC Adela
         </div>
         {gm && <p class="text-sm text-base-content/70">GM: {gm}</p>}
       </div>
-    </a>
+    </ExternalLink>
   )
 }
-
-<style>
-  /* Scoped to the featured card so the compact variant keeps its parity. */
-  @media (max-width: 400px) {
-    .game-card--featured .card-body {
-      padding: 1rem !important;
-    }
-
-    .game-card--featured .card-title {
-      font-size: 1.25rem !important;
-      line-height: 1.75rem !important;
-    }
-  }
-</style>

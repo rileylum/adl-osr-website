@@ -3,6 +3,7 @@ import CalendarIcon from '../assets/calendar.svg?raw';
 import LocationIcon from '../assets/location.svg?raw';
 import DiscordIcon from '../assets/discord.svg?raw';
 import FacebookIcon from '../assets/facebook.svg?raw';
+import ExternalLink from './ui/ExternalLink.astro';
 import { site } from '../data/site';
 import { currentEvent, gmApplications, nextEventWindow } from '../data/events';
 import { longDate } from '../lib/format';
@@ -42,10 +43,10 @@ const [lead, sub, primaryLabel] = warhornUrl
           width="500"
           height="250"
           fetchpriority="high"
-          class="w-full max-w-md mx-auto banner-logo"
+          class="w-full h-auto max-w-md mx-auto logo-ink"
         />
       </div>
-      <h1 class="text-5xl font-bold mb-4">
+      <h1 class="title-page mb-4">
         OZ ORC: Adelaide's <span class="whitespace-nowrap">Old-School</span> D&D &
         OSR Convention{event ? ` ${event.date.slice(0, 4)}` : ''}
       </h1>
@@ -90,26 +91,19 @@ const [lead, sub, primaryLabel] = warhornUrl
         >
           {primaryLabel}
         </a>
-        <a
-          href={site.socials.discord}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="btn btn-primary gap-2"
-        >
+        <ExternalLink href={site.socials.discord} class="btn btn-primary gap-2">
           <Fragment set:html={DiscordIcon} />
           Join Discord
-        </a>
+        </ExternalLink>
         {
           event?.facebookEventUrl && (
-            <a
+            <ExternalLink
               href={event.facebookEventUrl}
-              target="_blank"
-              rel="noopener noreferrer"
               class="btn btn-primary gap-2"
             >
               <Fragment set:html={FacebookIcon} />
               Follow on Facebook
-            </a>
+            </ExternalLink>
           )
         }
       </div>
@@ -126,22 +120,3 @@ const [lead, sub, primaryLabel] = warhornUrl
     </div>
   </div>
 </div>
-
-<style>
-  .banner-logo {
-    width: 100%;
-    height: auto;
-  }
-
-  /* Invert the SVG colors in dark mode */
-  @media (prefers-color-scheme: dark) {
-    .banner-logo {
-      filter: invert(1);
-    }
-  }
-
-  /* For DaisyUI dark theme */
-  [data-theme='dark'] .banner-logo {
-    filter: invert(1);
-  }
-</style>

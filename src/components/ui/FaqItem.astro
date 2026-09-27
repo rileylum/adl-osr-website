@@ -1,0 +1,19 @@
+---
+// One question in a radio-group accordion: opening one closes the others in
+// the same `group`. The answer goes in the slot.
+interface Props {
+  question: string;
+  group: string;
+  open?: boolean;
+}
+
+const { question, group, open = false } = Astro.props;
+---
+
+<div class="collapse collapse-plus bg-raised">
+  <input type="radio" name={group} checked={open} aria-label={question} />
+  <div class="collapse-title text-xl font-medium">{question}</div>
+  <div class="collapse-content">
+    <slot />
+  </div>
+</div>

@@ -1,4 +1,7 @@
 ---
+import Section from './ui/Section.astro';
+import SectionHeading from './ui/SectionHeading.astro';
+
 interface Photo {
   src: string;
   alt: string;
@@ -147,49 +150,46 @@ const sections: GallerySection[] = [
 ];
 ---
 
-<section class="bg-base-200 min-h-screen py-20">
-  <div class="max-w-6xl mx-auto px-6">
-    <div class="text-center mb-12">
-      <h1 class="text-5xl font-bold mb-6">PHOTOS FROM PAST EVENTS</h1>
-      <p class="text-lg text-base-content/70">
-        Relive the excitement from previous OZ ORC conventions
-      </p>
-    </div>
+<Section page width="wide">
+  <SectionHeading
+    as="h1"
+    title="PHOTOS FROM PAST EVENTS"
+    subtitle="Relive the excitement from previous OZ ORC conventions"
+  />
 
-    {
-      sections.map((section) => (
-        <div class="mb-16">
-          <h2 class="text-3xl font-bold text-center mb-8">{section.title}</h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {section.photos.map((photo) => (
-              <a
-                href={photo.src}
-                target="_blank"
-                rel="noopener"
-                class="card bg-base-100 shadow-sm overflow-hidden"
-              >
-                {/* The square crop cuts off people at the edges, so the tile
+  {
+    sections.map((section) => (
+      <div class="mb-16">
+        <h2 class="title-subsection text-center mb-8">{section.title}</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {section.photos.map((photo) => (
+            <a
+              href={photo.src}
+              target="_blank"
+              rel="noopener"
+              class="card bg-raised shadow-sm overflow-hidden"
+            >
+              {/* The square crop cuts off people at the edges, so the tile
                     links to the full photo. */}
-                <figure class="aspect-square">
-                  <img
-                    src={photo.src}
-                    alt={photo.alt}
-                    width="959"
-                    height="722"
-                    loading="lazy"
-                    decoding="async"
-                    class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </figure>
-              </a>
-            ))}
-          </div>
+              <figure class="aspect-square">
+                <img
+                  src={photo.src}
+                  alt={photo.alt}
+                  width="959"
+                  height="722"
+                  loading="lazy"
+                  decoding="async"
+                  class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                />
+              </figure>
+            </a>
+          ))}
         </div>
-      ))
-    }
+      </div>
+    ))
+  }
 
-    <div class="text-center">
-      <a href="/" class="btn btn-primary">Back to Main Page</a>
-    </div>
+  <div class="text-center">
+    <a href="/" class="btn btn-primary">Back to Main Page</a>
   </div>
-</section>
+</Section>
