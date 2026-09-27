@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Hero from '../components/Hero.astro';
+import Cover from '../components/Cover.astro';
+import CommandBar from '../components/CommandBar.astro';
 import FeaturedGames from '../components/FeaturedGames.astro';
 import CallForGames from '../components/CallForGames.astro';
 import RegisterInterest from '../components/RegisterInterest.astro';
@@ -9,10 +10,24 @@ import WhatToBring from '../components/WhatToBring.astro';
 import Testimonials from '../components/Testimonials.astro';
 import FAQ from '../components/FAQ.astro';
 import EventSchema from '../components/schemas/EventSchema.astro';
-import { currentEvent, nextEventWindow } from '../data/events';
+import {
+  currentEvent,
+  gmApplications,
+  latestEvent,
+  nextEventWindow,
+} from '../data/events';
+import { site } from '../data/site';
+import { homeFunnel } from '../data/home';
 import { longDate } from '../lib/format';
 
-const hasGames = (currentEvent?.games.length ?? 0) > 0;
+const funnel = homeFunnel({
+  currentEvent,
+  latestEvent,
+  gmApplications,
+  nextEventWindow,
+  socials: site.socials,
+});
+const { hasGames } = funnel;
 
 const [title, description] = !currentEvent
   ? [
@@ -28,8 +43,10 @@ const [title, description] = !currentEvent
 ---
 
 <Layout title={title} description={description} showLogo={false}>
-  <div class="alternating-sections">
-    <Hero />
+  <!-- F's whole homepage body sits under one root, so a second look can hide
+       it and mount its own markup in its place. -->
+  <div class="home-f">
+    <Cover funnel={funnel} />
     {
       currentEvent ? (
         <Fragment>
@@ -47,23 +64,7 @@ const [title, description] = !currentEvent
     <WhatToBring />
     <Testimonials />
     <FAQ />
+    <CommandBar funnel={funnel} />
   </div>
   {currentEvent && <EventSchema />}
 </Layout>
-
-<style is:global>
-  /* Which sections render depends on the event state, so a colour hardcoded
-     per section can put two of the same shade side by side. Alternate by
-     position instead. `of :not(script)` skips the inline JSON-LD and module
-     scripts some sections emit as siblings — plain :nth-child would count
-     them and break the pattern. Sections must not set their own bg-base-*;
-     cards inside use bg-raised, which --surface-raised keeps contrasting. */
-  .alternating-sections > :nth-child(odd of :not(script)) {
-    background-color: var(--color-base-200);
-    --surface-raised: var(--color-base-100);
-  }
-  .alternating-sections > :nth-child(even of :not(script)) {
-    background-color: var(--color-base-100);
-    --surface-raised: var(--color-base-200);
-  }
-</style>

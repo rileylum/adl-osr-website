@@ -1,21 +1,28 @@
 ---
 import Section from './ui/Section.astro';
 import SectionHeading from './ui/SectionHeading.astro';
-import Card from './ui/Card.astro';
 ---
 
-<Section>
-  <SectionHeading title="WHAT ATTENDEES SAY" />
+<Section width="wide">
+  <SectionHeading title="What Attendees Say" />
 
-  <div class="grid gap-6">
-    <Card>
-      <p class="text-lg italic mb-4">
+  <figure class="read-aloud">
+    <blockquote>
+      <p class="quote">
         "Was great meeting you all! Just ran my first game last night and
         enjoyed the chaos. Looking forward to gaining more experience. Seeing
         the vibe at the last event, I know it's not as intimidating as one might
         imagine."
       </p>
-      <div class="text-sm text-base-content/70">— Will</div>
-    </Card>
-  </div>
+    </blockquote>
+    <figcaption class="label-caps mt-4 text-right">— Will</figcaption>
+  </figure>
 </Section>
+
+<style>
+  .quote {
+    font-size: clamp(1.15rem, 2.4vw, 1.45rem);
+    font-weight: 600;
+    line-height: 1.5;
+  }
+</style>

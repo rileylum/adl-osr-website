@@ -7,31 +7,31 @@ import { site } from '../data/site';
 import { longDate } from '../lib/format';
 ---
 
-<Section>
-  <SectionHeading title="ABOUT OZ ORC" />
-  <div>
-    <p class="mb-6">
+<Section width="wide">
+  <SectionHeading title="About OZ ORC" />
+  <div class="two-col">
+    <p>
       OZ ORC is a day of the finest in old-school D&D and OSR gaming. We've dug
       up TTRPGs from throughout the OSR scene, from weird-punk sci-fi
       post-apocalypse to classic D&D and original-edition Dungeons & Dragons.
       We've gathered together a dozen of Adelaide's most experienced and capable
       GMs to take you through worlds of exploration, treasure, and death.
     </p>
-    <p class="mb-6">
+    <p>
       No matter if you are the most grizzled grognard or you're entirely new to
       the hobby, we will have a game that will fill you with awe and terror.
     </p>
     {
       currentEvent ? (
-        <p class="mb-6">
+        <p>
           Join us on {longDate(currentEvent.date)} at the{' '}
           {currentEvent.venue.name} for a day of adventure like nothing you've
           ever seen before, at Adelaide's Premier old-school gaming convention!
         </p>
       ) : (
-        <p class="mb-6">
+        <p>
           Our next convention is planned for {nextEventWindow}. Join the{' '}
-          <a href="#register" class="link link-primary">
+          <a href="#register" class="link">
             mailing list
           </a>{' '}
           to hear first when the date and games are announced.
@@ -42,18 +42,82 @@ import { longDate } from '../lib/format';
       We've started OZ ORC as a chance to bring the old-school and its glories
       to everyone in Adelaide. Everyone is welcome to bring dice, snacks, and
       their wits with them and test themselves against the dangers of the
-      deepest delves. Read our <a
-        href="/code-of-conduct"
-        class="link link-primary">Code of Conduct</a
+      deepest delves. Read our <a href="/code-of-conduct" class="link"
+        >Code of Conduct</a
       > to learn more about our commitment to creating a welcoming environment.
     </p>
+    <figure class="illo">
+      <img
+        src="/images/gallery/sep-2026/wrap-up-01.webp"
+        alt="Wide view of the hall at OZ ORC, with players at tables between partition screens"
+        width="959"
+        height="722"
+        loading="lazy"
+        decoding="async"
+      />
+      <figcaption class="label-caps">
+        <span>Fig. 1</span> The hall at a past OZ ORC.
+      </figcaption>
+    </figure>
   </div>
-  <div class="text-center mt-8">
+  <div class="mt-8">
     <ExternalLink
-      href={currentEvent?.warhornUrl ?? site.socials.discord}
+      href={currentEvent?.warhornUrl || site.socials.discord}
       class="btn btn-primary btn-lg"
     >
       {currentEvent?.warhornUrl ? 'Register Now' : 'Join our Discord'}
+      <span aria-hidden="true">→</span>
     </ExternalLink>
   </div>
 </Section>
+
+<style>
+  /* Two-column module text with a drop cap. */
+  .two-col p {
+    margin: 0 0 1rem;
+    max-width: 65ch;
+  }
+
+  .two-col p:first-of-type::first-letter {
+    font-family: var(--font-display);
+    float: left;
+    font-size: 3.6em;
+    line-height: 0.9;
+    padding: 0.04em 0.1em 0 0;
+  }
+
+  .illo {
+    margin: 1rem 0;
+    border: var(--border) solid var(--color-rule);
+    background-color: var(--surface-raised);
+    break-inside: avoid;
+  }
+
+  .illo img {
+    width: 100%;
+    height: auto;
+  }
+
+  .illo figcaption {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.85rem;
+    border-top: var(--border) solid var(--color-rule);
+  }
+
+  .illo figcaption span {
+    background-color: var(--color-spot);
+    color: var(--color-spot-content);
+    padding: 0 0.35rem;
+  }
+
+  @media (min-width: 760px) {
+    .two-col {
+      column-count: 2;
+      column-gap: 2.5rem;
+      column-rule: var(--border) solid var(--color-rule);
+    }
+  }
+</style>

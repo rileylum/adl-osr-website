@@ -8,7 +8,7 @@ export interface Props {
 }
 
 const { game, variant = 'featured' } = Astro.props;
-const { title, system, image, description, warhornUrl, gm, level, tags } = game;
+const { title, system, image, description, warhornUrl, gm, level } = game;
 
 // Responsive-image srcset rule — the width-suffix naming convention
 // (-400w / -600w / -800w) is defined once, here, and both variants emit it.
@@ -16,92 +16,69 @@ const widthUrl = (w: number) => image.replace('.webp', `-${w}w.webp`);
 const src = widthUrl(400);
 const srcset = `${widthUrl(400)} 400w, ${widthUrl(600)} 600w, ${widthUrl(800)} 800w`;
 const alt = `${title} - ${system} tabletop RPG module cover art for OZ ORC Adelaide`;
+const featured = variant === 'featured';
+
+// Featured cards carry their own Sign Up button; a compact card is itself the
+// link out, opened like ExternalLink's.
+const Root = featured ? 'article' : 'a';
+const rootProps = featured
+  ? { class: 'encounter' }
+  : {
+      class: 'encounter encounter-compact',
+      href: warhornUrl,
+      target: '_blank',
+      rel: 'noopener noreferrer',
+    };
 ---
 
-{
-  variant === 'featured' ? (
-    <div class="card bg-raised shadow-sm h-full flex flex-col">
-      <figure class="aspect-video overflow-hidden">
-        <img
-          src={src}
-          srcset={srcset}
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 400px, 400px"
-          alt={alt}
-          class="w-full h-full object-cover"
-          loading="lazy"
-          decoding="async"
-        />
-      </figure>
-      <div class="card-body flex flex-col flex-1 max-[400px]:p-4">
-        <h3 class="card-title text-2xl max-[400px]:text-xl mb-2">{title}</h3>
-        <div class="flex flex-wrap gap-2 mb-3">
-          <div class="badge badge-accent">{system}</div>
-          {level && <div class="badge badge-primary">Level {level}</div>}
-        </div>
-
-        {gm && (
-          <div class="text-sm text-base-content mb-3">
-            <span class="font-semibold">GM:</span> {gm}
-          </div>
-        )}
-
-        <div class="mb-4">
-          <p class="line-clamp-4 text-base-content">{description}</p>
-        </div>
-
-        {tags && tags.length > 0 && (
-          <div class="flex flex-wrap gap-2 mb-4">
-            {tags.map((tag) => (
-              <span class="badge badge-primary">{tag}</span>
-            ))}
-          </div>
-        )}
-
-        <div class="mt-auto">
-          <ExternalLink href={warhornUrl} class="btn btn-primary w-full">
-            Sign Up on Warhorn
-          </ExternalLink>
-        </div>
-      </div>
-    </div>
-  ) : (
-    <ExternalLink href={warhornUrl} class="encounter encounter-compact">
-      <img
-        src={src}
-        srcset={srcset}
-        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-        alt={title}
-        width="800"
-        height="450"
-        loading="lazy"
-      />
-      <h3 class="encounter-title">
-        <span class="sub-key" />
-        {title}
-      </h3>
-      <p class="statline">
-        <span>
-          <b>System</b> {system}
-        </span>{' '}
-        {level && (
-          <span>
-            <b>Level</b> {level}
-          </span>
-        )}{' '}
-        {gm && (
-          <span>
-            <b>GM</b> {gm}
-          </span>
-        )}
-      </p>
-    </ExternalLink>
-  )
-}
+<Root {...rootProps}>
+  <img
+    src={src}
+    srcset={srcset}
+    sizes={featured
+      ? '(max-width: 859px) 86vw, 360px'
+      : '(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw'}
+    alt={featured ? alt : title}
+    width="800"
+    height="450"
+    loading="lazy"
+    decoding="async"
+  />
+  <h3 class="encounter-title">
+    <span class="sub-key"></span>
+    {title}
+  </h3>
+  <p class="statline">
+    {
+      [
+        ['System', system],
+        ['Level', level],
+        ['GM', gm],
+      ].map(
+        ([label, value]) =>
+          value && (
+            <span>
+              <b class="label-caps">{label}</b> {value}{' '}
+            </span>
+          )
+      )
+    }
+  </p>
+  {
+    featured && (
+      <Fragment>
+        <p class="desc">{description}</p>
+        <ExternalLink href={warhornUrl} class="btn btn-line">
+          Sign Up on Warhorn <span aria-hidden="true">→</span>
+        </ExternalLink>
+      </Fragment>
+    )
+  }
+</Root>
 
 <style>
-  /* A keyed encounter entry, as in a module's room key. :global because the
-     root may be an ExternalLink, which doesn't take this file's scope. */
-  :global(.encounter) {
+  /* A keyed encounter entry, as in a module's room key. */
+  .encounter {
     display: flex;
     flex-direction: column;
     gap: 0.65rem;
@@ -132,11 +109,6 @@ const alt = `${title} - ${system} tabletop RPG module cover art for OZ ORC Adela
   }
 
   .statline b {
-    font-family: var(--font-sans);
-    font-variation-settings: 'wdth' 70;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
     font-size: 0.8rem;
     color: var(--color-muted);
     margin-right: 0.15em;
@@ -148,14 +120,40 @@ const alt = `${title} - ${system} tabletop RPG module cover art for OZ ORC Adela
     margin-right: 0.9em;
   }
 
+  .desc {
+    margin: 0;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    overflow: hidden;
+  }
+
+  /* A ruled button on the card's own surface; hover inverts it. */
+  .encounter :global(.btn-line) {
+    margin-top: auto;
+    align-self: stretch;
+    height: auto;
+    min-height: 48px;
+    background-color: var(--surface-raised);
+    color: var(--color-base-content);
+    border: var(--border) solid var(--color-rule);
+    box-shadow: none;
+  }
+
+  .encounter :global(.btn-line:hover) {
+    background-color: var(--color-base-content);
+    color: var(--surface-raised);
+  }
+
   /* The whole compact card is the link: text keeps the body colour, and
      hover marks the frame in the link colour. */
-  :global(.encounter-compact) {
+  .encounter-compact {
     color: var(--color-base-content);
     text-decoration: none;
   }
 
-  :global(.encounter-compact:hover) {
+  .encounter-compact:hover {
     border-color: var(--color-link);
   }
 </style>

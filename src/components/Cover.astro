@@ -1,0 +1,587 @@
+---
+// The homepage's module cover: corner banner, module code, the logo framed as
+// cover art, a stat block and the funnel buttons. Every state-dependent word
+// comes from homeFunnel(); this file only lays it out.
+import LocationIcon from '../assets/location.svg?raw';
+import DiscordIcon from '../assets/discord.svg?raw';
+import FacebookIcon from '../assets/facebook.svg?raw';
+import ExternalLink from './ui/ExternalLink.astro';
+import { site } from '../data/site';
+import type { HomeFunnel } from '../data/home';
+
+interface Props {
+  funnel: HomeFunnel;
+}
+
+const { funnel } = Astro.props;
+const { primary } = funnel;
+---
+
+<section class="cover-wrap" aria-labelledby="cover-title">
+  <div class="cover">
+    <div class="ribbon" aria-hidden="true">
+      <span>For Character Levels 1&ndash;&infin;</span>
+    </div>
+    <div class="code-tag">
+      <span class="label-caps code-kicker">Convention Module</span>
+      <span class="code">{site.edition}</span>
+    </div>
+
+    <div class="cover-grid">
+      <h1 id="cover-title" class="cover-title">
+        <span class="t-small">OZ ORC:</span>
+        {funnel.title}
+      </h1>
+
+      <div class="art-frame">
+        {
+          /* The logo is black line art and this panel is cream in both modes,
+            so it is never inverted. */
+        }
+        <img
+          src="/images/OZORC_Dungeon-500w.webp"
+          srcset="/images/OZORC_Dungeon-500w.webp 500w, /images/OZORC_Dungeon-800w.webp 800w, /images/OZORC_Dungeon.webp 1200w"
+          sizes="(max-width: 859px) 230px, 560px"
+          alt="OZ ORC Logo"
+          width="500"
+          height="250"
+          fetchpriority="high"
+          class="logo"
+        />
+      </div>
+
+      <div class="cover-copy">
+        <dl class="cover-stats">
+          {
+            funnel.stats.map((stat) => {
+              const pieces = (
+                <Fragment>
+                  {stat.lead && (
+                    <span
+                      class="label-caps stat-sm"
+                      aria-hidden={stat.spoken ? 'true' : undefined}
+                    >
+                      {stat.lead}
+                    </span>
+                  )}
+                  <span
+                    class="stat-big"
+                    aria-hidden={stat.spoken ? 'true' : undefined}
+                  >
+                    {stat.big}
+                  </span>
+                  <span
+                    class="label-caps stat-sm"
+                    aria-hidden={stat.spoken ? 'true' : undefined}
+                  >
+                    {stat.small.map((line, i) => (
+                      <Fragment>
+                        {i > 0 && <br />}
+                        {line}
+                      </Fragment>
+                    ))}
+                  </span>
+                </Fragment>
+              );
+              return (
+                <div class="cover-stat">
+                  <dt class="label-caps">{stat.label}</dt>
+                  <dd>
+                    {stat.datetime ? (
+                      <time datetime={stat.datetime} aria-label={stat.spoken}>
+                        {pieces}
+                      </time>
+                    ) : (
+                      pieces
+                    )}
+                  </dd>
+                </div>
+              );
+            })
+          }
+          <div class="cover-stat cover-venue">
+            <dt class="sr-only">Venue</dt>
+            <dd><Fragment set:html={LocationIcon} />{funnel.venue}</dd>
+          </div>
+        </dl>
+
+        <p class="lead">{funnel.lead[0]} <span>{funnel.lead[1]}</span></p>
+
+        <div class="cta">
+          <a
+            id="hero-signup"
+            class="btn btn-primary cta-main"
+            href={primary.href}
+            target={primary.external ? '_blank' : undefined}
+            rel={primary.external ? 'noopener noreferrer' : undefined}
+          >
+            {primary.label}
+            <span class="arrow" aria-hidden="true">&rarr;</span>
+          </a>
+          <div class="cta-row">
+            <ExternalLink href={funnel.discord} class="btn btn-hero">
+              <Fragment set:html={DiscordIcon} />
+              Join Discord
+            </ExternalLink>
+            <ExternalLink href={funnel.facebook} class="btn btn-hero">
+              <Fragment set:html={FacebookIcon} />
+              Follow on Facebook
+            </ExternalLink>
+          </div>
+          {
+            funnel.gmLink && (
+              <a class="label-caps gm-link" href={funnel.gmLink.href}>
+                {funnel.gmLink.label} <span aria-hidden="true">&rarr;</span>
+              </a>
+            )
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cover-wrap {
+    padding: 0.6rem;
+  }
+
+  .cover {
+    --color-link: var(--hero-content);
+    --color-focus: var(--hero-content);
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: var(--hero-bg);
+    color: var(--hero-content);
+    border: var(--border) solid var(--hero-content);
+    /* The printed inner hairline frame of the orange B/X covers. */
+    box-shadow:
+      inset 0 0 0 5px var(--hero-bg),
+      inset 0 0 0 7px var(--hero-content);
+    padding: 0.8rem 0.95rem 1rem;
+  }
+
+  /* Draco alatus, from Ulisse Aldrovandi, Serpentum, et draconum historiae
+     libri duo (Bologna, 1640); woodcut by an unnamed block-cutter. Public
+     domain. Full credit and how the mask was made:
+     docs/design/2026-09-27-oz-orc-look-spike.md, Dragon art.
+     The woodcut's head is at the image's far right; anchor it any further
+     right and the head is cropped off the cover. The url() is root-relative
+     on purpose: a relative one resolves against the stylesheet that uses it. */
+  .cover::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    pointer-events: none;
+    top: 5.5rem;
+    right: 0.5rem;
+    width: 85%; /* phones: head beside the title */
+    aspect-ratio: 1600 / 958;
+    background: var(--hero-content);
+    opacity: 0.2;
+    mask: url(/art/dragon-mask.webp) center / contain no-repeat;
+  }
+
+  @media (min-width: 860px) {
+    .cover::before {
+      top: -2.5rem;
+      right: 1.5rem;
+      width: 58%; /* head under the OZ3 tag */
+    }
+  }
+
+  .ribbon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .ribbon span {
+    /* The band's centre sits on the corner diagonal at (--c, --c); the box
+       clips its ends. */
+    --c: 50px;
+    position: absolute;
+    top: var(--c);
+    left: var(--c);
+    width: 240px;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    background-color: var(--color-spot);
+    color: var(--color-spot-content);
+    border-block: var(--border) solid var(--color-spot-content);
+    text-align: center;
+    padding: 0.22rem 0 0.18rem;
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    font-size: 0.68rem;
+    letter-spacing: 0.05em;
+    line-height: 1.15;
+  }
+
+  .code-tag {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-left: auto;
+    width: max-content;
+  }
+
+  .code-kicker {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+  }
+
+  .code {
+    font-family: var(--font-display);
+    font-size: 1.9rem;
+    line-height: 1;
+    padding: 0.12rem 0.45rem 0.08rem;
+    background-color: var(--hero-content);
+    color: var(--hero-bg);
+    letter-spacing: 0.04em;
+  }
+
+  .cover-grid {
+    display: grid;
+    gap: 0.65rem;
+    margin-top: 1.1rem;
+  }
+
+  .cover-title {
+    text-transform: uppercase;
+    font-size: clamp(1.75rem, 8.2vw, 4.6rem);
+    line-height: 0.98;
+    letter-spacing: 0.005em;
+  }
+
+  .t-small {
+    display: block;
+    width: max-content;
+    font-size: 0.55em;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.1em;
+    border-bottom: var(--border) solid currentColor;
+  }
+
+  .art-frame {
+    background-color: var(--hero-panel);
+    border: var(--border) solid var(--hero-content);
+    padding: 0.35rem 1rem;
+    display: grid;
+    place-items: center;
+  }
+
+  .logo {
+    width: min(100%, 230px);
+    height: auto;
+  }
+
+  /* D's stat block: labelled boxes with thick rules. Small print must never
+     sit on the dragon, so the stat boxes stay solid cover colour. */
+  .cover-stats {
+    position: relative;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    border: var(--border) solid var(--hero-content);
+    background-color: var(--hero-bg);
+  }
+
+  .cover-stat {
+    margin: 0;
+    min-width: 0;
+    padding: 0 0.5rem 0.3rem;
+    border-right: var(--border) solid var(--hero-content);
+  }
+
+  .cover-stat:nth-child(3) {
+    border-right: 0;
+  }
+
+  .cover-stat dt {
+    font-size: 0.68rem;
+    margin: 0 -0.5rem 0.15rem;
+    padding: 0.08rem 0.5rem;
+    background-color: var(--hero-content);
+    color: var(--hero-bg);
+  }
+
+  .cover-stat dd,
+  .cover-stat time {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .stat-big {
+    font-family: var(--font-display);
+    font-size: 2.35rem;
+    line-height: 1.05;
+  }
+
+  .stat-sm {
+    font-size: 0.74rem;
+    line-height: 1.1;
+  }
+
+  .cover-venue {
+    grid-column: 1 / -1;
+    border-right: 0;
+    border-top: var(--border) solid var(--hero-content);
+    padding: 0.3rem 0.5rem;
+  }
+
+  .cover-venue dd {
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1.2;
+    gap: 0.4rem;
+  }
+
+  .cover-venue dd :global(svg) {
+    width: 1.25em;
+    height: 1.25em;
+    flex: none;
+  }
+
+  .lead {
+    margin: 0;
+    font-weight: 700;
+    font-size: 1.0625rem;
+    line-height: 1.4;
+  }
+
+  .lead span {
+    font-weight: 400;
+  }
+
+  .cta {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .cta-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  .cover :global(.btn) {
+    min-height: 48px;
+    height: auto;
+    line-height: 1.1;
+    border-width: var(--border);
+  }
+
+  .cta-main {
+    width: 100%;
+    min-height: 64px;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-variation-settings: normal;
+    letter-spacing: 0.03em;
+    font-size: 1.6rem;
+    border-color: var(--hero-content);
+  }
+
+  .arrow {
+    font-family: var(--font-display);
+    font-size: 1.3em;
+    line-height: 0;
+    transition: transform 0.12s ease;
+  }
+
+  .cta-main:hover .arrow {
+    transform: translateX(4px);
+  }
+
+  /* Secondary actions use the cover's own ink. */
+  .cover :global(.btn-hero) {
+    background-color: transparent;
+    color: var(--hero-content);
+    border-color: var(--hero-content);
+    box-shadow: none;
+    padding-inline: 0.45em;
+    font-size: 0.88rem;
+    gap: 0.4em;
+  }
+
+  .cover :global(.btn-hero:hover) {
+    background-color: var(--hero-content);
+    color: var(--hero-bg);
+  }
+
+  .cover :global(.btn-hero svg) {
+    width: 1.25em;
+    height: 1.25em;
+    flex: none;
+  }
+
+  .gm-link {
+    font-size: 0.95rem;
+    justify-self: start;
+    padding: 0.25rem 0;
+    text-decoration: underline;
+  }
+
+  @media (min-width: 860px) {
+    .cover-wrap {
+      padding: 1.5rem 2rem;
+    }
+
+    .cover {
+      padding: 1.4rem 2.25rem 2.25rem;
+      box-shadow:
+        inset 0 0 0 7px var(--hero-bg),
+        inset 0 0 0 10px var(--hero-content);
+    }
+
+    .ribbon {
+      width: 240px;
+      height: 240px;
+    }
+
+    .ribbon span {
+      --c: 84px;
+      width: 380px;
+      font-size: 1.05rem;
+      padding: 0.4rem 0 0.32rem;
+    }
+
+    .code-kicker {
+      font-size: 0.85rem;
+    }
+
+    .code {
+      font-size: 3rem;
+    }
+
+    .cover-grid {
+      grid-template-columns: 1fr 1.05fr;
+      grid-template-areas: 'title title' 'art copy';
+      gap: 1.5rem 2.5rem;
+      align-items: stretch;
+      margin-top: 0;
+    }
+
+    .cover-title {
+      grid-area: title;
+      padding-left: 9.5rem;
+      padding-right: 8rem;
+      margin-top: -3.9rem;
+      font-size: clamp(2.8rem, 5vw, 4.4rem);
+    }
+
+    .art-frame {
+      grid-area: art;
+      padding: 1.5rem;
+    }
+
+    .logo {
+      width: 100%;
+      max-width: 560px;
+    }
+
+    .cover-copy {
+      grid-area: copy;
+      display: grid;
+      gap: 1rem;
+      align-content: center;
+    }
+
+    .cover-stat {
+      padding: 0 0.9rem 0.5rem;
+    }
+
+    .cover-stat dt {
+      margin-inline: -0.9rem;
+      padding-inline: 0.9rem;
+      font-size: 0.8rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .stat-big {
+      font-size: 3.6rem;
+    }
+
+    .stat-sm {
+      font-size: 0.9rem;
+    }
+
+    .cover-venue {
+      padding: 0.45rem 0.9rem;
+    }
+
+    .cover-venue dd {
+      font-size: 1.1rem;
+    }
+
+    .lead {
+      font-size: 1.15rem;
+    }
+
+    .cta-main {
+      font-size: 2.1rem;
+      min-height: 76px;
+    }
+
+    .cover :global(.btn-hero) {
+      font-size: 1rem;
+    }
+  }
+
+  @media (max-width: 859px) {
+    .cover-copy {
+      display: grid;
+      gap: 0.65rem;
+    }
+
+    /* Clears the corner ribbon, which crosses the first title line on
+       phones. */
+    .t-small {
+      margin-left: 3.6rem;
+    }
+  }
+
+  @media (max-width: 374px) {
+    .cover :global(.btn-hero) {
+      font-size: 0.78rem;
+      gap: 0.3em;
+      padding-inline: 0.3em;
+    }
+
+    .cover-stat {
+      padding-inline: 0.4rem;
+    }
+
+    .cover-stat dt {
+      margin-inline: -0.4rem;
+      padding-inline: 0.4rem;
+    }
+
+    .stat-big {
+      font-size: 2rem;
+    }
+
+    .stat-sm {
+      font-size: 0.68rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .arrow {
+      transition: none;
+    }
+
+    .cta-main:hover .arrow {
+      transform: none;
+    }
+  }
+</style>

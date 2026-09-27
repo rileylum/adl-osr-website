@@ -70,8 +70,11 @@ for (const scheme of ['light', 'dark']) {
     const anyLink = (part) =>
       [...document.querySelectorAll(`a[href*="${part}"]`)].some(onFirstScreen);
     const signup = document.getElementById('hero-signup');
+    // The label as read aloud: decorative arrows are aria-hidden.
+    const label = signup?.cloneNode(true);
+    label?.querySelectorAll('[aria-hidden="true"]').forEach((e) => e.remove());
     return {
-      signupText: signup?.textContent.replace(/\s+/g, ' ').trim() ?? null,
+      signupText: label?.textContent.replace(/\s+/g, ' ').trim() ?? null,
       signup: !!signup && onFirstScreen(signup),
       discord: anyLink('discord'),
       facebook: anyLink('facebook'),

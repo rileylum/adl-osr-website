@@ -12,8 +12,8 @@ import { currentEvent, gmApplications, nextEventWindow } from '../data/events';
 import { longDate } from '../lib/format';
 ---
 
-<Section width="text" class="text-center">
-  <SectionHeading title="GMS WANTED" />
+<Section width="wide">
+  <SectionHeading title="GMs Wanted" />
   {
     currentEvent ? (
       <Fragment>
@@ -51,9 +51,10 @@ import { longDate } from '../lib/format';
       </Fragment>
     )
   }
-  <div class="flex flex-col sm:flex-row gap-4 justify-center">
+  <div class="flex flex-col sm:flex-row gap-4">
     <a href="/gm-submission" class="btn btn-primary btn-lg">
       {currentEvent || gmApplications ? 'Run a Game' : 'GM Submissions'}
+      <span aria-hidden="true">→</span>
     </a>
     <ExternalLink
       href={site.socials.discord}

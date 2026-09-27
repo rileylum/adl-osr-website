@@ -1,41 +1,69 @@
 ---
 import Section from './ui/Section.astro';
 import SectionHeading from './ui/SectionHeading.astro';
-import Card from './ui/Card.astro';
-import IconList from './ui/IconList.astro';
+
+// Roll tables, as in a module: the die column numbers each row.
+const tables = [
+  {
+    caption: 'What to Bring (d4)',
+    die: 'd4',
+    column: 'Equipment',
+    rows: [
+      'Dice (standard polyhedral set)',
+      'Pencils and paper for notes',
+      'Your enthusiasm for adventure!',
+      'Your own food and drinks (non-alcoholic)',
+    ],
+  },
+  {
+    caption: 'What We Provide (d3)',
+    die: 'd3',
+    column: 'Provision',
+    // Lunch and dinner were provided once; add them back here if they return.
+    rows: [
+      'Experienced Game Masters',
+      'Pre-generated characters',
+      'All rulebooks and materials',
+    ],
+  },
+];
 ---
 
-<Section>
-  <SectionHeading title="WHAT TO EXPECT" />
+<Section width="wide">
+  <SectionHeading title="What to Expect" />
 
-  <div class="grid md:grid-cols-2 gap-8">
-    <Card title="What to Bring" titleAs="h3">
-      <IconList marker="check">
-        <li>Dice (standard polyhedral set)</li>
-        <li>Pencils and paper for notes</li>
-        <li>Your enthusiasm for adventure!</li>
-        <li>Your own food and drinks (non-alcoholic)</li>
-      </IconList>
-    </Card>
-
-    <Card title="What We Provide" titleAs="h3">
-      <IconList marker="check">
-        <li>Experienced Game Masters</li>
-        <li>Pre-generated characters</li>
-        <li>All rulebooks and materials</li>
-        <!-- <li>Lunch and dinner</li> -->
-      </IconList>
-    </Card>
+  <div class="grid md:grid-cols-2 md:items-start gap-6 mb-7">
+    {
+      tables.map((table) => (
+        <table class="table roll">
+          <caption>{table.caption}</caption>
+          <thead>
+            <tr>
+              <th scope="col">{table.die}</th>
+              <th scope="col">{table.column}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {table.rows.map((row, i) => (
+              <tr>
+                <td>{i + 1}</td>
+                <td>{row}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ))
+    }
   </div>
 
-  <div class="alert bg-raised shadow-sm mt-8">
-    <div>
-      <h4 class="title-group mb-2">First Time at an OSR Event?</h4>
-      <p>
-        Don't worry! Our GMs are experienced at welcoming new players. You don't
-        need to know the rules or bring a character - just bring yourself and a
-        willingness to explore strange worlds.
-      </p>
-    </div>
-  </div>
+  <aside class="read-aloud" aria-labelledby="first-time">
+    <h3 id="first-time" class="title-card uppercase mb-2">
+      First Time at an OSR Event?
+    </h3>
+    <p class="max-w-[65ch]">
+      Don't worry! Our GMs are experienced at welcoming new players. You don't
+      need to know the rules or bring a character - just bring yourself and a
+      willingness to explore strange worlds.
+    </p>
+  </aside>
 </Section>

@@ -48,7 +48,6 @@
   --color-link: #8a3a0c;
   --hero-bg: #e0691c;
   --hero-content: #1c1209;
-  --hero-logo-ink: #22170e;
   --hero-panel: #f7ecd2;
   --color-spot: #f5bf1f;
   --color-spot-content: #22170e;
@@ -96,7 +95,6 @@
   --color-link: #f5bf1f;
   --hero-bg: #e0691c;
   --hero-content: #140c06;
-  --hero-logo-ink: #22170e;
   --hero-panel: #f3e7cf;
   --color-spot: #f5bf1f;
   --color-spot-content: #17110b;
@@ -226,13 +224,6 @@
   line-height: 0.95;
   font-weight: 400;
   text-transform: uppercase;
-}
-
-@utility title-subsection {
-  font-family: var(--font-display);
-  font-size: var(--text-3xl);
-  line-height: var(--text-3xl--line-height);
-  font-weight: 400;
 }
 
 @utility title-card {
