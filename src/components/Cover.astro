@@ -242,8 +242,16 @@ const { primary } = funnel;
   }
 
   /* D's stat block: labelled boxes with thick rules. Small print must never
-     sit on the dragon, so the stat boxes stay solid cover colour. */
+     sit on the dragon, so the stat boxes stay solid cover colour.
+     Everything in the three boxes is sized in --u, which is 1rem when the
+     column has room and shrinks with the column (cqi of .cover-copy) when it
+     hasn't. --stat-row is the row's width in --u, less its four rules: the
+     widest state, "Sat 12 Sep 2026 | $15 AUD | GMs wanted" (an announced event
+     still recruiting GMs), measured and rounded up. Longer stat text needs a
+     bigger --stat-row, or it overflows below 1rem. */
   .cover-stats {
+    --stat-row: 20.25;
+    --u: min(1rem, (100cqi - 4 * var(--border)) / var(--stat-row));
     position: relative;
     margin: 0;
     display: grid;
@@ -255,7 +263,7 @@ const { primary } = funnel;
   .cover-stat {
     margin: 0;
     min-width: 0;
-    padding: 0 0.5rem 0.3rem;
+    padding: 0 calc(0.5 * var(--u)) calc(0.3 * var(--u));
     border-right: var(--border) solid var(--hero-content);
   }
 
@@ -264,9 +272,11 @@ const { primary } = funnel;
   }
 
   .cover-stat dt {
-    font-size: 0.68rem;
-    margin: 0 -0.5rem 0.15rem;
-    padding: 0.08rem 0.5rem;
+    /* Floored, since a label never sets the box's width: at 320px, 0.68u
+       would be 8.5px. */
+    font-size: max(0.625rem, 0.68 * var(--u));
+    margin: 0 calc(-0.5 * var(--u)) calc(0.15 * var(--u));
+    padding: calc(0.08 * var(--u)) calc(0.5 * var(--u));
     background-color: var(--hero-content);
     color: var(--hero-bg);
   }
@@ -276,17 +286,17 @@ const { primary } = funnel;
     margin: 0;
     display: flex;
     align-items: center;
-    gap: 0.3rem;
+    gap: calc(0.3 * var(--u));
   }
 
   .stat-big {
     font-family: var(--font-display);
-    font-size: 2.35rem;
+    font-size: calc(2.35 * var(--u));
     line-height: 1.05;
   }
 
   .stat-sm {
-    font-size: 0.74rem;
+    font-size: calc(0.74 * var(--u));
     line-height: 1.1;
   }
 
@@ -308,6 +318,12 @@ const { primary } = funnel;
     width: 1.25em;
     height: 1.25em;
     flex: none;
+  }
+
+  /* The stat block's --u reads this width. Inline-size containment also
+     stops the stats' own width from widening the column. */
+  .cover-copy {
+    container-type: inline-size;
   }
 
   .lead {
@@ -449,23 +465,28 @@ const { primary } = funnel;
       align-content: center;
     }
 
+    /* The same measure, at this width's larger sizes. */
+    .cover-stats {
+      --stat-row: 29.5;
+    }
+
     .cover-stat {
-      padding: 0 0.9rem 0.5rem;
+      padding: 0 calc(0.9 * var(--u)) calc(0.5 * var(--u));
     }
 
     .cover-stat dt {
-      margin-inline: -0.9rem;
-      padding-inline: 0.9rem;
-      font-size: 0.8rem;
-      margin-bottom: 0.3rem;
+      margin-inline: calc(-0.9 * var(--u));
+      padding-inline: calc(0.9 * var(--u));
+      font-size: max(0.625rem, 0.8 * var(--u));
+      margin-bottom: calc(0.3 * var(--u));
     }
 
     .stat-big {
-      font-size: 3.6rem;
+      font-size: calc(3.6 * var(--u));
     }
 
     .stat-sm {
-      font-size: 0.9rem;
+      font-size: calc(0.9 * var(--u));
     }
 
     .cover-venue {
@@ -508,23 +529,6 @@ const { primary } = funnel;
       font-size: 0.78rem;
       gap: 0.3em;
       padding-inline: 0.3em;
-    }
-
-    .cover-stat {
-      padding-inline: 0.4rem;
-    }
-
-    .cover-stat dt {
-      margin-inline: -0.4rem;
-      padding-inline: 0.4rem;
-    }
-
-    .stat-big {
-      font-size: 2rem;
-    }
-
-    .stat-sm {
-      font-size: 0.68rem;
     }
   }
 
