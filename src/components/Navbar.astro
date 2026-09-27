@@ -10,36 +10,46 @@ interface Props {
 const { showLogo = true } = Astro.props;
 ---
 
-<div class="navbar bg-base-100 shadow-sm">
-  <div class="max-w-7xl mx-auto w-full flex items-center">
-    <!-- Below sm the title, logo and both menus don't fit in 320px, so the
-         title slot goes and the logo, now first, is the home link. The
-         homepage hides the logo too (the hero shows it), leaving no home link
-         there, which it doesn't need. -->
-    <div class="hidden sm:block flex-1">
-      <a href="/" class="btn btn-ghost text-xl">ADL OSR - OZ ORC</a>
+<!-- The black band across the top of a module; dark in both modes. -->
+<header class="band relative z-10">
+  <div class="max-w-7xl mx-auto w-full flex items-center gap-2 px-3 py-1.5">
+    <!-- Below sm the name, logo and both menus don't fit in 320px, so the name
+         goes and the logo, now first, is the home link. The homepage hides the
+         logo (the cover shows it), which leaves room for the name down to
+         375px; below that the homepage has no home link, which it doesn't
+         need. -->
+    <div
+      class:list={[
+        'flex-1',
+        showLogo ? 'hidden sm:block' : 'hidden min-[375px]:block',
+      ]}
+    >
+      <a
+        href="/"
+        class="label-caps no-underline whitespace-nowrap text-[.95rem]"
+        >ADL OSR <span aria-hidden="true">//</span> OZ ORC</a
+      >
     </div>
     {
       showLogo && (
         <div class="flex-none">
-          <a
-            href="/"
-            class="block px-4 rounded-box focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-          >
+          <a href="/" class="block px-2">
             {/* Alt names where the link goes, not what the image looks like:
-                on phones this is the only home link. */}
+                on phones this is the only home link. The artwork is black
+                line art and the band is dark in both modes, so it's always
+                inverted. */}
             <img
               src="/images/OZORC_Dungeon.svg"
               alt="OZ ORC home"
               width="5000"
               height="2500"
-              class="h-12 w-auto logo-ink"
+              class="h-12 w-auto invert"
             />
           </a>
         </div>
       )
     }
-    <div class="flex-1 flex justify-end items-center gap-1">
+    <nav class="flex-1 flex justify-end items-center gap-1.5" aria-label="Main">
       <NavDropdown title="ATTEND">
         <NavLink text="Code of Conduct" url="/code-of-conduct" />
         <NavLink
@@ -58,6 +68,6 @@ const { showLogo = true } = Astro.props;
         <NavLink text="GM Info" url="/gm-info" />
         <NavLink text="Game Submission" url="/gm-submission" />
       </NavDropdown>
-    </div>
+    </nav>
   </div>
-</div>
+</header>

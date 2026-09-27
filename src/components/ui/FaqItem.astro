@@ -1,6 +1,8 @@
 ---
-// One question in a radio-group accordion: opening one closes the others in
-// the same `group`. The answer goes in the slot.
+// One question in an exclusive accordion: native <details> sharing a `name`,
+// so opening one closes the others in the same `group` with no script. The
+// summary's `.sub-key` counts on from the keyed heading above it ("6a").
+// The answer goes in the slot.
 interface Props {
   question: string;
   group: string;
@@ -10,10 +12,62 @@ interface Props {
 const { question, group, open = false } = Astro.props;
 ---
 
-<div class="collapse collapse-plus bg-raised">
-  <input type="radio" name={group} checked={open} aria-label={question} />
-  <div class="collapse-title text-xl font-medium">{question}</div>
-  <div class="collapse-content">
+<details name={group} open={open} class="faq bg-raised">
+  <summary><span class="sub-key"></span>{question}</summary>
+  <div class="answer">
     <slot />
   </div>
-</div>
+</details>
+
+<style>
+  .faq {
+    border: var(--border) solid var(--color-rule);
+  }
+
+  summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    position: relative;
+    padding: 0.7rem 2.8rem 0.7rem 0.75rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+    line-height: 1.3;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary .sub-key {
+    font-size: 1.35rem;
+    min-width: 2.4rem;
+    text-align: center;
+  }
+
+  summary::after {
+    content: '+';
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: 900;
+    font-size: 1.8rem;
+    line-height: 1;
+  }
+
+  .faq[open] summary {
+    border-bottom: var(--border) solid var(--color-rule);
+  }
+
+  .faq[open] summary::after {
+    content: '\2212';
+  }
+
+  .answer {
+    padding: 0.85rem 1rem 1rem;
+    max-width: 70ch;
+  }
+</style>

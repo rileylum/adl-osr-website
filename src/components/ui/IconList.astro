@@ -1,5 +1,5 @@
 ---
-// Bulleted list with a primary-coloured glyph marker. Items are plain <li>s
+// Bulleted list with a glyph marker in the rule colour. Items are plain <li>s
 // in the slot, so they can hold links and inline markup.
 interface Props {
   marker: 'check' | 'arrow';
@@ -25,6 +25,6 @@ const { marker } = Astro.props;
     content: var(--marker);
     position: absolute;
     left: 0;
-    color: var(--color-primary);
+    color: var(--color-rule);
   }
 </style>

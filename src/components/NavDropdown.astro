@@ -1,4 +1,6 @@
 ---
+// A navbar menu. daisyUI's dropdown-hover opens on hover and on focus with no
+// script; the look is the prototype's square, band-coloured menu.
 interface Props {
   title: string;
   alignEnd?: boolean;
@@ -8,13 +10,69 @@ const { title, alignEnd = false } = Astro.props;
 ---
 
 <div
-  class={`dropdown dropdown-hover ${alignEnd ? 'dropdown-end' : 'dropdown-bottom'}`}
+  class={`nav-menu dropdown dropdown-hover ${alignEnd ? 'dropdown-end' : 'dropdown-bottom'}`}
 >
-  <div tabindex="0" role="button" class="btn btn-ghost">{title}</div>
+  <div tabindex="0" role="button" class="trigger label-caps">{title}</div>
   <ul
     tabindex="-1"
-    class={`dropdown-content menu bg-base-content text-base-100 rounded-box z-[1] w-fit min-w-max p-2 shadow ${alignEnd ? '' : 'left-1/2 -translate-x-1/2'}`}
+    class={`dropdown-content menu z-[1] w-fit min-w-max p-0 ${alignEnd ? '' : 'left-1/2 -translate-x-1/2'}`}
   >
     <slot />
   </ul>
 </div>
+
+<style>
+  .trigger {
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0.4rem 0.75rem;
+    border: var(--border) solid var(--band-content);
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+
+  .trigger::after {
+    content: '\2193';
+    margin-left: 0.35em;
+    font-weight: 900;
+  }
+
+  .nav-menu:hover .trigger,
+  .nav-menu:focus-within .trigger {
+    background-color: var(--band-content);
+    color: var(--band-bg);
+  }
+
+  .menu {
+    margin-top: 4px;
+    background-color: var(--band-bg);
+    color: var(--band-content);
+    border: var(--border) solid var(--band-content);
+  }
+
+  .menu :global(li + li) {
+    border-top: 1px solid var(--band-content);
+  }
+
+  .menu :global(a) {
+    display: block;
+    padding: 0.65rem 1rem;
+    color: var(--band-content);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .menu :global(a[href]:hover),
+  .menu :global(a[href]:focus-visible) {
+    background-color: var(--band-content);
+    color: var(--band-bg);
+  }
+
+  @media (width < 32.5rem) {
+    .trigger {
+      padding: 0.35rem 0.6rem;
+      font-size: 0.85rem;
+    }
+  }
+</style>

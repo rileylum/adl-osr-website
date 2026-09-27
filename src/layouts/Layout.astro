@@ -35,6 +35,21 @@ const {
       href="/images/OZORC_Dungeon-500w.webp"
       fetchpriority="high"
     />
+    <!-- Both faces are on the first screen of every page. -->
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/fonts/anton-latin.woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/fonts/archivo-latin.woff2"
+      crossorigin
+    />
     <meta name="generator" content={Astro.generator} />
     <SEO title={title} description={description} image={image} type={type} />
     <ViewTransitions />

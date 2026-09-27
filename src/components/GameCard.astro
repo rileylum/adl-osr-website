@@ -65,30 +65,97 @@ const alt = `${title} - ${system} tabletop RPG module cover art for OZ ORC Adela
       </div>
     </div>
   ) : (
-    <ExternalLink
-      href={warhornUrl}
-      class="card bg-raised shadow-sm hover:shadow-lg transition-shadow"
-    >
-      <figure class="aspect-video overflow-hidden">
-        <img
-          src={src}
-          srcset={srcset}
-          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          alt={title}
-          class="w-full h-full object-cover"
-          loading="lazy"
-        />
-      </figure>
-      <div class="card-body p-4">
-        <h3 class="card-title text-lg">{title}</h3>
-        <div class="flex flex-wrap gap-2">
-          <span class="badge badge-accent badge-sm">{system}</span>
-          {level && (
-            <span class="badge badge-primary badge-sm">Level {level}</span>
-          )}
-        </div>
-        {gm && <p class="text-sm text-base-content/70">GM: {gm}</p>}
-      </div>
+    <ExternalLink href={warhornUrl} class="encounter encounter-compact">
+      <img
+        src={src}
+        srcset={srcset}
+        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        alt={title}
+        width="800"
+        height="450"
+        loading="lazy"
+      />
+      <h3 class="encounter-title">
+        <span class="sub-key" />
+        {title}
+      </h3>
+      <p class="statline">
+        <span>
+          <b>System</b> {system}
+        </span>{' '}
+        {level && (
+          <span>
+            <b>Level</b> {level}
+          </span>
+        )}{' '}
+        {gm && (
+          <span>
+            <b>GM</b> {gm}
+          </span>
+        )}
+      </p>
     </ExternalLink>
   )
 }
+
+<style>
+  /* A keyed encounter entry, as in a module's room key. :global because the
+     root may be an ExternalLink, which doesn't take this file's scope. */
+  :global(.encounter) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    background-color: var(--surface-raised);
+    border: var(--border) solid var(--color-rule);
+    padding: 0.75rem;
+  }
+
+  .encounter img {
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    width: 100%;
+    border: var(--border) solid var(--color-rule);
+  }
+
+  .encounter-title {
+    font-size: 1.55rem;
+    line-height: 1.02;
+    text-transform: uppercase;
+  }
+
+  .statline {
+    margin: 0;
+    padding: 0.35rem 0;
+    font-size: 1rem;
+    line-height: 1.45;
+    border-block: var(--border) solid var(--color-rule);
+  }
+
+  .statline b {
+    font-family: var(--font-sans);
+    font-variation-settings: 'wdth' 70;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.8rem;
+    color: var(--color-muted);
+    margin-right: 0.15em;
+  }
+
+  .statline span {
+    display: inline-block;
+    max-width: 100%;
+    margin-right: 0.9em;
+  }
+
+  /* The whole compact card is the link: text keeps the body colour, and
+     hover marks the frame in the link colour. */
+  :global(.encounter-compact) {
+    color: var(--color-base-content);
+    text-decoration: none;
+  }
+
+  :global(.encounter-compact:hover) {
+    border-color: var(--color-link);
+  }
+</style>

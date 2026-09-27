@@ -5,53 +5,80 @@ import InstagramIcon from '../assets/instagram.svg?raw';
 import BlueskyIcon from '../assets/bluesky.svg?raw';
 import ExternalLink from './ui/ExternalLink.astro';
 import { site } from '../data/site';
+
+const socials = [
+  { href: site.socials.discord, label: 'Join our Discord', icon: DiscordIcon },
+  {
+    href: site.socials.facebook,
+    label: 'Follow us on Facebook',
+    icon: FacebookIcon,
+  },
+  {
+    href: site.socials.instagram,
+    label: 'Follow us on Instagram',
+    icon: InstagramIcon,
+  },
+  {
+    href: site.socials.bluesky,
+    label: 'Follow us on Bluesky',
+    icon: BlueskyIcon,
+  },
+];
 ---
 
-<!-- daisyUI 5's modifier names read backwards with footer-center:
-     footer-horizontal stacks the two blocks, footer-vertical puts them side by
-     side. Phones stack them — side by side, the icons plus the email are wider
-     than a 390px screen and the whole page scrolls sideways. -->
-<footer
-  class="footer footer-center footer-horizontal sm:footer-vertical bg-base-200 text-base-content p-10"
->
-  <div>
-    <div class="flex gap-4">
-      <ExternalLink
-        href={site.socials.discord}
-        class="btn btn-circle btn-ghost"
-        aria-label="Join our Discord"
-      >
-        <Fragment set:html={DiscordIcon} />
-      </ExternalLink>
-      <ExternalLink
-        href={site.socials.facebook}
-        class="btn btn-circle btn-ghost"
-        aria-label="Follow us on Facebook"
-      >
-        <Fragment set:html={FacebookIcon} />
-      </ExternalLink>
-      <ExternalLink
-        href={site.socials.instagram}
-        class="btn btn-circle btn-ghost"
-        aria-label="Follow us on Instagram"
-      >
-        <Fragment set:html={InstagramIcon} />
-      </ExternalLink>
-      <ExternalLink
-        href={site.socials.bluesky}
-        class="btn btn-circle btn-ghost"
-        aria-label="Follow us on Bluesky"
-      >
-        <Fragment set:html={BlueskyIcon} />
-      </ExternalLink>
-    </div>
-  </div>
-  <div>
-    <p class="mb-2">
-      Contact us: <a href={`mailto:${site.email}`} class="link link-primary"
-        >{site.email}</a
-      >
+<!-- The module's back cover. Built on plain flex rather than daisyUI's footer
+     classes: footer-center lays its children side by side, which once made
+     the whole page scroll sideways on phones. -->
+<footer class="band site-footer">
+  <div class="max-w-[1120px] mx-auto px-4 py-8 text-center">
+    <ul class="flex justify-center gap-2.5 mb-4">
+      {
+        socials.map(({ href, label, icon }) => (
+          <li>
+            <ExternalLink href={href} class="social" aria-label={label}>
+              <Fragment set:html={icon} />
+            </ExternalLink>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="my-1">
+      Contact us: <a href={`mailto:${site.email}`} class="link">{site.email}</a>
     </p>
-    <p>© {new Date().getFullYear()} OZ ORC. All rights reserved.</p>
+    <p class="my-1">
+      © {new Date().getFullYear()} OZ ORC. All rights reserved.
+    </p>
+    <span class="code-mark" aria-hidden="true">{site.edition}</span>
   </div>
 </footer>
+
+<style>
+  .site-footer {
+    border-top: var(--rule-heavy) solid var(--color-rule);
+  }
+
+  .site-footer :global(.social) {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border: var(--border) solid var(--band-content);
+    color: var(--band-content);
+  }
+
+  .site-footer :global(.social:hover) {
+    background-color: var(--band-content);
+    color: var(--band-bg);
+  }
+
+  .code-mark {
+    display: inline-block;
+    margin-top: 1rem;
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    letter-spacing: 0.06em;
+    background-color: var(--band-content);
+    color: var(--band-bg);
+    padding: 0.05rem 0.5rem;
+  }
+</style>

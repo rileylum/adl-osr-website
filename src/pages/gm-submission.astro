@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import DiscordIcon from '../assets/discord.svg?raw';
 import Section from '../components/ui/Section.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
 import Card from '../components/ui/Card.astro';
 import ExternalLink from '../components/ui/ExternalLink.astro';
 import { site } from '../data/site';
@@ -16,7 +17,7 @@ import { longDate } from '../lib/format';
     : `Run a game at OZ ORC ${nextEventWindow}! GM submissions aren't open yet — join our Discord to register your interest. All experience levels welcome.`}
 >
   <Section page as="div">
-    <h1 class="title-page text-center mb-12">Game Submission</h1>
+    <SectionHeading as="h1" title="Game Submission" />
     {
       !gmApplications && (
         <Card class="max-w-2xl mx-auto text-center">
@@ -44,7 +45,7 @@ import { longDate } from '../lib/format';
     }
     {
       gmApplications && (
-        <div class="bg-raised rounded-box shadow-sm p-4">
+        <div class="bg-raised border-(length:--border) border-(--color-rule) p-4">
           <p class="text-lg text-center mb-4">
             Applications close {longDate(gmApplications.closes)}.
           </p>
