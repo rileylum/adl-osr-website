@@ -20,7 +20,7 @@ const { primary } = funnel;
 <section class="cover-wrap" aria-labelledby="cover-title">
   <div class="cover cover-frame">
     <div class="ribbon" aria-hidden="true">
-      <span>For Character Levels 1&ndash;&infin;</span>
+      <span>For Character Levels 1&ndash;<span class="inf">&infin;</span></span>
     </div>
     <div class="module-code code-tag">
       <span class="label-caps">Convention Module</span>
@@ -185,7 +185,7 @@ const { primary } = funnel;
     pointer-events: none;
   }
 
-  .ribbon span {
+  .ribbon > span {
     /* The band's centre sits on the corner diagonal at (--c, --c); the box
        clips its ends. */
     --c: 50px;
@@ -204,6 +204,15 @@ const { primary } = funnel;
     font-size: 0.68rem;
     letter-spacing: 0.05em;
     line-height: 1.15;
+  }
+
+  /* Anton draws ∞ at lowercase height, which looks lost among the capitals.
+     Enlarged, it rides above their centre line; the vertical-align lowers it
+     back. line-height: 0 keeps the larger glyph from growing the band. */
+  .ribbon .inf {
+    font-size: 1.4em;
+    line-height: 0;
+    vertical-align: -0.05em;
   }
 
   .cover-grid {
@@ -366,10 +375,16 @@ const { primary } = funnel;
     border-color: var(--hero-content);
   }
 
+  /* Archivo, like the site's other arrows: Anton's → is too heavy. Archivo
+     draws → low in its em, so `top` lifts it onto the capitals' centre line;
+     `transform` stays free for the hover nudge. */
   .arrow {
-    font-family: var(--font-display);
+    font-family: var(--font-sans);
+    font-weight: 700;
     font-size: 1.3em;
     line-height: 0;
+    position: relative;
+    top: -0.09em;
     transition: transform 0.12s ease;
   }
 
@@ -420,7 +435,7 @@ const { primary } = funnel;
       height: 240px;
     }
 
-    .ribbon span {
+    .ribbon > span {
       --c: 84px;
       width: 380px;
       font-size: 1.05rem;
