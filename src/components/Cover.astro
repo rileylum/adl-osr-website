@@ -20,7 +20,7 @@ const { primary } = funnel;
 <section class="cover-wrap" aria-labelledby="cover-title">
   <div class="cover cover-frame">
     <div class="ribbon" aria-hidden="true">
-      <span>For Character Levels 1&ndash;<span class="inf">&infin;</span></span>
+      <span>For Character Levels 1&ndash;99</span>
     </div>
     <div class="module-code code-tag">
       <span class="label-caps">Convention Module</span>
@@ -204,15 +204,6 @@ const { primary } = funnel;
     font-size: 0.68rem;
     letter-spacing: 0.05em;
     line-height: 1.15;
-  }
-
-  /* Anton draws ∞ at lowercase height, which looks lost among the capitals.
-     Enlarged, it rides above their centre line; the vertical-align lowers it
-     back. line-height: 0 keeps the larger glyph from growing the band. */
-  .ribbon .inf {
-    font-size: 1.4em;
-    line-height: 0;
-    vertical-align: -0.05em;
   }
 
   .cover-grid {
