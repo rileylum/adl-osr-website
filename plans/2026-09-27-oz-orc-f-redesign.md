@@ -523,15 +523,15 @@ copy. Don't recompute them from the implementation.
 
 **Done when**
 
-- [ ] Everything in Phase 1's Done when, now on all eight routes. That includes `/` in
+- [x] Everything in Phase 1's Done when, now on all eight routes. That includes `/` in
       pixc, and the funnel check in `layout.mjs`.
-- [ ] Off-season (the real data), `layout.mjs` prints `#hero-signup` = "Join the Mailing
+- [x] Off-season (the real data), `layout.mjs` prints `#hero-signup` = "Join the Mailing
       List" and passes.
-- [ ] With the temporary registration-open flip (Implementer notes), `npm run build`
+- [x] With the temporary registration-open flip (Implementer notes), `npm run build`
       passes. Then `layout.mjs` prints `#hero-signup` = "Sign Up for Event" and passes,
       and pixc reports `fails=0` on all eight routes, in both modes, at 390 and 1280.
       Revert the flip afterwards and confirm `git diff src/data/events.ts` is empty.
-- [ ] `grep -rn "swiper\|link-primary\|logo-ink\|alternating-sections" src` returns
+- [x] `grep -rn "swiper\|link-primary\|logo-ink\|alternating-sections" src` returns
       nothing.
 
 ## Manual verification

@@ -94,10 +94,12 @@ const items = await page.evaluate(() => {
   return out;
 });
 
-// Hide text, keep everything else, and shoot the page.
+// Hide text, keep everything else, and shoot the page. Embeds (MailerLite)
+// pin their colours with more specific !important rules that beat `color`
+// here, so the fill colour is cleared too: they don't set it.
 await page.addStyleTag({
   content:
-    '*, *::before, *::after { color: transparent !important; text-shadow: none !important; -webkit-text-stroke: 0 !important; caret-color: transparent !important; text-decoration-color: transparent !important; } svg { visibility: hidden !important; }',
+    '*, *::before, *::after { color: transparent !important; -webkit-text-fill-color: transparent !important; text-shadow: none !important; -webkit-text-stroke: 0 !important; caret-color: transparent !important; text-decoration-color: transparent !important; } svg { visibility: hidden !important; }',
 });
 await page.waitForTimeout(200);
 const { data, info } = await sharp(await page.screenshot())

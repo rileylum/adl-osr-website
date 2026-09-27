@@ -5,11 +5,41 @@
 // its styling, validation, reCAPTCHA and double opt-in. Edit the form's copy,
 // fields and success message in the MailerLite dashboard, not here.
 import Section from './ui/Section.astro';
+import SectionHeading from './ui/SectionHeading.astro';
 ---
 
-<Section id="register" width="narrow">
-  <div class="ml-embedded" data-form="B6FVva"></div>
+<Section id="register" width="wide">
+  <!-- The module's record sheet: a double-ruled frame round the form. -->
+  <div class="record">
+    <SectionHeading
+      title="Stay in the loop"
+      subtitle="Hear first when dates and games are announced."
+    />
+    <div class="ml-embedded" data-form="B6FVva"></div>
+  </div>
 </Section>
+
+<style>
+  .record {
+    display: grid;
+    gap: 1rem;
+    margin: 7px;
+    padding: 1.25rem;
+    background-color: var(--surface-raised);
+    border: var(--border) solid var(--color-rule);
+    outline: var(--border) solid var(--color-rule);
+    outline-offset: 4px;
+  }
+
+  @media (min-width: 860px) {
+    .record {
+      grid-template-columns: 1fr 1.4fr;
+      align-items: center;
+      gap: 2.5rem;
+      padding: 2rem 2.25rem;
+    }
+  }
+</style>
 
 <style is:global>
   /* daisyUI ships a `.checkbox` component class. MailerLite's embedded form

@@ -3,158 +3,41 @@ import { currentEvent } from '../data/events';
 import GameCard from './GameCard.astro';
 import Section from './ui/Section.astro';
 import SectionHeading from './ui/SectionHeading.astro';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
 
 // index.astro renders this only while the current event has games.
 const games = currentEvent?.games ?? [];
 ---
 
-<Section width="full">
-  <SectionHeading title="FEATURED GAMES" />
-
-  <div class="relative">
-    <div class="swiper games-swiper">
-      <div class="swiper-wrapper">
-        {
-          games.map((game) => (
-            <div class="swiper-slide">
-              <GameCard game={game} variant="featured" />
-            </div>
-          ))
-        }
-      </div>
-
-      <div class="swiper-button-prev"></div>
-      <div class="swiper-button-next"></div>
-      <div class="swiper-pagination"></div>
-    </div>
+<Section id="games" width="wide">
+  <SectionHeading title="Featured Games" />
+  <div class="encounters">
+    {games.map((game) => <GameCard game={game} variant="featured" />)}
   </div>
 </Section>
 
-<style is:global>
-  /* Swiper draws its controls from these variables; point them at the theme
-     so the carousel restyles with everything else. */
-  .games-swiper {
-    padding-bottom: 2rem;
-    --swiper-navigation-size: 3rem;
-    --swiper-navigation-color: var(--color-primary-content);
-    --swiper-pagination-bottom: 0;
-    --swiper-pagination-bullet-size: 0.75rem;
-    --swiper-pagination-color: var(--color-primary);
-    --swiper-pagination-bullet-inactive-color: var(--color-base-content);
-    --swiper-pagination-bullet-inactive-opacity: 0.3;
+<style>
+  /* Keyed encounters: a swipe row on phones, scrolling inside itself so the
+     page never scrolls sideways; a 3-up grid on desktop. */
+  .encounters {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 86%;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 0.75rem;
   }
 
-  .swiper-button-prev,
-  .swiper-button-next {
-    padding: 0.875rem;
-    border-radius: 50%;
-    background-color: var(--color-primary);
-    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  .encounters > :global(*) {
+    scroll-snap-align: start;
   }
 
-  .swiper-button-prev:hover,
-  .swiper-button-next:hover {
-    background-color: color-mix(in oklab, var(--color-primary) 90%, black);
-  }
-
-  @media (max-width: 640px) {
-    .swiper-button-prev,
-    .swiper-button-next {
-      display: none;
-    }
-  }
-
-  .swiper-slide {
-    height: auto;
-    display: flex;
-    transition: all 0.3s ease;
-  }
-
-  .swiper-slide > div {
-    width: 100%;
-  }
-
-  .swiper-slide:not(.swiper-slide-active) {
-    opacity: 0.5;
-    transform: scale(0.9);
-  }
-
-  .swiper-slide:not(.swiper-slide-active) .btn {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .swiper-slide .btn {
-    transition: opacity 0.3s ease;
-  }
-
-  @media (max-width: 400px) {
-    .games-swiper {
-      padding-bottom: 1.5rem;
+  @media (min-width: 860px) {
+    .encounters {
+      grid-auto-flow: row;
+      grid-template-columns: repeat(3, 1fr);
+      overflow: visible;
+      gap: 1.5rem;
     }
   }
 </style>
-
-<script>
-  import Swiper from 'swiper';
-  import { Navigation, Pagination } from 'swiper/modules';
-
-  let swiperInstance: Swiper | null = null;
-
-  function initSwiper() {
-    const swiperElement = document.querySelector('.games-swiper');
-    if (!swiperElement) return;
-
-    // Destroy existing instance if it exists
-    if (swiperInstance) {
-      swiperInstance.destroy(true, true);
-      swiperInstance = null;
-    }
-
-    // Small delay to ensure DOM is ready
-    setTimeout(() => {
-      // Initialize new Swiper instance
-      swiperInstance = new Swiper('.games-swiper', {
-        modules: [Navigation, Pagination],
-        slidesPerView: 1,
-        spaceBetween: 24,
-        centeredSlides: true,
-        loop: false,
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        },
-        pagination: {
-          el: '.swiper-pagination',
-          clickable: true,
-        },
-        breakpoints: {
-          640: {
-            slidesPerView: 1.5,
-            spaceBetween: 24,
-          },
-          1024: {
-            slidesPerView: 2.5,
-            spaceBetween: 24,
-          },
-        },
-      });
-
-      // Force update for Firefox to properly apply active slide styles
-      setTimeout(() => {
-        if (swiperInstance) {
-          swiperInstance.update();
-        }
-      }, 100);
-    }, 50);
-  }
-
-  // Initialize on first load
-  initSwiper();
-
-  // Reinitialize after view transitions
-  document.addEventListener('astro:page-load', initSwiper);
-</script>

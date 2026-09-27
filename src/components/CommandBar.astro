@@ -1,0 +1,273 @@
+---
+// The homepage's fixed bottom bar: the funnel one tap away. Phones always show
+// it; desktop hides it while the hero's own Sign Up is on screen, so the first
+// screen never shows two Sign Up buttons.
+import DiscordIcon from '../assets/discord.svg?raw';
+import FacebookIcon from '../assets/facebook.svg?raw';
+import type { HomeFunnel } from '../data/home';
+
+interface Props {
+  funnel: HomeFunnel;
+}
+
+const { funnel } = Astro.props;
+const { primary } = funnel;
+const external = { target: '_blank', rel: 'noopener noreferrer' };
+---
+
+<nav class="cmdbar band is-away" id="cmdbar" aria-label="Quick actions">
+  <div class="cmdbar-inner">
+    <a
+      class="cmd cmd-primary"
+      href={primary.href}
+      {...primary.external ? external : {}}
+    >
+      <span class="cmd-i cmd-arrow" aria-hidden="true">&rarr;</span><span
+        class="label-caps cmd-l"
+        ><span class="long">{primary.label}</span><span class="short"
+          >{primary.short}</span
+        ></span
+      >
+    </a>
+    {
+      funnel.hasGames && (
+        <a class="cmd" href="#games">
+          <svg class="cmd-i" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              fill="currentColor"
+              fill-rule="evenodd"
+              d="M3 3h18v18H3zm2.5 2.5v13h13v-13zM8 6.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3m8 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3m-4 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3m-4 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3m8 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3"
+            />
+          </svg>
+          <span class="label-caps cmd-l">Games</span>
+        </a>
+      )
+    }
+    <a class="cmd" href={funnel.discord} {...external}>
+      <Fragment set:html={DiscordIcon} /><span class="label-caps cmd-l"
+        >Discord</span
+      >
+    </a>
+    <a class="cmd" href={funnel.facebook} {...external}>
+      <Fragment set:html={FacebookIcon} /><span class="label-caps cmd-l"
+        >Facebook</span
+      >
+    </a>
+    <a class="cmd" href="/gm-submission">
+      <svg class="cmd-i" viewBox="0 0 24 24" aria-hidden="true">
+        <path
+          fill="currentColor"
+          d="M3 17.25V21h3.75L17.8 9.94l-3.75-3.75zM20.7 7.04a1 1 0 0 0 0-1.41l-2.33-2.34a1 1 0 0 0-1.42 0l-1.83 1.84 3.75 3.75z"
+        ></path>
+      </svg>
+      <span class="label-caps cmd-l">Run a Game</span>
+    </a>
+  </div>
+</nav>
+
+<script>
+  // Runs on every astro:page-load (view transitions swap the page), so it drops
+  // the previous page's observer first. Slice 2 may remove either element;
+  // then there's nothing to watch.
+  let observer: IntersectionObserver | undefined;
+
+  function watchHeroSignup() {
+    observer?.disconnect();
+    observer = undefined;
+    const bar = document.getElementById('cmdbar');
+    const signup = document.getElementById('hero-signup');
+    if (!bar || !signup) return;
+    observer = new IntersectionObserver(([entry]) =>
+      bar.classList.toggle('is-away', entry.isIntersecting)
+    );
+    observer.observe(signup);
+  }
+
+  document.addEventListener('astro:page-load', watchHeroSignup);
+</script>
+
+<style is:global>
+  /* Only where the bar exists: room under the footer for it, and keyboard
+     focus and #anchors kept out from under it. */
+  html:has(#cmdbar) {
+    scroll-padding-bottom: calc(var(--bar-h) + 1rem);
+  }
+
+  body:has(#cmdbar) > footer {
+    padding-bottom: calc(var(--bar-h) + env(safe-area-inset-bottom));
+  }
+</style>
+
+<style>
+  .cmdbar {
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: 20;
+    border-top: var(--border) solid var(--band-content);
+    padding-bottom: env(safe-area-inset-bottom);
+    transition:
+      transform 0.25s ease,
+      visibility 0s linear 0s;
+  }
+
+  .cmdbar :focus-visible {
+    outline-offset: -5px;
+  }
+
+  /* 1.35fr for Sign Up, then equal columns for however many slots follow
+     (four or five, depending on whether GAMES shows). */
+  .cmdbar-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    height: calc(var(--bar-h) - var(--border));
+    display: grid;
+    grid-template-columns: 1.35fr;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+  }
+
+  .cmd {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    min-width: 0;
+    padding: 0 2px;
+    color: var(--band-content);
+    text-decoration: none;
+    border-left: 1px solid
+      color-mix(in oklab, var(--band-content) 35%, var(--band-bg));
+  }
+
+  .cmd:hover {
+    background-color: var(--band-content);
+    color: var(--band-bg);
+  }
+
+  .cmd-i,
+  .cmd :global(svg) {
+    width: 20px;
+    height: 20px;
+    flex: none;
+  }
+
+  .cmd-l {
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .long {
+    display: none;
+  }
+
+  .cmd-primary {
+    background-color: var(--color-primary);
+    color: var(--color-primary-content);
+    border-left: 0;
+    /* A band-ink ring keeps Sign Up reading as a button against the band. */
+    box-shadow: inset 0 0 0 3px var(--band-content);
+  }
+
+  .cmd-primary:hover {
+    background-color: color-mix(
+      in oklab,
+      var(--color-primary) 85%,
+      var(--color-primary-content)
+    );
+    color: var(--color-primary-content);
+  }
+
+  .cmd-primary .cmd-l {
+    font-size: 0.85rem;
+  }
+
+  .cmdbar .cmd-primary:focus-visible {
+    outline-color: var(--color-primary-content);
+    outline-offset: -8px;
+  }
+
+  .cmd-arrow {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    line-height: 20px;
+    width: auto;
+    text-align: center;
+  }
+
+  @media (min-width: 48rem) {
+    .cmdbar-inner {
+      grid-template-columns: auto;
+      grid-auto-columns: auto;
+      justify-content: start;
+      padding-inline: 1rem;
+    }
+
+    .cmd {
+      flex-direction: row;
+      gap: 0.5rem;
+      padding: 0 1.25rem;
+    }
+
+    .cmd-l {
+      font-size: 0.95rem;
+      letter-spacing: 0.07em;
+    }
+
+    .long {
+      display: inline;
+    }
+
+    .short {
+      display: none;
+    }
+
+    .cmd-primary {
+      padding-inline: 1.6rem;
+      flex-direction: row-reverse;
+    }
+
+    .cmd-primary .cmd-l {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-variation-settings: normal;
+      font-size: 1.3rem;
+      letter-spacing: 0.04em;
+    }
+
+    .cmd:last-child {
+      border-right: 1px solid
+        color-mix(in oklab, var(--band-content) 35%, var(--band-bg));
+    }
+
+    /* Desktop only: off-screen while the hero's Sign Up is visible. Hidden
+       by visibility too, so its links leave the tab order. */
+    .cmdbar.is-away {
+      transform: translateY(100%);
+      visibility: hidden;
+      transition:
+        transform 0.25s ease,
+        visibility 0s linear 0.25s;
+    }
+  }
+
+  @media (max-width: 374px) {
+    .cmd-l {
+      font-size: 0.64rem;
+      letter-spacing: 0.02em;
+    }
+
+    .cmd-primary .cmd-l {
+      font-size: 0.78rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cmdbar,
+    .cmdbar.is-away {
+      transition: none;
+    }
+  }
+</style>
