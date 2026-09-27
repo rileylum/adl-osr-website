@@ -57,7 +57,7 @@ const [title, description] = !currentEvent
   />
   <!-- F's whole homepage body sits under one root, so a second look can hide
        it and mount its own markup in its place. -->
-  <div class="home-f">
+  <div class="home-f" data-look-only="f">
     <Cover funnel={funnel} />
     {
       currentEvent ? (

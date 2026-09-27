@@ -87,12 +87,13 @@ const external = { target: '_blank', rel: 'noopener noreferrer' };
 
 <style is:global>
   /* Only where the bar exists: room under the footer for it, and keyboard
-     focus and #anchors kept out from under it. */
-  html:has(#cmdbar) {
+     focus and #anchors kept out from under it. Only in F: option H hides this
+     bar, and H's status bar is a body > footer too (goldbox.css). */
+  :root:not([data-look='h']):has(#cmdbar) {
     scroll-padding-bottom: calc(var(--bar-h) + 1rem);
   }
 
-  body:has(#cmdbar) > footer {
+  :root:not([data-look='h']) body:has(#cmdbar) > footer {
     padding-bottom: calc(var(--bar-h) + env(safe-area-inset-bottom));
   }
 </style>

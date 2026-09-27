@@ -1,0 +1,199 @@
+---
+// Option H's menubar and status bar, around every page's <main>, and the
+// site-wide script that turns H on and off. Both bars stay hidden until
+// <html data-look="h"> is set. The homepage adds its own steps (GoldBox.astro)
+// through the LOOK_CHANGE event in src/lib/look.ts.
+import '../assets/goldbox.css';
+import DiscordIcon from '../assets/discord.svg?raw';
+import FacebookIcon from '../assets/facebook.svg?raw';
+import InstagramIcon from '../assets/instagram.svg?raw';
+import BlueskyIcon from '../assets/bluesky.svg?raw';
+import { currentEvent } from '../data/events';
+import { site } from '../data/site';
+
+const external = { target: '_blank', rel: 'noopener noreferrer' };
+// Below 375px the homepage drops the home link, as F's navbar does there.
+const isHome = Astro.url.pathname === '/';
+
+// lazy: copied from Footer.astro's socials. ceiling: F and H drift when a link changes. upgrade: move the list into src/data/ if it's edited twice.
+const socials = [
+  { href: site.socials.discord, label: 'Join our Discord', icon: DiscordIcon },
+  {
+    href: site.socials.facebook,
+    label: 'Follow us on Facebook',
+    icon: FacebookIcon,
+  },
+  {
+    href: site.socials.instagram,
+    label: 'Follow us on Instagram',
+    icon: InstagramIcon,
+  },
+  {
+    href: site.socials.bluesky,
+    label: 'Follow us on Bluesky',
+    icon: BlueskyIcon,
+  },
+];
+---
+
+<header class="menubar" data-look-only="h">
+  <a class:list={['menubar-name', isHome && 'is-home']} href="/"
+    ><span class="long">ADL OSR - OZ ORC</span><span class="short">OZ ORC</span
+    ></a
+  >
+  <nav class="menubar-menus" aria-label="Site">
+    <details class="gb-menu">
+      <summary><span class="hot">A</span>ttend</summary>
+      <!-- Mirrors Navbar.astro's ATTEND menu. -->
+      <ul class="menu-list window">
+        <li><a href="/code-of-conduct">Code of Conduct</a></li>
+        <li>
+          {
+            currentEvent?.warhornUrl ? (
+              <a href={currentEvent.warhornUrl}>Event Signup</a>
+            ) : (
+              <a class="is-disabled" aria-disabled="true" title="Coming Soon">
+                Event Signup
+              </a>
+            )
+          }
+        </li>
+        <li><a href="/schedule">Event Schedule</a></li>
+        <li><a href="/location">Event Location</a></li>
+        <li><a href="/gallery">Gallery</a></li>
+      </ul>
+    </details>
+    <details class="gb-menu">
+      <summary><span class="hot">G</span>M's</summary>
+      <!-- Mirrors Navbar.astro's GM'S menu. -->
+      <ul class="menu-list window">
+        <li><a href="/gm-info">GM Info</a></li>
+        <li><a href="/gm-submission">Game Submission</a></li>
+      </ul>
+    </details>
+    <button type="button" class="menubar-exit" data-look-exit>
+      <span class="hot">E</span>xit
+    </button>
+  </nav>
+</header>
+
+<slot />
+
+<footer class="window statusbar" data-look-only="h">
+  <ul class="socials">
+    {
+      socials.map(({ href, label, icon }) => (
+        <li>
+          <a href={href} aria-label={label} {...external}>
+            <span class="icon" aria-hidden="true">
+              <Fragment set:html={icon} />
+            </span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+  <p>Contact us: <a href={`mailto:${site.email}`}>{site.email}</a></p>
+  <p class="copy">
+    © {new Date().getFullYear()} OZ ORC. All rights reserved.
+  </p>
+</footer>
+
+<script>
+  import { createKonami } from '../lib/konami';
+  import { LOOK_CHANGE, type LookChange } from '../lib/look';
+
+  // Mirrored in Layout.astro's look-restore script, which can't import this.
+  const STORAGE_KEY = 'oz-look';
+  const LOOK = 'h';
+
+  const root = document.documentElement;
+  const press = createKonami();
+  let ctx: AudioContext | undefined;
+
+  // C5 E5 G5 at 0.08 s each, then C6 for 0.3 s: 0.54 s in all.
+  const TUNE: [hz: number, seconds: number][] = [
+    [523.25, 0.08],
+    [659.25, 0.08],
+    [783.99, 0.08],
+    [1046.5, 0.3],
+  ];
+
+  // Browsers allow audio only from a user gesture, so this must run inside the
+  // keydown that completed the code — never on restore or Exit.
+  function playTune() {
+    ctx ??= new AudioContext();
+    void ctx.resume();
+    const start = ctx.currentTime;
+    const end = start + TUNE.reduce((sum, [, s]) => sum + s, 0);
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0, start);
+    gain.gain.linearRampToValueAtTime(0.05, start + 0.005);
+    gain.gain.exponentialRampToValueAtTime(0.0001, end);
+    gain.connect(ctx.destination);
+    const osc = ctx.createOscillator();
+    osc.type = 'square';
+    let at = start;
+    for (const [hz, seconds] of TUNE) {
+      osc.frequency.setValueAtTime(hz, at);
+      at += seconds;
+    }
+    osc.connect(gain);
+    osc.start(start);
+    osc.stop(end);
+  }
+
+  function setStored(on: boolean) {
+    // Blocked storage throws; the look then lasts for this page only.
+    try {
+      if (on) sessionStorage.setItem(STORAGE_KEY, LOOK);
+      else sessionStorage.removeItem(STORAGE_KEY);
+    } catch {
+      /* stays page-only */
+    }
+  }
+
+  function announce(look: 'h' | 'f') {
+    scrollTo(0, 0);
+    const event: LookChange = new CustomEvent(LOOK_CHANGE, {
+      detail: { look },
+      cancelable: true,
+    });
+    if (!document.dispatchEvent(event)) return;
+    // A heading takes focus only with a tabindex.
+    const heading = document.querySelector<HTMLElement>('main h1');
+    heading?.setAttribute('tabindex', '-1');
+    heading?.focus();
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.repeat || e.ctrlKey || e.altKey || e.metaKey) return;
+    if (e.key === 'Shift' || e.key === 'CapsLock') return;
+    const t = e.target;
+    if (
+      t instanceof HTMLElement &&
+      (t.isContentEditable || t.matches('input, textarea, select'))
+    )
+      return;
+    if (!press(e.key) || root.dataset.look === LOOK) return;
+    playTune();
+    setStored(true);
+    root.dataset.look = LOOK;
+    announce('h');
+  });
+
+  document.addEventListener('click', (e) => {
+    const target = e.target as Element;
+    if (target.closest('[data-look-exit]')) {
+      setStored(false);
+      delete root.dataset.look;
+      announce('f');
+    }
+    // Only one menubar dropdown open at a time; a click elsewhere closes them.
+    document
+      .querySelectorAll<HTMLDetailsElement>('.gb-menu[open]')
+      .forEach((menu) => {
+        if (!menu.contains(target)) menu.open = false;
+      });
+  });
+</script>
