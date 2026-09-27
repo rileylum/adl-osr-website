@@ -127,17 +127,20 @@
   src: url('/fonts/archivo-latin.woff2') format('woff2');
 }
 
-/* The latin subset lacks → and ∞, so each family gets a second face with just
-   those two glyphs (from the Google Fonts API's `text=` parameter). The
-   unicode-range means a page downloads it only when it uses them. Archivo's
-   file keeps the wght and wdth axes; re-request with them if regenerating. */
+/* The latin subsets lack → and ∞, so each family gets a second face with the
+   symbols it sets (from the Google Fonts API's `text=` parameter): Archivo
+   both, Anton only ∞, since the site sets every → in Archivo. The
+   unicode-range means a page downloads a face only when it uses them. An →
+   set in Anton falls back to Impact; add U+2192 to Anton's file first.
+   Archivo's file keeps the wght and wdth axes; re-request with them if
+   regenerating. */
 @font-face {
   font-family: 'Anton';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
   src: url('/fonts/anton-symbols.woff2') format('woff2');
-  unicode-range: U+2192, U+221E;
+  unicode-range: U+221E;
 }
 
 @font-face {

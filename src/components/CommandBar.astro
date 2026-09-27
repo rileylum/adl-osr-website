@@ -188,8 +188,10 @@ const external = { target: '_blank', rel: 'noopener noreferrer' };
     outline-offset: -8px;
   }
 
+  /* Archivo, like the site's other arrows: Anton's → is too heavy. */
   .cmd-arrow {
-    font-family: var(--font-display);
+    font-family: var(--font-sans);
+    font-weight: 700;
     font-size: 1.5rem;
     line-height: 20px;
     width: auto;
@@ -226,6 +228,13 @@ const external = { target: '_blank', rel: 'noopener noreferrer' };
     .cmd-primary {
       padding-inline: 1.6rem;
       flex-direction: row-reverse;
+    }
+
+    /* Beside the label, Archivo's low-set → would sit below the capitals'
+       centre line. Stacked on phones, it centres in its icon slot unaided. */
+    .cmd-arrow {
+      position: relative;
+      top: -0.18em;
     }
 
     .cmd-primary .cmd-l {
