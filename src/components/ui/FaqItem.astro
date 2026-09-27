@@ -12,7 +12,7 @@ interface Props {
 const { question, group, open = false } = Astro.props;
 ---
 
-<details name={group} open={open} class="faq bg-raised">
+<details name={group} open={open} class="faq bg-raised" data-ui="faq">
   <summary><span class="sub-key"></span>{question}</summary>
   <div class="answer">
     <slot />

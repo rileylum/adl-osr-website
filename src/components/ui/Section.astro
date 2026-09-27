@@ -29,7 +29,10 @@ const {
 ---
 
 <Tag id={id} class:list={['py-section', page && 'flex-1', className]}>
-  <div class:list={['mx-auto px-6', widths[width]]}>
+  <div
+    class:list={['mx-auto px-6', widths[width]]}
+    data-ui={page ? 'page' : undefined}
+  >
     <slot />
   </div>
 </Tag>

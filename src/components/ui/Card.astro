@@ -15,6 +15,7 @@ const { title, titleAs: Title = 'h2', class: className } = Astro.props;
     'bg-raised border-(length:--border) border-(--color-rule) p-6 sm:p-8',
     className,
   ]}
+  data-ui="card"
 >
   {title && <Title class="title-card mb-4">{title}</Title>}
   <slot />

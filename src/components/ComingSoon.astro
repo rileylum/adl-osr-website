@@ -17,7 +17,7 @@ const { title } = Astro.props;
 
 <Section page width="text">
   <SectionHeading as="h1" title={title} />
-  <div class="read-aloud">
+  <div class="read-aloud" data-ui="read-aloud">
     <p class="text-lg"><slot /></p>
   </div>
   <div class="flex flex-col sm:flex-row gap-4 mt-8">

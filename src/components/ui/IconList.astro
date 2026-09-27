@@ -9,7 +9,11 @@ const glyphs = { check: '✓', arrow: '→' };
 const { marker } = Astro.props;
 ---
 
-<ul class="icon-list space-y-2" style={`--marker: '${glyphs[marker]}'`}>
+<ul
+  class="icon-list space-y-2"
+  style={`--marker: '${glyphs[marker]}'`}
+  data-ui="icon-list"
+>
   <slot />
 </ul>
 
