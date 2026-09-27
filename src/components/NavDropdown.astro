@@ -51,6 +51,18 @@ const { title, alignEnd = false } = Astro.props;
     border: var(--border) solid var(--band-content);
   }
 
+  /* An invisible bridge over the 4px gap and the top border. dropdown-hover
+     closes the menu the moment the pointer leaves .nav-menu, and without this
+     the gap sits outside it, so the menu shut on the way down to an option.
+     Keep its height in step with margin-top above. */
+  .menu::before {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    bottom: 100%;
+    height: calc(4px + var(--border));
+  }
+
   .menu :global(li + li) {
     border-top: 1px solid var(--band-content);
   }
