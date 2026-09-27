@@ -252,6 +252,7 @@ html[data-look='h'] {
       inset -1px -1px var(--bevel-light),
       inset -2px -2px var(--bevel-mid);
     padding: clamp(1rem, 3vw, 1.5rem);
+    border: 0;
   }
 
   /* ========== BUTTONS ========== */
@@ -318,18 +319,9 @@ html[data-look='h'] {
     box-shadow: none;
   }
 
-  /* H's link colour is the title bar's colour in light mode. */
-  & [data-ui='page-title'] a {
-    color: inherit;
-  }
-
   & [data-ui='section-title'] h2,
   & [data-ui='card'] .title-card {
     color: var(--heading);
-  }
-
-  & :is([data-ui='card'], [data-ui='read-aloud']) {
-    border: 0;
   }
 
   /* white-space: F's heads don't wrap, and at 320px "Modern D&D (5e)" then
