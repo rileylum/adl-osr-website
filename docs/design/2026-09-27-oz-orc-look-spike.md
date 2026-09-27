@@ -180,7 +180,7 @@ median, lowest text 5.45:1 ("Date" label on the cover), Sign Up 10.3:1; dark —
 
 1. **Navbar** (`--band-bg`): site name (hidden < 375px), ATTEND and GM'S menus.
 2. **Cover** (`--hero-bg`, double-ruled frame): angled corner banner "For Character
-   Levels 1–∞" (top-left, `--color-spot`); "CONVENTION MODULE / OZ3" tag (top-right);
+   Levels 1–99" (top-left, `--color-spot`); "CONVENTION MODULE / OZ3" tag (top-right);
    kicker "OZ ORC:" + title in Anton; the logo in a framed `--hero-panel`; a stat block
    `<dl>` — DATE (SAT **12** SEP 2026), TICKETS (**$15** AUD), GAMES (**6** on the
    table), venue row; the lead line; CTA row — **Sign Up for Event →** (primary, full
