@@ -1,30 +1,30 @@
 @import 'tailwindcss';
 
 /* The site's own themes replace daisyUI's built-ins, so every colour, radius
-   and depth decision lives in the two blocks below. They currently match
-   daisyUI's stock light/dark; restyle the site by editing them, not by adding
-   colour utilities in components. */
+   and depth decision lives in the two blocks below: option F, "The Module,
+   Loud" (docs/design/2026-09-27-oz-orc-look-spike.md, Tokens). Restyle the site
+   by editing them, not by adding colour utilities in components. */
 @plugin "daisyui" {
   themes: false;
 }
 
+/* Light — TSR Orange. */
 @plugin "daisyui/theme" {
   name: 'ozorc';
   default: true;
   color-scheme: light;
-  --color-base-100: oklch(100% 0 0);
-  --color-base-200: oklch(98% 0 0);
-  --color-base-300: oklch(95% 0 0);
-  /* Darker than daisyUI's stock 21% to meet WCAG AA on base-200. */
-  --color-base-content: oklch(15% 0.006 285.885);
-  --color-primary: oklch(45% 0.24 277.023);
-  --color-primary-content: oklch(93% 0.034 272.788);
-  --color-secondary: oklch(65% 0.241 354.308);
-  --color-secondary-content: oklch(94% 0.028 342.258);
-  --color-accent: oklch(77% 0.152 181.912);
-  --color-accent-content: oklch(38% 0.063 188.416);
-  --color-neutral: oklch(14% 0.005 285.823);
-  --color-neutral-content: oklch(92% 0.004 286.32);
+  --color-base-100: #f4ead3;
+  --color-base-200: #eadbb8;
+  --color-base-300: #dccaa0;
+  --color-base-content: #22170e;
+  --color-primary: #f5bf1f;
+  --color-primary-content: #22170e;
+  --color-secondary: #fbf4e3;
+  --color-secondary-content: #22170e;
+  --color-accent: #e0691c;
+  --color-accent-content: #1c1209;
+  --color-neutral: #22170e;
+  --color-neutral-content: #f4ead3;
   --color-info: oklch(74% 0.16 232.661);
   --color-info-content: oklch(29% 0.066 243.157);
   --color-success: oklch(76% 0.177 163.223);
@@ -33,34 +33,48 @@
   --color-warning-content: oklch(41% 0.112 45.904);
   --color-error: oklch(71% 0.194 13.428);
   --color-error-content: oklch(27% 0.105 12.094);
-  --radius-selector: 0.5rem;
-  --radius-field: 0.25rem;
-  --radius-box: 0.5rem;
+  --radius-selector: 0;
+  --radius-field: 0;
+  --radius-box: 0;
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
-  --border: 1px;
-  --depth: 1;
+  --border: 3px;
+  --depth: 0;
   --noise: 0;
-  /* The logo artwork is black line art; the dark theme inverts it. */
-  --logo-filter: none;
+  /* F's roles that daisyUI has no name for. On the cover and the dark bands,
+     text uses --hero-content / --band-content, never the base tokens. */
+  --color-muted: #5a4632;
+  --color-rule: #22170e;
+  --color-link: #8a3a0c;
+  --hero-bg: #e0691c;
+  --hero-content: #1c1209;
+  --hero-logo-ink: #22170e;
+  --hero-panel: #f7ecd2;
+  --color-spot: #f5bf1f;
+  --color-spot-content: #22170e;
+  --band-bg: #22170e;
+  --band-content: #f4ead3;
+  --surface-raised: #fbf4e3;
+  --color-focus: #22170e;
 }
 
+/* Dark — Ember · Cream: the orange cover stays lit on a warm near-black page. */
 @plugin "daisyui/theme" {
   name: 'ozorc-dark';
   prefersdark: true;
   color-scheme: dark;
-  --color-base-100: oklch(25.33% 0.016 252.42);
-  --color-base-200: oklch(23.26% 0.014 253.1);
-  --color-base-300: oklch(21.15% 0.012 254.09);
-  --color-base-content: oklch(97.807% 0.029 256.847);
-  --color-primary: oklch(58% 0.233 277.117);
-  --color-primary-content: oklch(96% 0.018 272.314);
-  --color-secondary: oklch(65% 0.241 354.308);
-  --color-secondary-content: oklch(94% 0.028 342.258);
-  --color-accent: oklch(77% 0.152 181.912);
-  --color-accent-content: oklch(38% 0.063 188.416);
-  --color-neutral: oklch(14% 0.005 285.823);
-  --color-neutral-content: oklch(92% 0.004 286.32);
+  --color-base-100: #17110b;
+  --color-base-200: #211810;
+  --color-base-300: #2b2016;
+  --color-base-content: #f3e7cf;
+  --color-primary: #f5bf1f;
+  --color-primary-content: #17110b;
+  --color-secondary: #17110b;
+  --color-secondary-content: #f3e7cf;
+  --color-accent: #e0691c;
+  --color-accent-content: #140c06;
+  --color-neutral: #0e0a06;
+  --color-neutral-content: #f3e7cf;
   --color-info: oklch(74% 0.16 232.661);
   --color-info-content: oklch(29% 0.066 243.157);
   --color-success: oklch(76% 0.177 163.223);
@@ -69,83 +83,253 @@
   --color-warning-content: oklch(41% 0.112 45.904);
   --color-error: oklch(71% 0.194 13.428);
   --color-error-content: oklch(27% 0.105 12.094);
-  --radius-selector: 0.5rem;
-  --radius-field: 0.25rem;
-  --radius-box: 0.5rem;
+  --radius-selector: 0;
+  --radius-field: 0;
+  --radius-box: 0;
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
-  --border: 1px;
-  --depth: 1;
+  --border: 3px;
+  --depth: 0;
   --noise: 0;
-  --logo-filter: invert(1);
+  --color-muted: #c9b594;
+  --color-rule: #e0691c;
+  --color-link: #f5bf1f;
+  --hero-bg: #e0691c;
+  --hero-content: #140c06;
+  --hero-logo-ink: #22170e;
+  --hero-panel: #f3e7cf;
+  --color-spot: #f5bf1f;
+  --color-spot-content: #17110b;
+  --band-bg: #0e0a06;
+  --band-content: #f3e7cf;
+  --surface-raised: #221a11;
+  --color-focus: #f5bf1f;
+}
+
+/* Self-hosted latin subsets of Google Fonts' Anton and Archivo (licence in
+   public/fonts/OFL.txt). Archivo is one variable file: the label style needs
+   its narrow widths. */
+@font-face {
+  font-family: 'Anton';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/anton-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 400 900;
+  font-stretch: 62% 125%;
+  font-display: swap;
+  src: url('/fonts/archivo-latin.woff2') format('woff2');
 }
 
 @theme {
-  /* Body text uses Tailwind's --font-sans; headings use --font-display. Both
-     are the system stack until the redesign picks typefaces. */
-  --font-display: var(--font-sans);
+  /* Anton for titles, headings and stat numerals; Archivo for everything else. */
+  --font-sans: 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Anton', 'Impact', 'Arial Narrow', sans-serif;
 
   /* Vertical padding of every page and homepage section (`py-section`). */
-  --spacing-section: 5rem;
+  --spacing-section: clamp(3rem, 7vw, 5rem);
 }
 
-/* A raised surface (card, FAQ item, table box) sits on a section and must
-   contrast with it. Sections that change their background also flip
-   --surface-raised; `inline` makes bg-raised read the nearest value rather
-   than the one resolved at :root. */
+/* A raised surface (card, FAQ item, table box) must contrast with what it sits
+   on. `inline` makes bg-raised read the nearest --surface-raised rather than
+   the one resolved at :root, so a region can still flip it. */
 @theme inline {
   --color-raised: var(--surface-raised);
 }
 
 @layer base {
   :root {
-    --surface-raised: var(--color-base-100);
+    --rule-heavy: 8px;
+    /* Command bar height, excluding the iPhone safe-area inset. */
+    --bar-h: 56px;
+  }
+
+  body {
+    background-color: var(--color-base-100);
+    color: var(--color-base-content);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+  }
+
+  /* Link colour is a token, not a class: a coloured band sets --color-link on
+     itself (see .band). Yellow primary is never text on cream (about 1.6:1). */
+  a {
+    color: var(--color-link);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 3px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+  }
+
+  /* Keyed headings number themselves by position (SectionHeading), because
+     which sections render depends on the event state. */
+  main {
+    counter-reset: key;
   }
 }
 
+/* A dark band (navbar, footer, command bar). Text and links on it use the band
+   ink; base tokens would vanish against it. */
+@utility band {
+  background-color: var(--band-bg);
+  color: var(--band-content);
+  --color-link: var(--band-content);
+  --color-focus: var(--band-content);
+}
+
+/* Condensed Archivo caps. Short labels only — buttons, stat labels, table
+   heads, captions — never paragraphs. */
+@utility label-caps {
+  font-family: var(--font-sans);
+  font-variation-settings: 'wdth' 70;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
 /* Type scale. Each role sets family, size and weight only — spacing belongs to
-   the layout around it. */
-/* Steps down on phones: at 5xl a single long word ("INFORMATION") is wider
-   than a 320px screen and the page scrolls sideways. */
+   the layout around it. Anton has one weight, so the display roles stay at 400
+   rather than get a synthesised bold. */
+/* Steps down on phones: at the larger size a single long word ("INFORMATION")
+   is wider than a 320px screen and the page scrolls sideways. */
 @utility title-page {
   font-family: var(--font-display);
   font-size: var(--text-4xl);
-  line-height: var(--text-4xl--line-height);
-  font-weight: var(--font-weight-bold);
+  line-height: 1.02;
+  font-weight: 400;
+  text-transform: uppercase;
 
   @media (width >= 40rem) {
-    font-size: var(--text-5xl);
-    line-height: var(--text-5xl--line-height);
+    font-size: var(--text-6xl);
   }
 }
 
 @utility title-section {
   font-family: var(--font-display);
-  font-size: var(--text-4xl);
-  line-height: var(--text-4xl--line-height);
-  font-weight: var(--font-weight-bold);
+  font-size: clamp(2.1rem, 7.5vw, 4rem);
+  line-height: 0.95;
+  font-weight: 400;
+  text-transform: uppercase;
 }
 
 @utility title-subsection {
   font-family: var(--font-display);
   font-size: var(--text-3xl);
   line-height: var(--text-3xl--line-height);
-  font-weight: var(--font-weight-bold);
+  font-weight: 400;
 }
 
 @utility title-card {
   font-family: var(--font-display);
   font-size: var(--text-2xl);
   line-height: var(--text-2xl--line-height);
-  font-weight: var(--font-weight-bold);
+  font-weight: 400;
 }
 
 @utility title-group {
+  @apply label-caps;
   font-size: var(--text-lg);
   line-height: var(--text-lg--line-height);
-  font-weight: var(--font-weight-bold);
 }
 
-@utility logo-ink {
-  filter: var(--logo-filter);
+/* The keyed-number chips: "1." on a heading, "1a" on a card or FAQ item. */
+@utility sub-key {
+  display: inline-block;
+  flex: none;
+  font-family: var(--font-display);
+  font-weight: 400;
+  background-color: var(--color-spot);
+  color: var(--color-spot-content);
+  padding: 0.02em 0.22em;
+  margin-right: 0.2em;
+  text-transform: none;
+
+  &::before {
+    counter-increment: sub;
+    content: counter(key) counter(sub, lower-alpha);
+  }
+}
+
+/* Boxed read-aloud text, as in every TSR module. */
+@utility read-aloud {
+  margin: 0;
+  background-color: var(--color-base-200);
+  color: var(--color-base-content);
+  border: var(--border) solid var(--color-rule);
+  box-shadow:
+    inset 0 0 0 5px var(--color-base-200),
+    inset 0 0 0 7px var(--color-rule);
+  padding: 1.4rem 1.5rem;
+}
+
+/* daisyUI nests its components in sublayers of `utilities`; plain rules here
+   sit after them in the same layer, so they win without !important. */
+@layer utilities {
+  .btn {
+    @apply label-caps;
+  }
+
+  /* The module's dice-table look (".roll" in the prototype). */
+  .table {
+    border-collapse: collapse;
+    border: var(--border) solid var(--color-rule);
+    background-color: var(--surface-raised);
+    font-size: 1rem;
+  }
+
+  .table :where(thead th) {
+    @apply label-caps;
+    background-color: var(--color-base-content);
+    color: var(--color-base-100);
+    font-size: 0.85rem;
+    padding: 0.4rem 0.7rem;
+  }
+
+  .table :where(tbody tr) {
+    border-bottom: 0;
+  }
+
+  .table :where(tbody td) {
+    border-top: 1px solid var(--color-rule);
+    padding: 0.55rem 0.7rem;
+    vertical-align: top;
+  }
+
+  .table caption {
+    caption-side: top;
+    text-align: left;
+    font-family: var(--font-display);
+    font-size: 1.7rem;
+    line-height: 1.1;
+    padding-bottom: 0.35rem;
+  }
+
+  /* A roll table: the die column is narrow, centred and set in Anton. */
+  .table.roll :where(td:first-child, th:first-child) {
+    width: 3.6rem;
+    text-align: center;
+    border-right: var(--border) solid var(--color-rule);
+  }
+
+  .table.roll :where(td:first-child) {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    line-height: 1.1;
+  }
 }

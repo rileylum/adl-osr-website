@@ -22,56 +22,59 @@ import { longDate } from '../lib/format';
       subtitle="Resources and guidelines for Game Masters at OZ ORC"
     />
 
-    <div class="space-y-8">
-      <Card title="Support & Resources">
-        <div class="mb-6">
-          <h3 class="title-group mb-3">Safety Tools</h3>
-          <p class="mb-4">
-            In a convention environment, GMs will often be running games for
-            strangers with varied backgrounds and experiences. If you're
-            interested in learning about tools to help facilitate games in these
-            situations, here are some excellent resources:
-          </p>
-          <IconList marker="arrow">
-            <li>
-              <a href="/code-of-conduct" class="link link-primary">
-                OZ ORC Code of Conduct
-              </a>
-            </li>
-            <li>
-              <ExternalLink href="https://ttrpgsafetytoolkit.com">
-                TTRPG Safety Toolkit
-              </ExternalLink>
-            </li>
-            <li>
-              <ExternalLink href="https://slyflourish.com/safety_tools.html">
-                Sly Flourish's Guide to Safety Tools
-              </ExternalLink>
-            </li>
-            <li>
-              <ExternalLink
-                href="https://montecookgames.com/consent-in-gaming/"
-              >
-                Monte Cook Games: Consent in Gaming
-              </ExternalLink>
-            </li>
-          </IconList>
-        </div>
+    <div class="space-y-12">
+      <div>
+        <SectionHeading title="Support & Resources" />
+        <Card>
+          <div class="mb-6">
+            <h3 class="title-group mb-3">Safety Tools</h3>
+            <p class="mb-4">
+              In a convention environment, GMs will often be running games for
+              strangers with varied backgrounds and experiences. If you're
+              interested in learning about tools to help facilitate games in
+              these situations, here are some excellent resources:
+            </p>
+            <IconList marker="arrow">
+              <li>
+                <a href="/code-of-conduct" class="link">
+                  OZ ORC Code of Conduct
+                </a>
+              </li>
+              <li>
+                <ExternalLink href="https://ttrpgsafetytoolkit.com">
+                  TTRPG Safety Toolkit
+                </ExternalLink>
+              </li>
+              <li>
+                <ExternalLink href="https://slyflourish.com/safety_tools.html">
+                  Sly Flourish's Guide to Safety Tools
+                </ExternalLink>
+              </li>
+              <li>
+                <ExternalLink
+                  href="https://montecookgames.com/consent-in-gaming/"
+                >
+                  Monte Cook Games: Consent in Gaming
+                </ExternalLink>
+              </li>
+            </IconList>
+          </div>
 
-        <div>
-          <h3 class="title-group mb-3">Contact</h3>
-          <p>
-            If you have any questions or need assistance, please reach out to
-            the organizers at{' '}
-            <a href={`mailto:${site.email}`} class="link link-primary">
-              {site.email}
-            </a>
-          </p>
-        </div>
-      </Card>
+          <div>
+            <h3 class="title-group mb-3">Contact</h3>
+            <p>
+              If you have any questions or need assistance, please reach out to
+              the organizers at{' '}
+              <a href={`mailto:${site.email}`} class="link">
+                {site.email}
+              </a>
+            </p>
+          </div>
+        </Card>
+      </div>
 
       <div>
-        <h2 class="title-card mb-4">GM FAQ</h2>
+        <SectionHeading title="GM FAQ" />
 
         <div class="space-y-4">
           <FaqItem
@@ -128,9 +131,7 @@ import { longDate } from '../lib/format';
           >
             <p>
               Definitely! Fill in a{' '}
-              <a href="/gm-submission" class="link link-primary">
-                game application
-              </a>{' '}
+              <a href="/gm-submission" class="link"> game application </a>{' '}
               and select "Standby" for your game slot. Standby games are called up
               if we get extra players or a GM has to pull out late.
             </p>
@@ -166,7 +167,7 @@ import { longDate } from '../lib/format';
                 ' '
               }
               and get talking with the community, or email{' '}
-              <a href={`mailto:${site.gmEmail}`} class="link link-primary">
+              <a href={`mailto:${site.gmEmail}`} class="link">
                 {site.gmEmail}
               </a>{' '}
               to join the GM mailing list. We're very friendly and would love to help
@@ -178,7 +179,7 @@ import { longDate } from '../lib/format';
 
       <div class="text-center mt-8">
         <a href="/gm-submission" class="btn btn-primary btn-lg">
-          Submit Your Game
+          Submit Your Game <span aria-hidden="true">→</span>
         </a>
       </div>
     </div>

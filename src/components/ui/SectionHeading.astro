@@ -1,7 +1,14 @@
 ---
-// The centred title block that opens a page or section. h1 for page titles,
-// h2 for homepage sections; the level picks the type role. Extra content
-// (event date and venue, etc.) goes in the slot below the subtitle.
+// The block that opens a page or section, in two shapes.
+// h1: the page's cover strip — an orange, double-ruled band with the module
+//   code, like a smaller homepage cover. No dragon: the art is homepage only.
+// h2: a keyed heading — "1. TITLE" over a heavy rule. The number is a CSS
+//   counter, so it follows whichever sections render in the current event
+//   state. `.sub-key` chips after it count on from it ("1a", "1b").
+// Extra content (event date and venue, etc.) goes in the slot below the
+// subtitle.
+import { site } from '../../data/site';
+
 interface Props {
   title: string;
   as?: 'h1' | 'h2';
@@ -9,18 +16,103 @@ interface Props {
 }
 
 const { title, as: Tag = 'h2', subtitle } = Astro.props;
-const hasMore = subtitle || Astro.slots.has('default');
 ---
 
-<div class="text-center mb-12">
-  <Tag
-    class:list={[
-      Tag === 'h1' ? 'title-page' : 'title-section',
-      hasMore && 'mb-6',
-    ]}
-  >
-    {title}
-  </Tag>
-  {subtitle && <p class="text-lg text-base-content/70">{subtitle}</p>}
-  <slot />
-</div>
+{
+  Tag === 'h1' ? (
+    <div class="cover-strip">
+      <div class="strip-tag">
+        <span class="label-caps strip-kicker">Convention Module</span>
+        <span class="strip-code">{site.edition}</span>
+      </div>
+      <h1 class="title-page">{title}</h1>
+      {subtitle && <p class="text-lg mt-3 font-semibold">{subtitle}</p>}
+      {Astro.slots.has('default') && (
+        <div class="mt-4">
+          <slot />
+        </div>
+      )}
+    </div>
+  ) : (
+    <div class="keyed mb-8">
+      <h2 class="title-section keyed-title">{title}</h2>
+      {subtitle && <p class="text-lg text-(--color-muted) mt-3">{subtitle}</p>}
+      <slot />
+    </div>
+  )
+}
+
+<style>
+  .cover-strip {
+    --color-link: var(--hero-content);
+    --color-focus: var(--hero-content);
+    background-color: var(--hero-bg);
+    color: var(--hero-content);
+    border: var(--border) solid var(--hero-content);
+    /* The printed inner hairline frame of the orange B/X covers. */
+    box-shadow:
+      inset 0 0 0 5px var(--hero-bg),
+      inset 0 0 0 7px var(--hero-content);
+    padding: 1rem 1.25rem 1.5rem;
+    margin-bottom: 3rem;
+    /* Break out of the Section's text column to the cover's width (1200px,
+       with the cover's .6rem gutter), and pull up into the Section's top
+       padding so the strip sits under the navbar as the cover does. Assumes
+       the strip opens a <Section page>. */
+    margin-inline: calc(50% - min(600px, 50vw - 0.6rem));
+    margin-top: calc(0.6rem - var(--spacing-section));
+  }
+
+  @media (width >= 860px) {
+    .cover-strip {
+      padding: 1.4rem 2.25rem 2.25rem;
+      box-shadow:
+        inset 0 0 0 7px var(--hero-bg),
+        inset 0 0 0 10px var(--hero-content);
+      margin-top: calc(1.5rem - var(--spacing-section));
+    }
+  }
+
+  .strip-tag {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-left: auto;
+    width: max-content;
+    margin-bottom: 0.5rem;
+  }
+
+  .strip-kicker {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+  }
+
+  .strip-code {
+    font-family: var(--font-display);
+    font-size: 1.9rem;
+    line-height: 1;
+    padding: 0.12rem 0.45rem 0.08rem;
+    background-color: var(--hero-content);
+    color: var(--hero-bg);
+    letter-spacing: 0.04em;
+  }
+
+  .keyed {
+    counter-increment: key;
+    counter-reset: sub;
+  }
+
+  .keyed-title {
+    border-bottom: var(--rule-heavy) solid var(--color-rule);
+    padding-bottom: 0.35rem;
+  }
+
+  .keyed-title::before {
+    content: counter(key) '.';
+    display: inline-block;
+    background-color: var(--color-spot);
+    color: var(--color-spot-content);
+    padding: 0.04em 0.14em 0;
+    margin-right: 0.3em;
+  }
+</style>

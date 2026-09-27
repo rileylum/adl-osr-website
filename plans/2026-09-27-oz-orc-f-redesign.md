@@ -460,12 +460,15 @@ checks below gate it.
 
 **Done when**
 
-- [ ] `npm test`, `npm run lint`, `npm run format:check` and `npx astro check` pass.
-- [ ] `npm run build` succeeds.
-- [ ] With `npx astro preview` running, `node scripts/visual/layout.mjs
-    http://localhost:4321` passes the 320px check on all eight routes. The funnel check
-      on `/` may still fail here.
-- [ ] `pixc.mjs` reports `fails=0` for every route except `/`, at widths 390 and 1280, in
+- [x] `npm test`, `npm run lint`, `npm run format:check` and `npx astro check` pass.
+      format:check ran against tracked files only
+      (`git ls-files | xargs npx prettier --check --ignore-unknown`): the working tree
+      holds untracked files outside this plan that Prettier flags.
+- [x] `npm run build` succeeds.
+- [x] With `npx astro preview` running,
+      `node scripts/visual/layout.mjs http://localhost:4321` passes the 320px check on all
+      eight routes. The funnel check on `/` may still fail here.
+- [x] `pixc.mjs` reports `fails=0` for every route except `/`, at widths 390 and 1280, in
       `light` and `dark`.
 
 ## Phase 2: the homepage

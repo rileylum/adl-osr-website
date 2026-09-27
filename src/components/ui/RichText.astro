@@ -17,7 +17,7 @@ const { parts } = Astro.props;
     ) : part.href.startsWith('http') ? (
       <ExternalLink href={part.href}>{part.text}</ExternalLink>
     ) : (
-      <a href={part.href} class="link link-primary">
+      <a href={part.href} class="link">
         {part.text}
       </a>
     )

@@ -36,6 +36,9 @@ export interface Site {
   gmEmail: string;
   socials: Socials;
   address: OrgAddress;
+  /** Module code printed on the cover, the page cover strips and the footer,
+   *  in the style of a TSR module number. */
+  edition: string;
 }
 
 export const site: Site = {
@@ -58,6 +61,8 @@ export const site: Site = {
     region: 'SA',
     country: 'AU',
   },
+  // The number of the next convention: Sep 2026 was OZ ORC 2.
+  edition: 'OZ3',
 };
 
 /** Absolute URL for the default OG / logo image. Resolved with `URL` (as

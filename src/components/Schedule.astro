@@ -15,9 +15,9 @@ const { agenda, games, venue, date } = Astro.props.event;
 const sessions = sessionGroups(agenda, games);
 ---
 
-<Section page as="div" width="full">
+<Section page as="div" width="wide">
   <SectionHeading as="h1" title="OZ ORC SCHEDULE">
-    <div class="flex items-center justify-center flex-wrap gap-4">
+    <div class="flex items-center flex-wrap gap-x-6 gap-y-2 font-semibold">
       <div class="flex items-center gap-2">
         <Fragment set:html={CalendarIcon} />
         <span>{longDate(date)}</span>
@@ -29,15 +29,14 @@ const sessions = sessionGroups(agenda, games);
     </div>
   </SectionHeading>
 
-  <div class="max-w-2xl mx-auto mb-16">
-    <div
-      class="overflow-x-auto rounded-box border border-base-content/5 bg-raised"
-    >
-      <table class="table table-zebra">
+  <div class="max-w-2xl mb-16">
+    <SectionHeading title="Agenda" />
+    <div class="overflow-x-auto">
+      <table class="table">
         <thead>
           <tr>
-            <th class="text-lg">Event</th>
-            <th class="text-lg">Time</th>
+            <th scope="col">Event</th>
+            <th scope="col">Time</th>
           </tr>
         </thead>
         <tbody>
@@ -48,14 +47,14 @@ const sessions = sessionGroups(agenda, games);
                   {row.sessionNumber !== undefined && games.length > 0 ? (
                     <a
                       href={`#session-${row.sessionNumber}`}
-                      class="link link-hover"
+                      class="link"
                       set:text={row.label}
                     />
                   ) : (
                     row.label
                   )}
                 </td>
-                <td>
+                <td class="font-display text-lg whitespace-nowrap">
                   {row.end
                     ? `${mil(row.start)} - ${mil(row.end)}`
                     : `${mil(row.start)} - Close`}
@@ -68,11 +67,11 @@ const sessions = sessionGroups(agenda, games);
     </div>
   </div>
 
-  <div class="space-y-12">
+  <div class="space-y-16">
     {
       games.length === 0 ? (
-        <div class="max-w-2xl mx-auto text-center">
-          <h2 class="title-subsection mb-4">Games To Be Announced</h2>
+        <div class="max-w-2xl">
+          <SectionHeading title="Games To Be Announced" />
           <p class="text-lg mb-6">
             We're still assembling the lineup for this event. Games will be
             listed here under each session as they're confirmed.
@@ -84,12 +83,9 @@ const sessions = sessionGroups(agenda, games);
       ) : (
         sessions.map((session) => (
           <section id={`session-${session.sessionNumber}`}>
-            <h2 class="title-subsection mb-6 text-center">
-              Session {session.sessionNumber}{' '}
-              <span class="text-base-content/60 text-xl">
-                ({friendly(session.start)} - {friendly(session.end)})
-              </span>
-            </h2>
+            <SectionHeading
+              title={`Session ${session.sessionNumber} — ${friendly(session.start)}–${friendly(session.end)}`}
+            />
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {session.games.map((game) => (
                 <GameCard game={game} variant="compact" />

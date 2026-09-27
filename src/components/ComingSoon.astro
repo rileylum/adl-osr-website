@@ -4,6 +4,8 @@
 // mailing list and Discord are the off-season funnels.
 import DiscordIcon from '../assets/discord.svg?raw';
 import ExternalLink from './ui/ExternalLink.astro';
+import Section from './ui/Section.astro';
+import SectionHeading from './ui/SectionHeading.astro';
 import { site } from '../data/site';
 
 interface Props {
@@ -13,21 +15,16 @@ interface Props {
 const { title } = Astro.props;
 ---
 
-<!-- flex-1 fills the space Layout's <main> leaves between navbar and footer.
-     min-h-screen here would add the navbar and footer on top and force a
-     scroll. -->
-<div class="hero bg-base-200 flex-1">
-  <div class="hero-content max-w-2xl text-center">
-    <div>
-      <h1 class="title-page mb-6">{title}</h1>
-      <p class="text-lg mb-8"><slot /></p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="/#register" class="btn btn-primary">Join the Mailing List</a>
-        <ExternalLink href={site.socials.discord} class="btn btn-outline gap-2">
-          <Fragment set:html={DiscordIcon} />
-          Join our Discord
-        </ExternalLink>
-      </div>
-    </div>
+<Section page width="text">
+  <SectionHeading as="h1" title={title} />
+  <div class="read-aloud">
+    <p class="text-lg"><slot /></p>
   </div>
-</div>
+  <div class="flex flex-col sm:flex-row gap-4 mt-8">
+    <a href="/#register" class="btn btn-primary">Join the Mailing List</a>
+    <ExternalLink href={site.socials.discord} class="btn btn-outline gap-2">
+      <Fragment set:html={DiscordIcon} />
+      Join our Discord
+    </ExternalLink>
+  </div>
+</Section>

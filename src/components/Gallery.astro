@@ -160,14 +160,14 @@ const sections: GallerySection[] = [
   {
     sections.map((section) => (
       <div class="mb-16">
-        <h2 class="title-subsection text-center mb-8">{section.title}</h2>
+        <SectionHeading title={section.title} />
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {section.photos.map((photo) => (
             <a
               href={photo.src}
               target="_blank"
               rel="noopener"
-              class="card bg-raised shadow-sm overflow-hidden"
+              class="block overflow-hidden bg-raised border-(length:--border) border-(--color-rule)"
             >
               {/* The square crop cuts off people at the edges, so the tile
                     links to the full photo. */}
@@ -179,7 +179,7 @@ const sections: GallerySection[] = [
                   height="722"
                   loading="lazy"
                   decoding="async"
-                  class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                  class="w-full h-full object-cover motion-safe:transition-transform motion-safe:duration-300 motion-safe:hover:scale-105"
                 />
               </figure>
             </a>
@@ -189,7 +189,7 @@ const sections: GallerySection[] = [
     ))
   }
 
-  <div class="text-center">
+  <div>
     <a href="/" class="btn btn-primary">Back to Main Page</a>
   </div>
 </Section>
