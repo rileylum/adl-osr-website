@@ -73,7 +73,6 @@ const external = { target: '_blank', rel: 'noopener noreferrer' };
 
   function watchHeroSignup() {
     observer?.disconnect();
-    observer = undefined;
     const bar = document.getElementById('cmdbar');
     const signup = document.getElementById('hero-signup');
     if (!bar || !signup) return;

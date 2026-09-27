@@ -1,0 +1,1145 @@
+/* Option H, "The Gold Box, Refined" — the Konami-code easter egg
+   (GoldBox.astro). Lifted from prototypes/oz-orc-look-h with only its goldbox
+   palette. Every rule is scoped to .home-h or to html[data-look='h'], so none
+   of it reaches F or the inner pages.
+
+   H's .btn, .hero, .menu and .stats are renamed .gb-btn, .gb-hero, .gb-menu
+   and .gb-stats: daisyUI ships components under the prototype's names, and
+   their styles would leak into H. */
+
+@font-face {
+  font-family: 'VT323';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/vt323-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/ibm-plex-mono-latin-400.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/ibm-plex-mono-latin-600.woff2') format('woff2');
+}
+
+/* ========== SHOW AND HIDE ========== */
+
+.home-h {
+  display: none;
+}
+
+html[data-look='h'] .home-h {
+  display: block;
+}
+
+html[data-look='h'] .home-f,
+html[data-look='h'] body:has(.home-h) > :is(header, footer) {
+  display: none;
+}
+
+/* ========== TOKENS ==========
+   Page-wide while H is on, so the MailerLite form moved into H's dialog picks
+   them up too. Specificity (0,2,1) must stay above CommandBar's
+   html:has(#cmdbar) scroll padding (0,1,1): F's bar stays in the DOM while
+   hidden. */
+
+html[data-look='h']:has(.home-h) {
+  /* Windows 3.x (light) */
+  --color-base-100: #008080;
+  --color-base-200: #c0c0c0;
+  --color-base-300: #808080;
+  --color-base-content: #000000;
+  --color-muted: #404040;
+  --color-primary: #000080;
+  --color-primary-content: #ffffff;
+  --color-secondary: #c0c0c0;
+  --color-secondary-content: #000000;
+  --color-accent: #800000;
+  --color-accent-content: #ffffff;
+  --surface-raised: #ffffff;
+  --titlebar-bg: #000080;
+  --titlebar-content: #ffffff;
+  --frame: #000000;
+  --bevel-light: #ffffff;
+  --bevel-mid: #dfdfdf;
+  --bevel-shadow: #808080;
+  --bevel-dark: #000000;
+  --primary-bevel-light: #4a4ad0;
+  --primary-bevel-shadow: #000033;
+  --link: #000080;
+  --focus: #000000;
+  --heading: #000080;
+  --highlight: #000080;
+  --highlight-content: #ffffff;
+  --menubar-bg: #ffffff;
+  --menubar-content: #000000;
+
+  /* F's roles that the MailerLite form styles read (RegisterInterest.astro). */
+  --color-rule: var(--frame);
+  --color-link: var(--link);
+  --color-focus: var(--focus);
+  --color-error-ink: #800000;
+
+  --font-display: 'VT323', 'Courier New', monospace;
+  --font-sans: 'IBM Plex Mono', ui-monospace, 'Courier New', monospace;
+  /* Not --border: that is F's token, and the MailerLite form reads it. */
+  --gb-border: 2px;
+  --frame-style: solid;
+  --spacing-section: clamp(1.75rem, 4vw, 2.75rem);
+  --gutter: clamp(0.75rem, 2.5vw, 1.5rem);
+
+  scroll-padding-block: 4.5rem 5rem;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  /* DOS EGA Gold Box (dark), with its double-line frame. */
+  html[data-look='h']:has(.home-h) {
+    --color-base-100: #000000;
+    --color-base-200: #0000aa;
+    --color-base-300: #aa5500;
+    --color-base-content: #ffffff;
+    --color-muted: #55ffff;
+    --color-primary: #ffff55;
+    --color-primary-content: #000000;
+    --color-secondary: #aaaaaa;
+    --color-secondary-content: #000000;
+    --color-accent: #55ff55;
+    --color-accent-content: #000000;
+    --surface-raised: #000000;
+    --titlebar-bg: #ffd24a;
+    --titlebar-content: #000000;
+    --frame: #ffd24a;
+    --bevel-light: #ffffff;
+    --bevel-mid: #aaaaaa;
+    --bevel-shadow: #555555;
+    --bevel-dark: #000000;
+    --primary-bevel-light: #ffffcc;
+    --primary-bevel-shadow: #aa5500;
+    --link: #55ffff;
+    --focus: #55ffff;
+    --heading: #ffff55;
+    --highlight: #55ffff;
+    --highlight-content: #000000;
+    --menubar-bg: #00aaaa;
+    --menubar-content: #000000;
+    --color-error-ink: #ff8080; /* EGA #ff5555 reads 4.2:1 on the dialog blue */
+    --gb-border: 6px;
+    --frame-style: double;
+    color-scheme: dark;
+  }
+}
+
+html[data-look='h']:has(.home-h) body {
+  background: var(--color-base-100);
+  color: var(--color-base-content);
+  font: 400 17px/1.6 var(--font-sans);
+}
+
+/* ========== BASE ========== */
+
+.home-h {
+  & a {
+    color: var(--link);
+    text-underline-offset: 3px;
+  }
+
+  & h1,
+  & h2,
+  & h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1.05;
+    margin: 0;
+  }
+
+  & p {
+    margin: 0 0 1em;
+  }
+
+  & ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  & :focus-visible {
+    outline: 3px dashed var(--focus);
+    outline-offset: 2px;
+  }
+
+  & .hot {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 2px;
+  }
+
+  & .icon {
+    display: inline-block;
+    flex: none;
+    width: 1.1em;
+    height: 1.1em;
+  }
+
+  & .icon svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  & .gb-main {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 1.25rem var(--gutter) 0;
+    display: grid;
+    gap: var(--spacing-section);
+  }
+
+  /* ========== WINDOWS ========== */
+
+  & .window {
+    background: var(--color-base-200);
+    border: var(--gb-border) var(--frame-style) var(--frame);
+    padding: 3px;
+    min-width: 0;
+    box-shadow:
+      inset -1px -1px var(--bevel-dark),
+      inset 1px 1px var(--bevel-mid),
+      inset -3px -3px var(--bevel-shadow),
+      inset 3px 3px var(--bevel-light);
+  }
+
+  & .titlebar {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--titlebar-bg);
+    color: var(--titlebar-content);
+    padding: 0.25rem 0.75rem;
+    min-height: 2.5rem;
+  }
+
+  & .tb-text {
+    font: 400 clamp(1.9rem, 4vw, 2.25rem) / 1 var(--font-display);
+    letter-spacing: 0.04em;
+  }
+
+  & .tb-aside {
+    margin-left: auto;
+    font: 400 1.35rem/1 var(--font-display);
+    letter-spacing: 0.06em;
+  }
+
+  & .ctl {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 1.75rem;
+    height: 1.75rem;
+    font: 400 1.4rem/1 var(--font-display);
+    background: var(--color-base-200);
+    color: var(--color-base-content);
+    box-shadow:
+      inset -1px -1px var(--bevel-dark),
+      inset 1px 1px var(--bevel-light);
+  }
+
+  & .window-body {
+    padding: clamp(1rem, 2.5vw, 1.75rem);
+  }
+
+  & .sunken {
+    background: var(--surface-raised);
+    box-shadow:
+      inset 1px 1px var(--bevel-shadow),
+      inset 2px 2px var(--bevel-dark),
+      inset -1px -1px var(--bevel-light),
+      inset -2px -2px var(--bevel-mid);
+    padding: clamp(1rem, 3vw, 1.5rem);
+  }
+
+  /* ========== BUTTONS ========== */
+
+  & .gb-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font: 400 1.85rem/1 var(--font-display);
+    letter-spacing: 0.03em;
+    text-decoration: none;
+    padding: 0.5rem 1.2rem 0.55rem;
+    background: var(--color-secondary);
+    color: var(--color-secondary-content);
+    border: 2px solid var(--bevel-dark);
+    box-shadow:
+      inset -2px -2px var(--bevel-shadow),
+      inset 2px 2px var(--bevel-light);
+    cursor: pointer;
+  }
+
+  & .gb-btn:active {
+    box-shadow: inset 2px 2px var(--bevel-shadow);
+  }
+
+  & .gb-btn-primary {
+    background: var(--color-primary);
+    color: var(--color-primary-content);
+    box-shadow:
+      inset -2px -2px var(--primary-bevel-shadow),
+      inset 2px 2px var(--primary-bevel-light);
+  }
+
+  & .gb-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  /* ========== NAVBAR (menu bar) ========== */
+
+  & .menubar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--menubar-bg);
+    color: var(--menubar-content);
+    border-bottom: 2px solid var(--frame);
+    padding: 0 var(--gutter);
+    position: relative;
+    z-index: 10;
+    font: 400 1.75rem/1 var(--font-display);
+  }
+
+  & .menubar-name,
+  & .gb-menu summary,
+  & .menubar-exit {
+    white-space: nowrap;
+  }
+
+  & .menubar-name {
+    color: inherit;
+    text-decoration: none;
+    padding: 0.5rem 0;
+    letter-spacing: 0.04em;
+  }
+
+  & .menubar-name .short {
+    display: none;
+  }
+
+  & .menubar-menus {
+    display: flex;
+    margin-left: auto;
+  }
+
+  & .gb-menu {
+    position: relative;
+  }
+
+  & .gb-menu summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 0.5rem 0.8rem;
+  }
+
+  & .gb-menu summary::-webkit-details-marker {
+    display: none;
+  }
+
+  & .gb-menu summary::after {
+    content: ' \25BE';
+  }
+
+  & .menubar-exit {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    padding: 0.5rem 0.8rem;
+  }
+
+  & .gb-menu[open] summary,
+  & .gb-menu summary:hover,
+  & .menubar-exit:hover {
+    background: var(--highlight);
+    color: var(--highlight-content);
+  }
+
+  & .menu-list {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    min-width: 16rem;
+  }
+
+  & .menu-list a {
+    display: block;
+    padding: 0.5rem 0.8rem;
+    color: var(--color-base-content);
+    text-decoration: none;
+    font-size: 1.6rem;
+  }
+
+  & .menu-list a:hover,
+  & .menu-list a:focus-visible {
+    background: var(--highlight);
+    color: var(--highlight-content);
+    outline-offset: -3px;
+  }
+
+  /* No Warhorn link yet: muted rather than faded, so it still reads 4.5:1. */
+  & .menu-list a.is-disabled {
+    color: var(--color-muted);
+    cursor: not-allowed;
+  }
+
+  & .menu-list a.is-disabled:hover {
+    background: none;
+    color: var(--color-muted);
+  }
+
+  /* ========== HERO (title screen) ========== */
+
+  & .hero-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: clamp(1rem, 3vw, 2.5rem);
+    align-items: center;
+    padding: clamp(1rem, 3vw, 2.5rem);
+  }
+
+  & .logo {
+    display: block;
+    width: min(100%, 420px);
+    height: auto;
+    margin-bottom: 0.75rem;
+  }
+
+  & .gb-hero h1 {
+    font-size: clamp(2.1rem, 4.2vw, 3.1rem);
+    color: var(--heading);
+    margin-bottom: 0.9rem;
+  }
+
+  & .facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem 1.25rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  & .facts li {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  & .facts .icon {
+    color: var(--color-muted);
+  }
+
+  & .icon-gp {
+    font: 600 1.1em/1 var(--font-sans);
+    text-align: center;
+  }
+
+  & .lead {
+    font-size: 1.15rem;
+    margin-bottom: 0.25rem;
+  }
+
+  & .sub {
+    margin: 0;
+  }
+
+  /* minmax(0, 1fr): an auto track grows to its items' min-content width and
+     pushes a 320px page sideways. */
+  & .mainmenu ul {
+    padding: 0.6rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.35rem;
+  }
+
+  & .mm {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.45rem 0.75rem 0.45rem 2.3rem;
+    font: 400 2.1rem/1 var(--font-display);
+    letter-spacing: 0.03em;
+    color: var(--color-base-content);
+    text-decoration: none;
+    /* The prototype kept items on one line, but the off-season labels ("Join
+       the Mailing List") outgrow the menu column at 320px and at 1280px. */
+    text-wrap: balance;
+  }
+
+  & .mm .icon {
+    width: 0.85em;
+    height: 0.85em;
+  }
+
+  /* The menu cursor: shown on the default choice and wherever focus or the
+     pointer goes. */
+  & .mm::before {
+    content: '\25B6';
+    position: absolute;
+    left: 0.7rem;
+    font-size: 1.3rem;
+    visibility: hidden;
+  }
+
+  & .mm:hover,
+  & .mm:focus-visible {
+    background: var(--highlight);
+    color: var(--highlight-content);
+    outline-offset: 1px;
+  }
+
+  & .mm:hover::before,
+  & .mm:focus-visible::before {
+    visibility: visible;
+  }
+
+  & .mm-primary {
+    font-size: 2.75rem;
+    padding: 0.75rem 0.75rem 0.75rem 2.8rem;
+    background: var(--color-primary);
+    color: var(--color-primary-content);
+    border: 3px solid var(--bevel-dark);
+    box-shadow:
+      inset -3px -3px var(--primary-bevel-shadow),
+      inset 3px 3px var(--primary-bevel-light);
+  }
+
+  & .mm-primary::before {
+    visibility: visible;
+    animation: gb-blink 1.06s steps(1) infinite;
+  }
+
+  & .mm-primary:hover,
+  & .mm-primary:focus-visible {
+    background: var(--color-primary);
+    color: var(--color-primary-content);
+  }
+
+  & .mm-gm {
+    font-size: 1.6rem;
+    color: var(--color-muted);
+  }
+
+  /* ========== GAMES (party roster) ========== */
+
+  & .roster {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+    gap: 1.25rem;
+  }
+
+  & .sheet {
+    display: flex;
+    flex-direction: column;
+  }
+
+  & .sheet img {
+    aspect-ratio: 16 / 9;
+    width: 100%;
+    object-fit: cover;
+    border: 2px solid var(--bevel-dark);
+    margin-bottom: 0.85rem;
+  }
+
+  & .sheet h3 {
+    font-size: 2.1rem;
+    color: var(--heading);
+    margin-bottom: 0.5rem;
+  }
+
+  & .gb-stats {
+    margin: 0 0 0.75rem;
+    border-block: 1px dashed var(--color-base-300);
+    padding-block: 0.35rem;
+  }
+
+  & .gb-stats div {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  & .gb-stats dt {
+    font: 400 1.45rem/1.25 var(--font-display);
+    color: var(--color-muted);
+    text-transform: uppercase;
+    min-width: 4.75rem;
+  }
+
+  & .gb-stats dt::after {
+    content: ':';
+  }
+
+  & .gb-stats dd {
+    margin: 0;
+    font-weight: 600;
+  }
+
+  & .desc {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    overflow: hidden;
+  }
+
+  & .sheet .gb-btn {
+    margin-top: auto;
+    align-self: stretch;
+  }
+
+  /* ========== MAILING LIST (dialog) ========== */
+
+  & .dialog {
+    width: min(100%, 580px);
+    justify-self: center;
+  }
+
+  & .dialog-body {
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  & .dialog-msg {
+    display: flex;
+    gap: 0.9rem;
+    align-items: center;
+  }
+
+  & .dialog-msg p {
+    margin: 0;
+  }
+
+  & .msg-icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    font: 400 2.1rem/1 var(--font-display);
+    background: var(--color-accent);
+    color: var(--color-accent-content);
+    border: 2px solid var(--bevel-dark);
+  }
+
+  /* The live form reads base-100 for its fields, and H's base-100 is the
+     desktop colour (teal in light), which fails 4.5:1 under black text. */
+  & [data-ml-slot] {
+    --color-base-100: var(--surface-raised);
+  }
+
+  /* ========== ABOUT (viewport + text log) ========== */
+
+  & .about {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  & .viewport {
+    margin: 0;
+    padding: 6px;
+    background: var(--color-base-200);
+    border: 2px solid var(--frame);
+  }
+
+  & .viewport img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  /* ========== WHAT TO EXPECT (inventory) ========== */
+
+  & .expect {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+
+  & .inventory h3,
+  & .msgbox h3 {
+    font-size: 2.1rem;
+    color: var(--heading);
+    margin-bottom: 0.6rem;
+  }
+
+  & .inventory li {
+    padding-left: 1.4rem;
+    position: relative;
+    margin-bottom: 0.35rem;
+  }
+
+  & .inventory li::before {
+    content: '\25BA';
+    position: absolute;
+    left: 0;
+    color: var(--color-muted);
+    font-size: 0.8em;
+    top: 0.2em;
+  }
+
+  & .msgbox {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    border: 2px solid var(--frame);
+    padding: 1.1rem 1.25rem;
+  }
+
+  & .msgbox p {
+    margin: 0;
+  }
+
+  /* ========== QUOTE (journal) ========== */
+
+  & .journal {
+    margin: 0;
+  }
+
+  & .speaker {
+    font: 400 1.85rem/1 var(--font-display);
+    color: var(--color-muted);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.6rem;
+  }
+
+  & .journal blockquote {
+    margin: 0;
+    font-size: 1.15rem;
+  }
+
+  & .attrib {
+    margin: 0;
+    font-weight: 600;
+  }
+
+  /* ========== FAQ (help log) ========== */
+
+  & .faq details + details {
+    border-top: 1px dashed var(--color-base-300);
+  }
+
+  & .faq summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    gap: 0.7rem;
+    padding: 0.7rem 0.4rem;
+    font: 400 1.85rem/1.1 var(--font-display);
+    color: var(--heading);
+  }
+
+  & .faq summary::-webkit-details-marker {
+    display: none;
+  }
+
+  & .faq summary::before {
+    content: '+';
+    flex: none;
+    width: 1ch;
+    color: var(--color-muted);
+  }
+
+  & .faq details[open] summary::before {
+    content: '\2212';
+  }
+
+  & .faq summary:hover {
+    background: var(--highlight);
+    color: var(--highlight-content);
+  }
+
+  & .faq summary:hover::before {
+    color: inherit;
+  }
+
+  & .faq details p {
+    padding: 0 0.4rem 0.5rem calc(1ch + 1.1rem);
+  }
+
+  /* ========== FOOTER (status bar) ========== */
+
+  & .statusbar {
+    max-width: calc(1160px - 2 * var(--gutter));
+    margin: var(--spacing-section) auto 1.25rem;
+    width: calc(100% - 2 * var(--gutter));
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.5rem;
+    padding: 0.9rem 1.1rem;
+  }
+
+  & .statusbar p {
+    margin: 0;
+  }
+
+  & .socials {
+    display: flex;
+    gap: 0.6rem;
+  }
+
+  & .socials a {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    color: var(--color-secondary-content);
+    background: var(--color-secondary);
+    border: 2px solid var(--bevel-dark);
+    box-shadow:
+      inset -2px -2px var(--bevel-shadow),
+      inset 2px 2px var(--bevel-light);
+  }
+
+  & .socials .icon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  & .copy {
+    margin-left: auto;
+  }
+
+  /* ========== COMMAND BAR ==========
+     Sticky, not fixed, and the last child of .home-h: it rides the bottom of
+     the viewport while scrolling, then parks below the status bar at the end,
+     so it can never cover the status bar or the last content. */
+
+  & .cmdbar {
+    position: sticky;
+    bottom: 0;
+    z-index: 20;
+    display: flex;
+    justify-content: center;
+    gap: clamp(0.25rem, 2vw, 2.5rem);
+    background: var(--menubar-bg);
+    color: var(--menubar-content);
+    border-top: 2px solid var(--frame);
+    padding: 0.35rem 0.4rem calc(0.35rem + env(safe-area-inset-bottom));
+    font: 400 1.75rem/1 var(--font-display);
+  }
+
+  & .cmd {
+    padding: 0.4rem 0.6rem;
+    color: inherit;
+    text-decoration: none;
+    white-space: nowrap;
+    letter-spacing: 0.04em;
+  }
+
+  & .cmd::first-letter {
+    text-decoration: underline;
+  }
+
+  & .cmd:hover,
+  & .cmd:focus-visible {
+    background: var(--highlight);
+    color: var(--highlight-content);
+  }
+
+  & .cmd-primary,
+  & .cmd-primary:hover,
+  & .cmd-primary:focus-visible {
+    background: var(--color-primary);
+    color: var(--color-primary-content);
+  }
+}
+
+@keyframes gb-blink {
+  50% {
+    visibility: hidden;
+  }
+}
+
+/* ========== DARK ========== */
+
+@media (prefers-color-scheme: dark) {
+  .home-h {
+    & .window {
+      box-shadow: none;
+    }
+
+    & .sunken {
+      box-shadow: inset 0 0 0 2px var(--color-base-300);
+    }
+
+    /* The logo is black line art on alpha; flip it to read on the dark
+       window. */
+    & .logo {
+      filter: invert(1);
+    }
+  }
+}
+
+/* ========== RESPONSIVE ========== */
+
+@media (max-width: 860px) {
+  .home-h {
+    & .hero-body {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    & .about,
+    & .expect {
+      grid-template-columns: 1fr;
+    }
+
+    & .copy {
+      margin-left: 0;
+    }
+  }
+}
+
+/* Phones: one flat window per section. Frames drop to one line, inner panels
+   lose their bevels and boxes, and type grows so it reads at arm's length. */
+@media (max-width: 600px) {
+  html[data-look='h']:has(.home-h) {
+    --gutter: 0.6rem;
+    --spacing-section: 1.5rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    html[data-look='h']:has(.home-h) {
+      --gb-border: 4px;
+    }
+  }
+
+  .home-h {
+    & .window {
+      box-shadow: none;
+      padding: 0;
+    }
+
+    & .ctl,
+    & .tb-aside {
+      display: none;
+    }
+
+    & .window-body {
+      padding: 1.1rem 1rem 1.25rem;
+    }
+
+    & .sunken {
+      background: none;
+      box-shadow: none;
+      padding: 0;
+    }
+
+    & .menubar-name .long {
+      display: none;
+    }
+
+    & .menubar-name .short {
+      display: inline;
+    }
+
+    & .gb-hero .titlebar {
+      display: none;
+    }
+
+    & .gb-main {
+      padding-top: 0.6rem;
+    }
+
+    & .hero-body {
+      padding: 0.9rem 0.8rem 1rem;
+      gap: 0.9rem;
+    }
+
+    & .hero-intro {
+      text-align: center;
+    }
+
+    & .logo {
+      width: 220px;
+      margin: 0 auto 0.35rem;
+    }
+
+    & .gb-hero h1 {
+      font-size: 2.15rem;
+      margin-bottom: 0.6rem;
+    }
+
+    & .facts {
+      justify-content: center;
+      margin-bottom: 0.6rem;
+      line-height: 1.45;
+    }
+
+    & .lead {
+      font-size: 1.0625rem;
+    }
+
+    /* The main menu stops being a nested window: just a labelled list. */
+    & .mainmenu {
+      border: 0;
+      padding: 0;
+      background: none;
+    }
+
+    & .mainmenu .titlebar {
+      display: none;
+    }
+
+    & .mainmenu ul {
+      padding: 0;
+      gap: 0.15rem;
+    }
+
+    /* A clamp() size on every item, not only Sign Up, keeps the short labels
+       on one line from 320px up. */
+    & .mm {
+      font-size: clamp(1.75rem, 8.4vw, 2.1rem);
+      padding: 0.4rem 0.5rem 0.4rem 2rem;
+      justify-content: center;
+      text-align: center;
+    }
+
+    & .mm::before {
+      left: 0.55rem;
+    }
+
+    & .mm-primary {
+      font-size: clamp(1.9rem, 8vw, 2.5rem);
+      padding: 0.65rem 0.5rem 0.65rem 2rem;
+      margin-bottom: 0.25rem;
+    }
+
+    & .mm-gm {
+      font-size: 1.6rem;
+      text-align: center;
+    }
+
+    /* Six stacked cards made the page twice as long; a swipe row keeps the
+       roster to one screen. Only the next card's dashed rule peeks in, as the
+       swipe cue. The prototype's 82% width showed its text too, cut off at
+       the window frame, and pixc.mjs samples the cut words over the frame. */
+    & .roster {
+      grid-template-columns: none;
+      grid-auto-flow: column;
+      grid-auto-columns: 100%;
+      gap: 0;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      overscroll-behavior-x: contain;
+      margin-inline: -1rem;
+      padding-inline: 1rem;
+      scroll-padding-inline: 1rem;
+    }
+
+    & .sheet {
+      scroll-snap-align: start;
+      padding-right: 1rem;
+    }
+
+    & .sheet + .sheet {
+      border-left: 2px dashed var(--color-base-300);
+      padding-left: 1rem;
+    }
+
+    & .sheet h3 {
+      font-size: 2.2rem;
+    }
+
+    & .sheet .gb-btn {
+      font-size: 1.6rem;
+      white-space: nowrap;
+      padding-inline: 0.5rem;
+    }
+
+    & .expect {
+      gap: 1.1rem;
+    }
+
+    & .msgbox {
+      padding: 1rem;
+    }
+
+    & .viewport {
+      padding: 0;
+    }
+
+    & .statusbar {
+      padding: 0.9rem 1rem;
+    }
+
+    & .cmdbar {
+      justify-content: space-between;
+      gap: 0;
+      font-size: 1.6rem;
+    }
+
+    & .cmd {
+      padding: 0.45rem;
+    }
+  }
+}
+
+/* The name, both menus and Exit don't fit below 375px. The home link goes, as
+   F's navbar does on the homepage: the homepage doesn't need one. */
+@media (max-width: 374px) {
+  .home-h .menubar-name {
+    display: none;
+  }
+}
+
+@media (max-width: 360px) {
+  .home-h {
+    & .menubar {
+      font-size: 1.55rem;
+    }
+
+    & .gb-menu summary,
+    & .menubar-exit {
+      padding-inline: 0.55rem;
+    }
+
+    & .facts {
+      font-size: 1rem;
+    }
+
+    & .cmdbar {
+      font-size: 1.45rem;
+    }
+
+    & .cmd {
+      padding-inline: 0.35rem;
+    }
+
+    & .gb-hero h1 {
+      font-size: 1.95rem;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-h .mm-primary::before {
+    animation: none;
+  }
+}

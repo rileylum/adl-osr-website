@@ -56,16 +56,16 @@ Branch: `feat/oz-orc-konami-egg`
 
 ### Files
 
-| File                                                                   | Change                                                                                            |
-| ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| `src/lib/konami.ts` (+ `konami.test.ts`)                               | New pure matcher                                                                                  |
-| `src/components/GoldBox.astro`                                         | New: H's markup, and a `<script>` for the trigger, tune, Exit, form move and menu keys            |
-| `src/assets/goldbox.css`                                               | New: H's CSS, imported by `GoldBox.astro` so only the homepage bundles it                         |
-| `src/pages/index.astro`                                                | Render `<GoldBox funnel={funnel} />` right after `.home-f`                                        |
-| `src/layouts/Layout.astro`                                             | Add the inline look-restore script to `<head>`                                                    |
-| `public/fonts/vt323-latin.woff2`, `ibm-plex-mono-latin-{400,600}.woff2` | New self-hosted fonts; add their copyright lines to `OFL.txt`                                     |
-| `scripts/visual/layout.mjs`, `pixc.mjs`                                | Add the optional `LOOK=h` variable                                                                 |
-| `src/components/CommandBar.astro`                                      | Delete line 76                                                                                    |
+| File                                                                    | Change                                                                                 |
+| ----------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `src/lib/konami.ts` (+ `konami.test.ts`)                                | New pure matcher                                                                       |
+| `src/components/GoldBox.astro`                                          | New: H's markup, and a `<script>` for the trigger, tune, Exit, form move and menu keys |
+| `src/assets/goldbox.css`                                                | New: H's CSS, imported by `GoldBox.astro` so only the homepage bundles it              |
+| `src/pages/index.astro`                                                 | Render `<GoldBox funnel={funnel} />` right after `.home-f`                             |
+| `src/layouts/Layout.astro`                                              | Add the inline look-restore script to `<head>`                                         |
+| `public/fonts/vt323-latin.woff2`, `ibm-plex-mono-latin-{400,600}.woff2` | New self-hosted fonts; add their copyright lines to `OFL.txt`                          |
+| `scripts/visual/layout.mjs`, `pixc.mjs`                                 | Add the optional `LOOK=h` variable                                                     |
+| `src/components/CommandBar.astro`                                       | Delete line 76                                                                         |
 
 ### The matcher (the tested seam)
 
@@ -115,10 +115,16 @@ export function createKonami(): (key: string) => boolean;
 holds these rules:
 
 ```css
-.home-h { display: none; }
-html[data-look='h'] .home-h { display: block; }
+.home-h {
+  display: none;
+}
+html[data-look='h'] .home-h {
+  display: block;
+}
 html[data-look='h'] .home-f,
-html[data-look='h'] body:has(.home-h) > :is(header, footer) { display: none; }
+html[data-look='h'] body:has(.home-h) > :is(header, footer) {
+  display: none;
+}
 ```
 
 - **Why always render H.** H is always in the HTML and CSS picks which look shows. A
@@ -224,6 +230,7 @@ It is a bundled `<script>`, so it runs once per full page load. It registers
   5. focus `#h-hero-signup`.
 
   Don't call `preventDefault` on any key, so the arrow keys still scroll.
+
 - **Exit.** Use a delegated `click` on `[data-look-exit]`. It removes the storage key,
   deletes `data-look`, moves the form back, scrolls to the top, and focuses F's
   `#hero-signup`.
@@ -278,6 +285,7 @@ It is a bundled `<script>`, so it runs once per full page load. It registers
   - remove `prototypes` from `.prettierignore` and `eslint.config.js`.
 
   H's source must stay until this slice has merged.
+
 - Any edit to `RegisterInterest.astro` or `src/assets/app.css`. They belong to the
   concurrent MailerLite slice.
 - Changing `homeFunnel`, `homeFaqs` or the F components.
@@ -316,22 +324,22 @@ Set up the preview server, then run the checks:
    linked yet.
 2. `npm run build && npm run preview`. The preview serves `http://localhost:4321`.
 
-- [ ] `npm test` passes.
-- [ ] `npm run lint` and `npm run format:check` pass.
-- [ ] `npm run build` succeeds.
-- [ ] `node scripts/visual/layout.mjs http://localhost:4321` passes, so F is unchanged.
-- [ ] `LOOK=h node scripts/visual/layout.mjs http://localhost:4321` passes: no sideways
+- [x] `npm test` passes.
+- [x] `npm run lint` and `npm run format:check` pass.
+- [x] `npm run build` succeeds.
+- [x] `node scripts/visual/layout.mjs http://localhost:4321` passes, so F is unchanged.
+- [x] `LOOK=h node scripts/visual/layout.mjs http://localhost:4321` passes: no sideways
       scroll at 320, and H's Sign Up, Discord and Facebook are on the first screen at
       390×844, in both schemes.
-- [ ] `LOOK=h node scripts/visual/pixc.mjs http://localhost:4321/ <w> <mode>` passes for
+- [x] `LOOK=h node scripts/visual/pixc.mjs http://localhost:4321/ <w> <mode>` passes for
       each w in 320, 390 and 1280 and each mode in light and dark.
-- [ ] The layout and contrast checks under `LOOK=h` pass in all three funnel states:
+- [x] The layout and contrast checks under `LOOK=h` pass in all three funnel states:
       registration open (today's data), announced but not open (set `warhornUrl` to
       `undefined` on the current event), and off-season (make `currentEvent`
       `undefined`). Make the data changes temporarily in `src/data/events.ts`, and
       revert them before stopping. The long labels "Register Your Interest" and "Join
       the Mailing List" are the likeliest to break 320px.
-- [ ] Delete the `node_modules` symlink before stopping.
+- [x] Delete the `node_modules` symlink before stopping.
 
 ## Manual verification
 

@@ -1,5 +1,6 @@
 // Worst real contrast of text over whatever is painted behind it, art included.
 // usage: node scripts/visual/pixc.mjs <url> [widths] [light|dark] [error|success]
+// LOOK=h node scripts/visual/pixc.mjs … checks the easter-egg look.
 // widths is a comma list, 320,390,1280 by default: 320 is the narrowest phone
 // the site supports, and the cover's small print is tightest there.
 // The fourth argument puts the MailerLite form into that state first (mlform.mjs).
@@ -34,13 +35,14 @@ if (
 const browser = await chromium.launch({ executablePath: CHROMIUM });
 
 async function check(width) {
-  const page = await (
-    await browser.newContext({
-      viewport: { width: +width, height: 900 },
-      colorScheme: mode,
-      reducedMotion: 'reduce',
-    })
-  ).newPage();
+  const context = await browser.newContext({
+    viewport: { width: +width, height: 900 },
+    colorScheme: mode,
+    reducedMotion: 'reduce',
+  });
+  if (process.env.LOOK === 'h')
+    await context.addInitScript(() => sessionStorage.setItem('oz-look', 'h'));
+  const page = await context.newPage();
   await page.goto(url, { waitUntil: 'networkidle' });
   await page.waitForTimeout(600);
   if (state) await setFormState(page, state);

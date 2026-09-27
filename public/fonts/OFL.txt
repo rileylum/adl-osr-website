@@ -1,7 +1,11 @@
 anton-latin.woff2 and archivo-latin.woff2, self-hosted from Google Fonts.
+vt323-latin.woff2 and ibm-plex-mono-latin-{400,600}.woff2, self-hosted from
+Fontsource.
 
 Copyright 2020 The Anton Project Authors (https://github.com/googlefonts/AntonFont.git)
 Copyright 2020 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo)
+Copyright 2011 The VT323 Project Authors (peter.hull@oikoi.com)
+Copyright 2017 IBM Corp. with Reserved Font Name "Plex"
 
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
 This license is copied below, and is also available with a FAQ at:
