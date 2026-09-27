@@ -1,0 +1,653 @@
+---
+// Option H, "The Gold Box, Refined": the Konami-code easter egg
+// (docs/design/2026-09-27-oz-orc-look-spike.md, "Easter egg: option H").
+// It renders on every homepage build and stays hidden until
+// <html data-look="h"> is set, so a reload in H paints H with no flash of F.
+// Every id takes an `h-` prefix because F's copies stay in the DOM.
+// lazy: prose copied from About/WhatToBring/Testimonials/CallForGames. ceiling: F and H drift when copy changes. upgrade: move the prose into src/data/ if it's edited twice.
+import '../assets/goldbox.css';
+import CalendarIcon from '../assets/calendar.svg?raw';
+import LocationIcon from '../assets/location.svg?raw';
+import DiscordIcon from '../assets/discord.svg?raw';
+import FacebookIcon from '../assets/facebook.svg?raw';
+import InstagramIcon from '../assets/instagram.svg?raw';
+import BlueskyIcon from '../assets/bluesky.svg?raw';
+import RichText from './ui/RichText.astro';
+import {
+  currentEvent,
+  gmApplications,
+  latestEvent,
+  nextEventWindow,
+} from '../data/events';
+import { site } from '../data/site';
+import { homeFaqs } from '../data/faq';
+import type { HomeFunnel } from '../data/home';
+import { longDate } from '../lib/format';
+
+interface Props {
+  funnel: HomeFunnel;
+}
+
+const { funnel } = Astro.props;
+const { primary, stats, hasGames } = funnel;
+const external = { target: '_blank', rel: 'noopener noreferrer' };
+// F owns the plain #anchors; H's copies carry the h- prefix.
+const local = (href: string) =>
+  href.startsWith('#') ? `#h-${href.slice(1)}` : href;
+
+const [date, tickets] = stats;
+const facts = {
+  date: date.spoken ?? `${date.big} ${date.small.join(' ')}`,
+  tickets: `Tickets: ${tickets.big} ${tickets.small[0]}`,
+};
+
+const faqs = homeFaqs({
+  currentEvent,
+  latestEvent,
+  gmApplications,
+  discordUrl: site.socials.discord,
+});
+
+// The windows between the hero and About follow index.astro's state branches.
+const games = currentEvent?.games ?? [];
+const order = currentEvent
+  ? [hasGames ? 'games' : 'gms', 'register']
+  : ['register', 'gms'];
+
+const socials = [
+  { href: site.socials.discord, label: 'Join our Discord', icon: DiscordIcon },
+  {
+    href: site.socials.facebook,
+    label: 'Follow us on Facebook',
+    icon: FacebookIcon,
+  },
+  {
+    href: site.socials.instagram,
+    label: 'Follow us on Instagram',
+    icon: InstagramIcon,
+  },
+  {
+    href: site.socials.bluesky,
+    label: 'Follow us on Bluesky',
+    icon: BlueskyIcon,
+  },
+];
+---
+
+<div class="home-h">
+  <header class="menubar">
+    <a class="menubar-name" href="/"
+      ><span class="long">ADL OSR - OZ ORC</span><span class="short"
+        >OZ ORC</span
+      ></a
+    >
+    <nav class="menubar-menus" aria-label="Site">
+      <details class="gb-menu">
+        <summary><span class="hot">A</span>ttend</summary>
+        <!-- Mirrors Navbar.astro's ATTEND menu. -->
+        <ul class="menu-list window">
+          <li><a href="/code-of-conduct">Code of Conduct</a></li>
+          <li>
+            {
+              currentEvent?.warhornUrl ? (
+                <a href={currentEvent.warhornUrl}>Event Signup</a>
+              ) : (
+                <a class="is-disabled" aria-disabled="true" title="Coming Soon">
+                  Event Signup
+                </a>
+              )
+            }
+          </li>
+          <li><a href="/schedule">Event Schedule</a></li>
+          <li><a href="/location">Event Location</a></li>
+          <li><a href="/gallery">Gallery</a></li>
+        </ul>
+      </details>
+      <details class="gb-menu">
+        <summary><span class="hot">G</span>M's</summary>
+        <!-- Mirrors Navbar.astro's GM'S menu. -->
+        <ul class="menu-list window">
+          <li><a href="/gm-info">GM Info</a></li>
+          <li><a href="/gm-submission">Game Submission</a></li>
+        </ul>
+      </details>
+      <button type="button" class="menubar-exit" data-look-exit>
+        <span class="hot">E</span>xit
+      </button>
+    </nav>
+  </header>
+
+  <div class="gb-main">
+    <section class="window gb-hero" aria-labelledby="h-hero-title">
+      <div class="titlebar" aria-hidden="true">
+        <span class="ctl">&#9644;</span><span class="tb-text">OZORC.EXE</span>
+      </div>
+      <div class="hero-body">
+        <div class="hero-intro">
+          <img
+            class="logo"
+            src="/images/OZORC_Dungeon-500w.webp"
+            srcset="/images/OZORC_Dungeon-500w.webp 500w, /images/OZORC_Dungeon-800w.webp 800w, /images/OZORC_Dungeon.webp 1200w"
+            sizes="(max-width: 600px) 220px, 420px"
+            width="1200"
+            height="600"
+            alt="OZ ORC"
+            loading="lazy"
+            decoding="async"
+          />
+          <h1 id="h-hero-title">OZ ORC: {funnel.title}</h1>
+          <ul class="facts">
+            <li>
+              <span class="icon" aria-hidden="true"
+                ><Fragment set:html={CalendarIcon} /></span
+              >{facts.date}
+            </li>
+            <li>
+              <span class="icon" aria-hidden="true"
+                ><Fragment set:html={LocationIcon} /></span
+              >{funnel.venue}
+            </li>
+            <li>
+              <span class="icon icon-gp" aria-hidden="true">$</span>{
+                facts.tickets
+              }
+            </li>
+          </ul>
+          <p class="lead">{funnel.lead[0]}</p>
+          <p class="sub">{funnel.lead[1]}</p>
+        </div>
+
+        <nav class="window mainmenu" aria-label="Main menu">
+          <div class="titlebar"><span class="tb-text">MAIN MENU</span></div>
+          <ul>
+            <li>
+              <a
+                class="mm mm-primary"
+                id="h-hero-signup"
+                href={local(primary.href)}
+                {...primary.external ? external : {}}
+                ><span
+                  ><span class="hot">{primary.label[0]}</span>{
+                    primary.label.slice(1)
+                  }</span
+                ></a
+              >
+            </li>
+            <li>
+              <a class="mm" href={funnel.discord} {...external}
+                ><span class="icon" aria-hidden="true"
+                  ><Fragment set:html={DiscordIcon} /></span
+                ><span>Join <span class="hot">D</span>iscord</span></a
+              >
+            </li>
+            <li>
+              <a class="mm" href={funnel.facebook} {...external}
+                ><span class="icon" aria-hidden="true"
+                  ><Fragment set:html={FacebookIcon} /></span
+                ><span><span class="hot">F</span>ollow on Facebook</span></a
+              >
+            </li>
+            {
+              funnel.gmLink && (
+                <li>
+                  <a class="mm mm-gm" href={funnel.gmLink.href}>
+                    <span>{funnel.gmLink.label}</span>
+                  </a>
+                </li>
+              )
+            }
+          </ul>
+        </nav>
+      </div>
+    </section>
+
+    {
+      order.map((key) =>
+        key === 'games' ? (
+          <section class="window" id="h-games" aria-labelledby="h-games-title">
+            <div class="titlebar">
+              <h2 id="h-games-title" class="tb-text">
+                FEATURED GAMES
+              </h2>
+              <span class="tb-aside" aria-hidden="true">
+                PARTY ROSTER {games.length}/{games.length}
+              </span>
+            </div>
+            <div class="window-body">
+              <ul class="roster">
+                {games.map((game) => (
+                  <li class="sheet sunken">
+                    <img
+                      src={game.image}
+                      alt={`Cover art for ${game.title}`}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    <h3>{game.title}</h3>
+                    <dl class="gb-stats">
+                      <div>
+                        <dt>System</dt>
+                        <dd>{game.system}</dd>
+                      </div>
+                      {game.level && (
+                        <div>
+                          <dt>Level</dt>
+                          <dd>{game.level}</dd>
+                        </div>
+                      )}
+                      {game.gm && (
+                        <div>
+                          <dt>GM</dt>
+                          <dd>{game.gm}</dd>
+                        </div>
+                      )}
+                    </dl>
+                    <p class="desc">{game.description}</p>
+                    <a class="gb-btn" href={game.warhornUrl} {...external}>
+                      Sign Up on Warhorn
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        ) : key === 'gms' ? (
+          <section class="window" aria-labelledby="h-gms-title">
+            <div class="titlebar">
+              <h2 id="h-gms-title" class="tb-text">
+                GMS WANTED
+              </h2>
+            </div>
+            <div class="window-body">
+              <div class="sunken">
+                {currentEvent ? (
+                  <Fragment>
+                    <p>
+                      The game lineup is being assembled right now. We're
+                      recruiting Game Masters to run old-school and OSR games
+                      across our three sessions.
+                    </p>
+                    <p>
+                      Want to run a table? Submit your game below — confirmed
+                      games will appear here as they're locked in.
+                    </p>
+                  </Fragment>
+                ) : gmApplications ? (
+                  <Fragment>
+                    <p>
+                      Want to run a table at OZ ORC in {nextEventWindow}? We
+                      welcome GMs of every experience level.
+                    </p>
+                    <p>
+                      GM applications are open until{' '}
+                      {longDate(gmApplications.closes)}. Submit your game below,
+                      or join our Discord if you'd like to chat it over first.
+                    </p>
+                  </Fragment>
+                ) : (
+                  <Fragment>
+                    <p>
+                      Want to run a table at OZ ORC in {nextEventWindow}? We
+                      welcome GMs of every experience level.
+                    </p>
+                    <p>
+                      Game submissions open once the date is set. Join our
+                      Discord and tell us what you'd like to run — we'll let you
+                      know first.
+                    </p>
+                  </Fragment>
+                )}
+                <div class="gb-actions">
+                  <a class="gb-btn gb-btn-primary" href="/gm-submission">
+                    {currentEvent || gmApplications
+                      ? 'Run a Game'
+                      : 'GM Submissions'}
+                  </a>
+                  <a class="gb-btn" href={site.socials.discord} {...external}>
+                    <span class="icon" aria-hidden="true">
+                      <Fragment set:html={DiscordIcon} />
+                    </span>
+                    Join our Discord
+                  </a>
+                </div>
+              </div>
+            </div>
+          </section>
+        ) : (
+          <section
+            class="window dialog"
+            id="h-register"
+            aria-labelledby="h-mail-title"
+          >
+            <div class="titlebar">
+              <span class="ctl" aria-hidden="true">
+                &#9644;
+              </span>
+              <h2 id="h-mail-title" class="tb-text">
+                Stay in the loop
+              </h2>
+            </div>
+            <div class="window-body dialog-body">
+              <div class="dialog-msg">
+                <span class="msg-icon" aria-hidden="true">
+                  i
+                </span>
+                <p>Hear first when dates and games are announced.</p>
+              </div>
+              {/* The live MailerLite form (.ml-embedded) moves in here while H
+                  is on; the script below owns the move. */}
+              <div data-ml-slot />
+            </div>
+          </section>
+        )
+      )
+    }
+
+    <section class="window" aria-labelledby="h-about-title">
+      <div class="titlebar">
+        <h2 id="h-about-title" class="tb-text">ABOUT OZ ORC</h2>
+      </div>
+      <div class="window-body about">
+        <figure class="viewport">
+          <img
+            src="/images/gallery/sep-2026/wrap-up-01.webp"
+            alt="Wide view of the hall at OZ ORC, with players at tables between partition screens"
+            width="959"
+            height="722"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+        <div class="sunken">
+          <p>
+            OZ ORC is a day of the finest in old-school D&D and OSR gaming.
+            We've dug up TTRPGs from throughout the OSR scene, from weird-punk
+            sci-fi post-apocalypse to classic D&D and original-edition Dungeons
+            & Dragons. We've gathered together a dozen of Adelaide's most
+            experienced and capable GMs to take you through worlds of
+            exploration, treasure, and death.
+          </p>
+          <p>
+            No matter if you are the most grizzled grognard or you're entirely
+            new to the hobby, we will have a game that will fill you with awe
+            and terror.
+          </p>
+          {
+            currentEvent ? (
+              <p>
+                Join us on {longDate(currentEvent.date)} at the{' '}
+                {currentEvent.venue.name} for a day of adventure like nothing
+                you've ever seen before, at Adelaide's Premier old-school gaming
+                convention!
+              </p>
+            ) : (
+              <p>
+                Our next convention is planned for {nextEventWindow}. Join the{' '}
+                <a href="#h-register">mailing list</a> to hear first when the
+                date and games are announced.
+              </p>
+            )
+          }
+          <p>
+            We've started OZ ORC as a chance to bring the old-school and its
+            glories to everyone in Adelaide. Everyone is welcome to bring dice,
+            snacks, and their wits with them and test themselves against the
+            dangers of the deepest delves. Read our <a href="/code-of-conduct"
+              >Code of Conduct</a
+            > to learn more about our commitment to creating a welcoming environment.
+          </p>
+          <a
+            class="gb-btn gb-btn-primary"
+            href={currentEvent?.warhornUrl || site.socials.discord}
+            {...external}
+          >
+            {currentEvent?.warhornUrl ? 'Register Now' : 'Join our Discord'}
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="window" aria-labelledby="h-expect-title">
+      <div class="titlebar">
+        <h2 id="h-expect-title" class="tb-text">WHAT TO EXPECT</h2>
+      </div>
+      <div class="window-body expect">
+        <div class="inventory sunken">
+          <h3>What to Bring</h3>
+          <ul>
+            <li>Dice (standard polyhedral set)</li>
+            <li>Pencils and paper for notes</li>
+            <li>Your enthusiasm for adventure!</li>
+            <li>Your own food and drinks (non-alcoholic)</li>
+          </ul>
+        </div>
+        <div class="inventory sunken">
+          <h3>What We Provide</h3>
+          <ul>
+            <li>Experienced Game Masters</li>
+            <li>Pre-generated characters</li>
+            <li>All rulebooks and materials</li>
+          </ul>
+        </div>
+        <div class="msgbox">
+          <span class="msg-icon" aria-hidden="true">!</span>
+          <div>
+            <h3>First Time at an OSR Event?</h3>
+            <p>
+              Don't worry! Our GMs are experienced at welcoming new players. You
+              don't need to know the rules or bring a character - just bring
+              yourself and a willingness to explore strange worlds.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="window" aria-labelledby="h-say-title">
+      <div class="titlebar">
+        <h2 id="h-say-title" class="tb-text">WHAT ATTENDEES SAY</h2>
+      </div>
+      <div class="window-body">
+        <figure class="journal sunken">
+          <figcaption class="speaker">WILL SAYS:</figcaption>
+          <blockquote>
+            <p>
+              "Was great meeting you all! Just ran my first game last night and
+              enjoyed the chaos. Looking forward to gaining more experience.
+              Seeing the vibe at the last event, I know it's not as intimidating
+              as one might imagine."
+            </p>
+          </blockquote>
+          <p class="attrib">— Will</p>
+        </figure>
+      </div>
+    </section>
+
+    <section class="window" id="h-faq" aria-labelledby="h-faq-title">
+      <div class="titlebar">
+        <span class="ctl" aria-hidden="true">?</span>
+        <h2 id="h-faq-title" class="tb-text">FREQUENTLY ASKED QUESTIONS</h2>
+      </div>
+      <div class="window-body">
+        <div class="sunken faq">
+          {
+            faqs.map((faq, i) => (
+              <details name="h-faq" open={i === 0}>
+                <summary>{faq.question}</summary>
+                <p>
+                  <RichText parts={faq.answer} />
+                </p>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer class="window statusbar">
+    <ul class="socials">
+      {
+        socials.map(({ href, label, icon }) => (
+          <li>
+            <a href={href} aria-label={label} {...external}>
+              <span class="icon" aria-hidden="true">
+                <Fragment set:html={icon} />
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <p>Contact us: <a href={`mailto:${site.email}`}>{site.email}</a></p>
+    <p class="copy">
+      © {new Date().getFullYear()} OZ ORC. All rights reserved.
+    </p>
+  </footer>
+
+  <!-- Keep the command bar the last child of .home-h. It is sticky, not fixed,
+       so at the end of the page it parks under the status bar; moved earlier,
+       it covers the status bar. -->
+  <nav class="cmdbar" aria-label="Commands">
+    <a
+      class="cmd cmd-primary"
+      href={local(primary.href)}
+      {...primary.external ? external : {}}>SIGN UP</a
+    >
+    {
+      hasGames && (
+        <a class="cmd" href="#h-games">
+          GAMES
+        </a>
+      )
+    }
+    <a class="cmd" href="#h-faq">FAQ</a>
+    <a class="cmd" href="/gm-submission">RUN A GAME</a>
+  </nav>
+</div>
+
+<script>
+  import { createKonami } from '../lib/konami';
+
+  // Mirrored in Layout.astro's look-restore script, which can't import this.
+  const STORAGE_KEY = 'oz-look';
+  const LOOK = 'h';
+
+  const root = document.documentElement;
+  const press = createKonami();
+  let ctx: AudioContext | undefined;
+
+  // C5 E5 G5 at 0.08 s each, then C6 for 0.3 s: 0.54 s in all.
+  const TUNE: [hz: number, seconds: number][] = [
+    [523.25, 0.08],
+    [659.25, 0.08],
+    [783.99, 0.08],
+    [1046.5, 0.3],
+  ];
+
+  // Browsers allow audio only from a user gesture, so this must run inside the
+  // keydown that completed the code — never on restore or Exit.
+  function playTune() {
+    ctx ??= new AudioContext();
+    void ctx.resume();
+    const start = ctx.currentTime;
+    const end = start + TUNE.reduce((sum, [, s]) => sum + s, 0);
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0, start);
+    gain.gain.linearRampToValueAtTime(0.05, start + 0.005);
+    gain.gain.exponentialRampToValueAtTime(0.0001, end);
+    gain.connect(ctx.destination);
+    const osc = ctx.createOscillator();
+    osc.type = 'square';
+    let at = start;
+    for (const [hz, seconds] of TUNE) {
+      osc.frequency.setValueAtTime(hz, at);
+      at += seconds;
+    }
+    osc.connect(gain);
+    osc.start(start);
+    osc.stop(end);
+  }
+
+  // MailerLite's loader (Layout.astro) renders into the first .ml-embedded it
+  // finds, so the one live form moves between the looks; a clone would leave
+  // two.
+  function moveFormIntoH() {
+    const form = document.querySelector('.ml-embedded');
+    const slot = document.querySelector('.home-h [data-ml-slot]');
+    if (form && slot) slot.append(form);
+  }
+
+  function moveFormBack() {
+    const form = document.querySelector('.ml-embedded');
+    const record = document.querySelector('#register .record');
+    if (form && record) record.append(form);
+  }
+
+  function setStored(on: boolean) {
+    // Blocked storage throws; the look then lasts for this page only.
+    try {
+      if (on) sessionStorage.setItem(STORAGE_KEY, LOOK);
+      else sessionStorage.removeItem(STORAGE_KEY);
+    } catch {
+      /* stays page-only */
+    }
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.repeat || e.ctrlKey || e.altKey || e.metaKey) return;
+    if (e.key === 'Shift' || e.key === 'CapsLock') return;
+    const t = e.target;
+    if (
+      t instanceof HTMLElement &&
+      (t.isContentEditable || t.matches('input, textarea, select'))
+    )
+      return;
+    if (!press(e.key)) return;
+    if (!document.querySelector('.home-h') || root.dataset.look === LOOK)
+      return;
+    playTune();
+    setStored(true);
+    root.dataset.look = LOOK;
+    moveFormIntoH();
+    scrollTo(0, 0);
+    document.getElementById('h-hero-signup')?.focus();
+  });
+
+  document.addEventListener('click', (e) => {
+    const target = e.target as Element;
+    if (target.closest('[data-look-exit]')) {
+      setStored(false);
+      delete root.dataset.look;
+      moveFormBack();
+      scrollTo(0, 0);
+      document.getElementById('hero-signup')?.focus();
+    }
+    // Only one menubar dropdown open at a time; a click elsewhere closes them.
+    document
+      .querySelectorAll<HTMLDetailsElement>('.home-h .gb-menu[open]')
+      .forEach((menu) => {
+        if (!menu.contains(target)) menu.open = false;
+      });
+  });
+
+  // Arrow keys move the MAIN MENU cursor, like a game's main menu. Delegated,
+  // since view transitions replace the menu's elements.
+  document.addEventListener('keydown', (e) => {
+    const step = e.key === 'ArrowDown' ? 1 : e.key === 'ArrowUp' ? -1 : 0;
+    const item = (e.target as Element).closest?.('.home-h .mainmenu a');
+    if (!step || !item) return;
+    const items = [
+      ...document.querySelectorAll<HTMLElement>('.home-h .mainmenu a'),
+    ];
+    e.preventDefault();
+    const i = items.indexOf(item as HTMLElement);
+    items[(i + step + items.length) % items.length].focus();
+  });
+
+  // Reloads and returns to the homepage start with F's markup in place.
+  document.addEventListener('astro:page-load', () => {
+    if (root.dataset.look === LOOK && document.querySelector('.home-h'))
+      moveFormIntoH();
+  });
+</script>

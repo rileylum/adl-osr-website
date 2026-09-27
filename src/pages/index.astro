@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Cover from '../components/Cover.astro';
 import CommandBar from '../components/CommandBar.astro';
+import GoldBox from '../components/GoldBox.astro';
 import FeaturedGames from '../components/FeaturedGames.astro';
 import CallForGames from '../components/CallForGames.astro';
 import RegisterInterest from '../components/RegisterInterest.astro';
@@ -77,5 +78,6 @@ const [title, description] = !currentEvent
     <FAQ />
     <CommandBar funnel={funnel} />
   </div>
+  <GoldBox funnel={funnel} />
   {currentEvent && <EventSchema />}
 </Layout>

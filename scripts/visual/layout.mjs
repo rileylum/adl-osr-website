@@ -1,5 +1,6 @@
 // Layout checks over every route, in both colour schemes.
 // usage: node scripts/visual/layout.mjs <baseUrl>
+// LOOK=h node scripts/visual/layout.mjs <baseUrl> checks the easter-egg look.
 // - No sideways scroll: scrollWidth is 320 at a 320px viewport, on every route
 //   and on `/` with the MailerLite form in its error and success states.
 // - On `/` at 390×844: the hero's Sign Up, a Discord link and a Facebook link
@@ -36,6 +37,8 @@ async function open(route, width, height, colorScheme) {
     viewport: { width, height },
     colorScheme,
   });
+  if (process.env.LOOK === 'h')
+    await context.addInitScript(() => sessionStorage.setItem('oz-look', 'h'));
   const page = await context.newPage();
   await page.goto(new URL(route, base).href, { waitUntil: 'networkidle' });
   await page.waitForTimeout(300);
@@ -71,7 +74,8 @@ for (const scheme of ['light', 'dark']) {
   }
 
   const { page, context } = await open('/', 390, 844, scheme);
-  const funnel = await page.evaluate(() => {
+  const signupId = process.env.LOOK === 'h' ? 'h-hero-signup' : 'hero-signup';
+  const funnel = await page.evaluate((signupId) => {
     const onFirstScreen = (e) => {
       const r = e.getBoundingClientRect();
       return (
@@ -85,7 +89,7 @@ for (const scheme of ['light', 'dark']) {
     };
     const anyLink = (part) =>
       [...document.querySelectorAll(`a[href*="${part}"]`)].some(onFirstScreen);
-    const signup = document.getElementById('hero-signup');
+    const signup = document.getElementById(signupId);
     // The label as read aloud: decorative arrows are aria-hidden.
     const label = signup?.cloneNode(true);
     label?.querySelectorAll('[aria-hidden="true"]').forEach((e) => e.remove());
@@ -95,11 +99,11 @@ for (const scheme of ['light', 'dark']) {
       discord: anyLink('discord'),
       facebook: anyLink('facebook'),
     };
-  });
+  }, signupId);
   const ok = funnel.signup && funnel.discord && funnel.facebook;
   if (!ok) failed++;
   console.log(
-    `${ok ? 'ok  ' : 'FAIL'} ${scheme} / funnel@390x844 #hero-signup="${funnel.signupText}" signup=${funnel.signup} discord=${funnel.discord} facebook=${funnel.facebook}`
+    `${ok ? 'ok  ' : 'FAIL'} ${scheme} / funnel@390x844 #${signupId}="${funnel.signupText}" signup=${funnel.signup} discord=${funnel.discord} facebook=${funnel.facebook}`
   );
   await context.close();
 }

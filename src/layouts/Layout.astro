@@ -28,6 +28,28 @@ const {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
+    <!-- The easter-egg look (GoldBox.astro) lasts for the browser session.
+         Before any stylesheet, so a reload in H paints H first. View
+         transitions replace <html>'s attributes with the incoming page's, so
+         it reapplies after every swap; the watcher registers once. The key
+         names are mirrored in GoldBox.astro's script. -->
+    <script is:inline>
+      (function () {
+        function applyLook() {
+          try {
+            if (sessionStorage.getItem('oz-look') === 'h')
+              document.documentElement.dataset.look = 'h';
+          } catch {
+            // Blocked storage throws; the page stays F.
+          }
+        }
+        if (!window.__lookWatcher) {
+          window.__lookWatcher = 1;
+          document.addEventListener('astro:after-swap', applyLook);
+        }
+        applyLook();
+      })();
+    </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <!-- Page-specific head tags, such as the homepage's LCP preload. -->
     <slot name="head" />
