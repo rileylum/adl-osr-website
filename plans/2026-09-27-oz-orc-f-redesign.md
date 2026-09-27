@@ -112,7 +112,7 @@ points to. Request that URL with a modern browser `User-Agent`, or it serves TTF
 - Write the `@font-face` rules in `app.css` with `font-display: swap`. Give Archivo
   `font-stretch: 62% 125%` and `font-weight: 400 900`.
 - Preload both files in `Layout.astro` (`<link rel="preload" as="font" type="font/woff2"
-  crossorigin>`). Both appear in the first screen.
+crossorigin>`). Both appear in the first screen.
 
 ### Global element styles
 
@@ -267,7 +267,7 @@ Invariants and error modes:
   3. **Off-season**: no current event.
 - **`primary`**:
   - Registration open: `{ label: 'Sign Up for Event', short: 'Sign Up', href:
-    warhornUrl, external: true }`.
+warhornUrl, external: true }`.
   - Announced: `'Register Your Interest'` / `'Register'` → `'#register'`.
   - Off-season: `'Join the Mailing List'` / `'Join List'` → `'#register'`.
 - **`facebook`** is `currentEvent?.facebookEventUrl ?? socials.facebook`, so the Facebook
@@ -277,7 +277,7 @@ Invariants and error modes:
     date. Compute the weekday with `Date.UTC`, never local time. `datetime` is the ISO
     date, and `spoken` is `"Saturday, " + longDate(date)`.
   - Off-season, it shows `big: 'TBC'` and `small: [first three letters of the month
-    word, year]`, parsed from `nextEventWindow`.
+word, year]`, parsed from `nextEventWindow`.
   - If `nextEventWindow` doesn't match `/^[A-Z][a-z]+ \d{4}$/`, throw. The build fails
     loudly rather than printing a garbled date (the spike doc's allow-list trap).
 - **Tickets stat** uses `currentEvent ?? latestEvent` for the price. The label shows
@@ -292,7 +292,7 @@ Invariants and error modes:
   there is a current event. That matches today's h1.
 - **`gmLink`** is set only while `gmApplications` is:
   `{ label: 'GMs wanted: apply by ' + longDate(closes).split(',')[0], href:
-  '/gm-submission' }`.
+'/gm-submission' }`.
 - **Purity.** `homeFunnel` reads only its argument, no module state. `Cover.astro` and
   `CommandBar.astro` each call it with the real `events.ts` and `site.ts` values. One
   call in `index.astro`, passed down as a prop, is equally fine.
@@ -303,7 +303,7 @@ Build no look switcher, no `data-look` attribute and no Konami code in this slic
 the seam slice 2 needs:
 
 - In `index.astro`, F's homepage body sits under one root element (`<div
-  class="home-f">`): the cover, the keyed interior and the command bar. Slice 2 can then
+class="home-f">`): the cover, the keyed interior and the command bar. Slice 2 can then
   hide it and mount H's markup in its place.
 - Everything H will need comes from pure modules: `homeFunnel`, `homeFaqs` and the games
   data. No state branching lives in F's markup.
@@ -377,16 +377,16 @@ Follow the doc's **Page structure**, in order.
 Each page gets the cover strip from its `h1` `SectionHeading`, with sections below it as
 keyed headings. Where a page lacks section headings, add them.
 
-| Page | Treatment |
-|---|---|
-| `/gm-info` | "1. Support & Resources": the `Card`, with `title-group` sub-labels. "2. GM FAQ": replace the bare `<h2 class="title-card">` with a keyed `SectionHeading`; the `FaqItem`s become 2a–2h. The CTA becomes `btn-primary btn-lg` with a trailing "→". |
-| `/gm-submission` | Its bare `<h1>` becomes `SectionHeading as="h1"`. The iframe frame becomes a `Card`-style ruled box. Drop `rounded-box shadow-sm`. |
-| `/schedule` (event) | The agenda becomes a roll table. Each session becomes a keyed heading ("2. Session 1 — 9:00AM–12:00PM"). The compact `GameCard`s become small encounters with no description, the whole card linking to Warhorn. |
-| `/location` (event) | The map becomes a ruled frame; drop `rounded-lg`. "Getting Here" stays a `Card`. |
-| `/schedule`, `/location` (off-season) | `ComingSoon` becomes a cover strip, a `.read-aloud` box holding the slot message, and its two buttons. |
-| `/code-of-conduct` | The `Card` becomes a `.read-aloud` box. |
-| `/gallery` | Each event's `h2` becomes a keyed heading. The tiles become ruled, square, shadowless figures with no rounding. Keep the hover zoom, but only under `prefers-reduced-motion: no-preference`. |
-| `/what-is-osr` | Primitives only. Drop `table-zebra`. It's out of the nav but still built, so it must pass the checks. |
+| Page                                  | Treatment                                                                                                                                                                                                                                          |
+| ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/gm-info`                            | "1. Support & Resources": the `Card`, with `title-group` sub-labels. "2. GM FAQ": replace the bare `<h2 class="title-card">` with a keyed `SectionHeading`; the `FaqItem`s become 2a–2h. The CTA becomes `btn-primary btn-lg` with a trailing "→". |
+| `/gm-submission`                      | Its bare `<h1>` becomes `SectionHeading as="h1"`. The iframe frame becomes a `Card`-style ruled box. Drop `rounded-box shadow-sm`.                                                                                                                 |
+| `/schedule` (event)                   | The agenda becomes a roll table. Each session becomes a keyed heading ("2. Session 1 — 9:00AM–12:00PM"). The compact `GameCard`s become small encounters with no description, the whole card linking to Warhorn.                                   |
+| `/location` (event)                   | The map becomes a ruled frame; drop `rounded-lg`. "Getting Here" stays a `Card`.                                                                                                                                                                   |
+| `/schedule`, `/location` (off-season) | `ComingSoon` becomes a cover strip, a `.read-aloud` box holding the slot message, and its two buttons.                                                                                                                                             |
+| `/code-of-conduct`                    | The `Card` becomes a `.read-aloud` box.                                                                                                                                                                                                            |
+| `/gallery`                            | Each event's `h2` becomes a keyed heading. The tiles become ruled, square, shadowless figures with no rounding. Keep the hover zoom, but only under `prefers-reduced-motion: no-preference`.                                                       |
+| `/what-is-osr`                        | Primitives only. Drop `table-zebra`. It's out of the nav but still built, so it must pass the checks.                                                                                                                                              |
 
 ### Checkers
 
@@ -463,7 +463,7 @@ checks below gate it.
 - [ ] `npm test`, `npm run lint`, `npm run format:check` and `npx astro check` pass.
 - [ ] `npm run build` succeeds.
 - [ ] With `npx astro preview` running, `node scripts/visual/layout.mjs
-      http://localhost:4321` passes the 320px check on all eight routes. The funnel check
+    http://localhost:4321` passes the 320px check on all eight routes. The funnel check
       on `/` may still fail here.
 - [ ] `pixc.mjs` reports `fails=0` for every route except `/`, at widths 390 and 1280, in
       `light` and `dark`.
@@ -484,7 +484,7 @@ copy. Don't recompute them from the implementation.
 - Registration open, with a fixture of the Sep 2026 event (`date: '2026-09-12'`, price
   `15 AUD`, Warhorn `https://warhorn.net/events/ozorc-adelaide-september-2026`, Facebook
   `https://www.facebook.com/share/1HQ8CNDTai/`, 17 games), `gmApplications.closes =
-  '2026-11-30'`, `nextEventWindow = 'February 2027'`:
+'2026-11-30'`, `nextEventWindow = 'February 2027'`:
   - `primary` → `{ label: 'Sign Up for Event', short: 'Sign Up', href: 'https://warhorn.net/events/ozorc-adelaide-september-2026', external: true }`
   - `stats[0]` → `{ label: 'Date', lead: 'Sat', big: '12', small: ['Sep', '2026'], datetime: '2026-09-12', spoken: 'Saturday, September 12th, 2026' }`
   - `stats[1]` → `{ label: 'Tickets', big: '$15', small: ['AUD'] }`
@@ -496,7 +496,7 @@ copy. Don't recompute them from the implementation.
   - `hasGames` → `true`
 - Off-season (today's real state): `currentEvent: undefined`, `latestEvent` = the same
   Sep 2026 fixture, the same `gmApplications`, `socials.facebook =
-  'https://www.facebook.com/profile.php?id=61582507863401'`:
+'https://www.facebook.com/profile.php?id=61582507863401'`:
   - `primary` → `{ label: 'Join the Mailing List', short: 'Join List', href: '#register', external: false }`
   - `stats[0]` → `{ label: 'Date', big: 'TBC', small: ['Feb', '2027'] }`, with no
     `datetime`
