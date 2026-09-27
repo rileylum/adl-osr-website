@@ -1,4 +1,5 @@
-anton-latin.woff2 and archivo-latin.woff2, self-hosted from Google Fonts.
+anton-latin.woff2 and archivo-latin.woff2, plus anton-symbols.woff2 and
+archivo-symbols.woff2 (→ and ∞ only), self-hosted from Google Fonts.
 vt323-latin.woff2 and ibm-plex-mono-latin-{400,600}.woff2, self-hosted from
 Fontsource.
 
