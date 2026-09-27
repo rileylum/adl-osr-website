@@ -10,8 +10,6 @@ import CalendarIcon from '../assets/calendar.svg?raw';
 import LocationIcon from '../assets/location.svg?raw';
 import DiscordIcon from '../assets/discord.svg?raw';
 import FacebookIcon from '../assets/facebook.svg?raw';
-import InstagramIcon from '../assets/instagram.svg?raw';
-import BlueskyIcon from '../assets/bluesky.svg?raw';
 import RichText from './ui/RichText.astro';
 import {
   currentEvent,
@@ -53,70 +51,9 @@ const games = currentEvent?.games ?? [];
 const order = currentEvent
   ? [hasGames ? 'games' : 'gms', 'register']
   : ['register', 'gms'];
-
-const socials = [
-  { href: site.socials.discord, label: 'Join our Discord', icon: DiscordIcon },
-  {
-    href: site.socials.facebook,
-    label: 'Follow us on Facebook',
-    icon: FacebookIcon,
-  },
-  {
-    href: site.socials.instagram,
-    label: 'Follow us on Instagram',
-    icon: InstagramIcon,
-  },
-  {
-    href: site.socials.bluesky,
-    label: 'Follow us on Bluesky',
-    icon: BlueskyIcon,
-  },
-];
 ---
 
-<div class="home-h">
-  <header class="menubar">
-    <a class="menubar-name" href="/"
-      ><span class="long">ADL OSR - OZ ORC</span><span class="short"
-        >OZ ORC</span
-      ></a
-    >
-    <nav class="menubar-menus" aria-label="Site">
-      <details class="gb-menu">
-        <summary><span class="hot">A</span>ttend</summary>
-        <!-- Mirrors Navbar.astro's ATTEND menu. -->
-        <ul class="menu-list window">
-          <li><a href="/code-of-conduct">Code of Conduct</a></li>
-          <li>
-            {
-              currentEvent?.warhornUrl ? (
-                <a href={currentEvent.warhornUrl}>Event Signup</a>
-              ) : (
-                <a class="is-disabled" aria-disabled="true" title="Coming Soon">
-                  Event Signup
-                </a>
-              )
-            }
-          </li>
-          <li><a href="/schedule">Event Schedule</a></li>
-          <li><a href="/location">Event Location</a></li>
-          <li><a href="/gallery">Gallery</a></li>
-        </ul>
-      </details>
-      <details class="gb-menu">
-        <summary><span class="hot">G</span>M's</summary>
-        <!-- Mirrors Navbar.astro's GM'S menu. -->
-        <ul class="menu-list window">
-          <li><a href="/gm-info">GM Info</a></li>
-          <li><a href="/gm-submission">Game Submission</a></li>
-        </ul>
-      </details>
-      <button type="button" class="menubar-exit" data-look-exit>
-        <span class="hot">E</span>xit
-      </button>
-    </nav>
-  </header>
-
+<div class="home-h" data-look-only="h">
   <div class="gb-main">
     <section class="window gb-hero" aria-labelledby="h-hero-title">
       <div class="titlebar" aria-hidden="true">
@@ -485,29 +422,10 @@ const socials = [
     </section>
   </div>
 
-  <footer class="window statusbar">
-    <ul class="socials">
-      {
-        socials.map(({ href, label, icon }) => (
-          <li>
-            <a href={href} aria-label={label} {...external}>
-              <span class="icon" aria-hidden="true">
-                <Fragment set:html={icon} />
-              </span>
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-    <p>Contact us: <a href={`mailto:${site.email}`}>{site.email}</a></p>
-    <p class="copy">
-      © {new Date().getFullYear()} OZ ORC. All rights reserved.
-    </p>
-  </footer>
-
   <!-- Keep the command bar the last child of .home-h. It is sticky, not fixed,
-       so at the end of the page it parks under the status bar; moved earlier,
-       it covers the status bar. -->
+       so it parks at the end of .home-h. The status bar (GoldBoxChrome.astro)
+       sits after <main>, outside .home-h, so the bar can't reach it; moved
+       earlier, the bar covers the last windows. -->
   <nav class="cmdbar" aria-label="Commands">
     <a
       class="cmd cmd-primary"
@@ -527,47 +445,9 @@ const socials = [
 </div>
 
 <script>
-  import { createKonami } from '../lib/konami';
-
-  // Mirrored in Layout.astro's look-restore script, which can't import this.
-  const STORAGE_KEY = 'oz-look';
-  const LOOK = 'h';
+  import { LOOK_CHANGE, type LookChange } from '../lib/look';
 
   const root = document.documentElement;
-  const press = createKonami();
-  let ctx: AudioContext | undefined;
-
-  // C5 E5 G5 at 0.08 s each, then C6 for 0.3 s: 0.54 s in all.
-  const TUNE: [hz: number, seconds: number][] = [
-    [523.25, 0.08],
-    [659.25, 0.08],
-    [783.99, 0.08],
-    [1046.5, 0.3],
-  ];
-
-  // Browsers allow audio only from a user gesture, so this must run inside the
-  // keydown that completed the code — never on restore or Exit.
-  function playTune() {
-    ctx ??= new AudioContext();
-    void ctx.resume();
-    const start = ctx.currentTime;
-    const end = start + TUNE.reduce((sum, [, s]) => sum + s, 0);
-    const gain = ctx.createGain();
-    gain.gain.setValueAtTime(0, start);
-    gain.gain.linearRampToValueAtTime(0.05, start + 0.005);
-    gain.gain.exponentialRampToValueAtTime(0.0001, end);
-    gain.connect(ctx.destination);
-    const osc = ctx.createOscillator();
-    osc.type = 'square';
-    let at = start;
-    for (const [hz, seconds] of TUNE) {
-      osc.frequency.setValueAtTime(hz, at);
-      at += seconds;
-    }
-    osc.connect(gain);
-    osc.start(start);
-    osc.stop(end);
-  }
 
   // MailerLite's loader (Layout.astro) renders into the first .ml-embedded it
   // finds, so the one live form moves between the looks; a clone would leave
@@ -584,51 +464,17 @@ const socials = [
     if (form && record) record.append(form);
   }
 
-  function setStored(on: boolean) {
-    // Blocked storage throws; the look then lasts for this page only.
-    try {
-      if (on) sessionStorage.setItem(STORAGE_KEY, LOOK);
-      else sessionStorage.removeItem(STORAGE_KEY);
-    } catch {
-      /* stays page-only */
-    }
-  }
-
-  document.addEventListener('keydown', (e) => {
-    if (e.repeat || e.ctrlKey || e.altKey || e.metaKey) return;
-    if (e.key === 'Shift' || e.key === 'CapsLock') return;
-    const t = e.target;
-    if (
-      t instanceof HTMLElement &&
-      (t.isContentEditable || t.matches('input, textarea, select'))
-    )
-      return;
-    if (!press(e.key)) return;
-    if (!document.querySelector('.home-h') || root.dataset.look === LOOK)
-      return;
-    playTune();
-    setStored(true);
-    root.dataset.look = LOOK;
-    moveFormIntoH();
-    scrollTo(0, 0);
-    document.getElementById('h-hero-signup')?.focus();
-  });
-
-  document.addEventListener('click', (e) => {
-    const target = e.target as Element;
-    if (target.closest('[data-look-exit]')) {
-      setStored(false);
-      delete root.dataset.look;
-      moveFormBack();
-      scrollTo(0, 0);
-      document.getElementById('hero-signup')?.focus();
-    }
-    // Only one menubar dropdown open at a time; a click elsewhere closes them.
+  // Listens on every page, since view transitions keep this module loaded
+  // after leaving the homepage; the .home-h check keeps it out of the others.
+  document.addEventListener(LOOK_CHANGE, (e) => {
+    if (!document.querySelector('.home-h')) return;
+    const { look } = (e as LookChange).detail;
+    if (look === 'h') moveFormIntoH();
+    else moveFormBack();
     document
-      .querySelectorAll<HTMLDetailsElement>('.home-h .gb-menu[open]')
-      .forEach((menu) => {
-        if (!menu.contains(target)) menu.open = false;
-      });
+      .getElementById(look === 'h' ? 'h-hero-signup' : 'hero-signup')
+      ?.focus();
+    e.preventDefault();
   });
 
   // Arrow keys move the MAIN MENU cursor, like a game's main menu. Delegated,
@@ -647,7 +493,7 @@ const socials = [
 
   // Reloads and returns to the homepage start with F's markup in place.
   document.addEventListener('astro:page-load', () => {
-    if (root.dataset.look === LOOK && document.querySelector('.home-h'))
+    if (root.dataset.look === 'h' && document.querySelector('.home-h'))
       moveFormIntoH();
   });
 </script>

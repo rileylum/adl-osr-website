@@ -1,7 +1,12 @@
 /* Option H, "The Gold Box, Refined" — the Konami-code easter egg
-   (GoldBox.astro). Lifted from prototypes/oz-orc-look-h with only its goldbox
-   palette. Every rule is scoped to .home-h or to html[data-look='h'], so none
-   of it reaches F or the inner pages.
+   (GoldBoxChrome.astro, GoldBox.astro). Lifted from prototypes/oz-orc-look-h
+   with only its goldbox palette. Every rule is scoped to html[data-look='h'] or
+   to .home-h, so none of it reaches F. The html[data-look='h'] rules reach the
+   inner pages too: the tokens, the chrome, and the shared windows and buttons.
+
+   This file is unlayered, so every rule here beats every Tailwind and daisyUI
+   rule, whatever the specificity. Widen a rule to the inner pages only where
+   H needs it there: it overrides F's utilities on those elements.
 
    H's .btn, .hero, .menu and .stats are renamed .gb-btn, .gb-hero, .gb-menu
    and .gb-stats: daisyUI ships components under the prototype's names, and
@@ -31,28 +36,20 @@
   src: url('/fonts/ibm-plex-mono-latin-600.woff2') format('woff2');
 }
 
-/* ========== SHOW AND HIDE ========== */
+/* ========== SHOW AND HIDE ==========
+   (0,2,1). No H display rule matches in F, and none matches a
+   data-look-only="f" element in H, so nothing needs to outrank this. */
 
-.home-h {
-  display: none;
-}
-
-html[data-look='h'] .home-h {
-  display: block;
-}
-
-html[data-look='h'] .home-f,
-html[data-look='h'] body:has(.home-h) > :is(header, footer) {
+html:not([data-look='h']) [data-look-only='h'],
+html[data-look='h'] [data-look-only='f'] {
   display: none;
 }
 
 /* ========== TOKENS ==========
-   Page-wide while H is on, so the MailerLite form moved into H's dialog picks
-   them up too. Specificity (0,2,1) must stay above CommandBar's
-   html:has(#cmdbar) scroll padding (0,1,1): F's bar stays in the DOM while
-   hidden. */
+   Page-wide while H is on, so F's utilities and scoped styles on the inner
+   pages, and the MailerLite form moved into H's dialog, read them too. */
 
-html[data-look='h']:has(.home-h) {
+html[data-look='h'] {
   /* Windows 3.x (light) */
   --color-base-100: #008080;
   --color-base-200: #c0c0c0;
@@ -89,6 +86,14 @@ html[data-look='h']:has(.home-h) {
   --color-focus: var(--focus);
   --color-error-ink: #800000;
 
+  /* F's roles on the inner pages: the page-title strip and its module-code
+     tag, the keyed-number chips, and the keyed-title rule. */
+  --hero-bg: var(--titlebar-bg);
+  --hero-content: var(--titlebar-content);
+  --color-spot: var(--highlight);
+  --color-spot-content: var(--highlight-content);
+  --rule-heavy: 2px;
+
   --font-display: 'VT323', 'Courier New', monospace;
   --font-sans: 'IBM Plex Mono', ui-monospace, 'Courier New', monospace;
   /* Not --border: that is F's token, and the MailerLite form reads it. */
@@ -97,13 +102,18 @@ html[data-look='h']:has(.home-h) {
   --spacing-section: clamp(1.75rem, 4vw, 2.75rem);
   --gutter: clamp(0.75rem, 2.5vw, 1.5rem);
 
-  scroll-padding-block: 4.5rem 5rem;
   color-scheme: light;
+}
+
+/* Room for the homepage's sticky command bar. Only the homepage has one, so
+   the anchors on /schedule jump normally. */
+html[data-look='h']:has(.home-h) {
+  scroll-padding-block: 4.5rem 5rem;
 }
 
 @media (prefers-color-scheme: dark) {
   /* DOS EGA Gold Box (dark), with its double-line frame. */
-  html[data-look='h']:has(.home-h) {
+  html[data-look='h'] {
     --color-base-100: #000000;
     --color-base-200: #0000aa;
     --color-base-300: #aa5500;
@@ -139,7 +149,7 @@ html[data-look='h']:has(.home-h) {
   }
 }
 
-html[data-look='h']:has(.home-h) body {
+html[data-look='h'] body {
   background: var(--color-base-100);
   color: var(--color-base-content);
   font: 400 17px/1.6 var(--font-sans);
@@ -147,29 +157,10 @@ html[data-look='h']:has(.home-h) body {
 
 /* ========== BASE ========== */
 
-.home-h {
+html[data-look='h'] {
   & a {
     color: var(--link);
     text-underline-offset: 3px;
-  }
-
-  & h1,
-  & h2,
-  & h3 {
-    font-family: var(--font-display);
-    font-weight: 400;
-    line-height: 1.05;
-    margin: 0;
-  }
-
-  & p {
-    margin: 0 0 1em;
-  }
-
-  & ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
   }
 
   & :focus-visible {
@@ -196,12 +187,11 @@ html[data-look='h']:has(.home-h) body {
     height: 100%;
   }
 
-  & .gb-main {
-    max-width: 1160px;
-    margin: 0 auto;
-    padding: 1.25rem var(--gutter) 0;
-    display: grid;
-    gap: var(--spacing-section);
+  /* The chrome's own resets; the homepage's live under .home-h. */
+  & :is(.menubar, .statusbar) ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 
   /* ========== WINDOWS ========== */
@@ -231,12 +221,6 @@ html[data-look='h']:has(.home-h) body {
   & .tb-text {
     font: 400 clamp(1.9rem, 4vw, 2.25rem) / 1 var(--font-display);
     letter-spacing: 0.04em;
-  }
-
-  & .tb-aside {
-    margin-left: auto;
-    font: 400 1.35rem/1 var(--font-display);
-    letter-spacing: 0.06em;
   }
 
   & .ctl {
@@ -407,6 +391,87 @@ html[data-look='h']:has(.home-h) body {
   & .menu-list a.is-disabled:hover {
     background: none;
     color: var(--color-muted);
+  }
+
+  /* ========== FOOTER (status bar) ========== */
+
+  & .statusbar {
+    max-width: calc(1160px - 2 * var(--gutter));
+    margin: var(--spacing-section) auto 1.25rem;
+    width: calc(100% - 2 * var(--gutter));
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.5rem;
+    padding: 0.9rem 1.1rem;
+  }
+
+  & .statusbar p {
+    margin: 0;
+  }
+
+  & .socials {
+    display: flex;
+    gap: 0.6rem;
+  }
+
+  & .socials a {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    color: var(--color-secondary-content);
+    background: var(--color-secondary);
+    border: 2px solid var(--bevel-dark);
+    box-shadow:
+      inset -2px -2px var(--bevel-shadow),
+      inset 2px 2px var(--bevel-light);
+  }
+
+  & .socials .icon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  & .copy {
+    margin-left: auto;
+  }
+}
+
+/* ========== HOMEPAGE ========== */
+
+.home-h {
+  & h1,
+  & h2,
+  & h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1.05;
+    margin: 0;
+  }
+
+  & p {
+    margin: 0 0 1em;
+  }
+
+  & ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  & .gb-main {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 1.25rem var(--gutter) 0;
+    display: grid;
+    gap: var(--spacing-section);
+  }
+
+  & .tb-aside {
+    margin-left: auto;
+    font: 400 1.35rem/1 var(--font-display);
+    letter-spacing: 0.06em;
   }
 
   /* ========== HERO (title screen) ========== */
@@ -782,50 +847,6 @@ html[data-look='h']:has(.home-h) body {
     padding: 0 0.4rem 0.5rem calc(1ch + 1.1rem);
   }
 
-  /* ========== FOOTER (status bar) ========== */
-
-  & .statusbar {
-    max-width: calc(1160px - 2 * var(--gutter));
-    margin: var(--spacing-section) auto 1.25rem;
-    width: calc(100% - 2 * var(--gutter));
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.75rem 1.5rem;
-    padding: 0.9rem 1.1rem;
-  }
-
-  & .statusbar p {
-    margin: 0;
-  }
-
-  & .socials {
-    display: flex;
-    gap: 0.6rem;
-  }
-
-  & .socials a {
-    display: grid;
-    place-items: center;
-    width: 3rem;
-    height: 3rem;
-    color: var(--color-secondary-content);
-    background: var(--color-secondary);
-    border: 2px solid var(--bevel-dark);
-    box-shadow:
-      inset -2px -2px var(--bevel-shadow),
-      inset 2px 2px var(--bevel-light);
-  }
-
-  & .socials .icon {
-    width: 1.5rem;
-    height: 1.5rem;
-  }
-
-  & .copy {
-    margin-left: auto;
-  }
-
   /* ========== COMMAND BAR ==========
      Sticky, not fixed, and the last child of .home-h: it rides the bottom of
      the viewport while scrolling, then parks below the status bar at the end,
@@ -880,7 +901,7 @@ html[data-look='h']:has(.home-h) body {
 /* ========== DARK ========== */
 
 @media (prefers-color-scheme: dark) {
-  .home-h {
+  html[data-look='h'] {
     & .window {
       box-shadow: none;
     }
@@ -888,12 +909,12 @@ html[data-look='h']:has(.home-h) body {
     & .sunken {
       box-shadow: inset 0 0 0 2px var(--color-base-300);
     }
+  }
 
-    /* The logo is black line art on alpha; flip it to read on the dark
-       window. */
-    & .logo {
-      filter: invert(1);
-    }
+  /* The logo is black line art on alpha; flip it to read on the dark
+     window. */
+  .home-h .logo {
+    filter: invert(1);
   }
 }
 
@@ -909,35 +930,34 @@ html[data-look='h']:has(.home-h) body {
     & .expect {
       grid-template-columns: 1fr;
     }
+  }
 
-    & .copy {
-      margin-left: 0;
-    }
+  html[data-look='h'] .copy {
+    margin-left: 0;
   }
 }
 
 /* Phones: one flat window per section. Frames drop to one line, inner panels
    lose their bevels and boxes, and type grows so it reads at arm's length. */
 @media (max-width: 600px) {
-  html[data-look='h']:has(.home-h) {
+  html[data-look='h'] {
     --gutter: 0.6rem;
     --spacing-section: 1.5rem;
   }
 
   @media (prefers-color-scheme: dark) {
-    html[data-look='h']:has(.home-h) {
+    html[data-look='h'] {
       --gb-border: 4px;
     }
   }
 
-  .home-h {
+  html[data-look='h'] {
     & .window {
       box-shadow: none;
       padding: 0;
     }
 
-    & .ctl,
-    & .tb-aside {
+    & .ctl {
       display: none;
     }
 
@@ -957,6 +977,16 @@ html[data-look='h']:has(.home-h) body {
 
     & .menubar-name .short {
       display: inline;
+    }
+
+    & .statusbar {
+      padding: 0.9rem 1rem;
+    }
+  }
+
+  .home-h {
+    & .tb-aside {
+      display: none;
     }
 
     & .gb-hero .titlebar {
@@ -1085,10 +1115,6 @@ html[data-look='h']:has(.home-h) body {
       padding: 0;
     }
 
-    & .statusbar {
-      padding: 0.9rem 1rem;
-    }
-
     & .cmdbar {
       justify-content: space-between;
       gap: 0;
@@ -1101,16 +1127,17 @@ html[data-look='h']:has(.home-h) body {
   }
 }
 
-/* The name, both menus and Exit don't fit below 375px. The home link goes, as
-   F's navbar does on the homepage: the homepage doesn't need one. */
+/* The name, both menus and Exit don't fit below 375px. The homepage drops
+   its home link, as F's navbar does there: it doesn't need one. The inner
+   pages keep the short name. */
 @media (max-width: 374px) {
-  .home-h .menubar-name {
+  html[data-look='h'] .menubar-name.is-home {
     display: none;
   }
 }
 
 @media (max-width: 360px) {
-  .home-h {
+  html[data-look='h'] {
     & .menubar {
       font-size: 1.55rem;
     }
@@ -1119,7 +1146,9 @@ html[data-look='h']:has(.home-h) body {
     & .menubar-exit {
       padding-inline: 0.55rem;
     }
+  }
 
+  .home-h {
     & .facts {
       font-size: 1rem;
     }
