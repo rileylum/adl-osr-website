@@ -36,7 +36,8 @@ const { primary } = funnel;
       <div class="art-frame">
         {
           /* The logo is black line art and this panel is cream in both modes,
-            so it is never inverted. */
+            so it is never inverted. index.astro preloads it: change srcset or
+            sizes there too, or the image downloads twice. */
         }
         <img
           src="/images/OZORC_Dungeon-500w.webp"
