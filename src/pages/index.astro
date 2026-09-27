@@ -43,6 +43,17 @@ const [title, description] = !currentEvent
 ---
 
 <Layout title={title} description={description} showLogo={false}>
+  <!-- Must match the cover logo's srcset and sizes (Cover.astro), or the
+       browser preloads one width and then fetches another for the <img>. -->
+  <link
+    slot="head"
+    rel="preload"
+    as="image"
+    href="/images/OZORC_Dungeon-500w.webp"
+    imagesrcset="/images/OZORC_Dungeon-500w.webp 500w, /images/OZORC_Dungeon-800w.webp 800w, /images/OZORC_Dungeon.webp 1200w"
+    imagesizes="(max-width: 859px) 230px, 560px"
+    fetchpriority="high"
+  />
   <!-- F's whole homepage body sits under one root, so a second look can hide
        it and mount its own markup in its place. -->
   <div class="home-f">

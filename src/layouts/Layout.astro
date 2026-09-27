@@ -29,12 +29,8 @@ const {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link
-      rel="preload"
-      as="image"
-      href="/images/OZORC_Dungeon-500w.webp"
-      fetchpriority="high"
-    />
+    <!-- Page-specific head tags, such as the homepage's LCP preload. -->
+    <slot name="head" />
     <!-- Both faces are on the first screen of every page. -->
     <link
       rel="preload"
