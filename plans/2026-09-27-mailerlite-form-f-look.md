@@ -229,15 +229,15 @@ against a built preview, run in Done when. What each run must show:
 
 Start with `npx astro build && npx astro preview`, then run against its URL:
 
-- [ ] `node scripts/visual/layout.mjs <url>` exits 0, including the new error and
+- [x] `node scripts/visual/layout.mjs <url>` exits 0, including the new error and
       success lines.
 - [ ] For each of `light` and `dark`, at widths `320` and `1280`:
       `node scripts/visual/pixc.mjs <url>/ <w> <mode>`, then the same with `error`, then
       with `success`. All 12 runs exit 0.
-- [ ] Sanity check that pixc sees the form: temporarily set `--color-error-ink` to
+- [x] Sanity check that pixc sees the form: temporarily set `--color-error-ink` to
       `#ff0000` in light, rerun `pixc … 320 light error`, and confirm it fails on the
       consent line. Revert.
-- [ ] In the browser, `getComputedStyle` of `.ml-embedded button.primary` shows
+- [x] In the browser, `getComputedStyle` of `.ml-embedded button.primary` shows
       `rgb(245, 191, 31)` background and `0px` border-radius. This confirms the layer
       survived Astro's build.
 - [ ] `npm run lint`, `npm run format:check` and `npm test` pass. None of them runs on

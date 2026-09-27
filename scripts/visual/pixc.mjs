@@ -1,5 +1,6 @@
 // Worst real contrast of text over whatever is painted behind it, art included.
-// usage: node scripts/visual/pixc.mjs <url> [width] [light|dark]
+// usage: node scripts/visual/pixc.mjs <url> [width] [light|dark] [error|success]
+// The fourth argument puts the MailerLite form into that state first (mlform.mjs).
 // Prints the worst text element and up to four failures; exits 1 on any failure.
 //
 // Computed-style checks can't see CSS-mask art, rotated text or line clamps, so
@@ -7,14 +8,19 @@
 // screenshot, and compare each box's background to its text colour.
 import { chromium } from '/home/riley/.npm/_npx/86170c4cd1c5da32/node_modules/playwright/index.mjs';
 import sharp from 'sharp';
+import { setFormState } from './mlform.mjs';
 
 // Playwright's bundled browser is the wrong version on this machine.
 const CHROMIUM = '/usr/bin/chromium';
 
-const [url, width = '1280', mode = 'light'] = process.argv.slice(2);
-if (!url || !['light', 'dark'].includes(mode)) {
+const [url, width = '1280', mode = 'light', state] = process.argv.slice(2);
+if (
+  !url ||
+  !['light', 'dark'].includes(mode) ||
+  (state && !['error', 'success'].includes(state))
+) {
   console.error(
-    'usage: node scripts/visual/pixc.mjs <url> [width] [light|dark]'
+    'usage: node scripts/visual/pixc.mjs <url> [width] [light|dark] [error|success]'
   );
   process.exit(2);
 }
@@ -29,6 +35,7 @@ const page = await (
 ).newPage();
 await page.goto(url, { waitUntil: 'networkidle' });
 await page.waitForTimeout(600);
+if (state) await setFormState(page, state);
 
 // Measure and shoot in one tall viewport: a full-page screenshot re-lays-out vh
 // units, which would shift everything away from the boxes measured at normal
@@ -94,12 +101,17 @@ const items = await page.evaluate(() => {
   return out;
 });
 
-// Hide text, keep everything else, and shoot the page. Embeds (MailerLite)
-// pin their colours with more specific !important rules that beat `color`
-// here, so the fill colour is cleared too: they don't set it.
-await page.addStyleTag({
-  content:
-    '*, *::before, *::after { color: transparent !important; -webkit-text-fill-color: transparent !important; text-shadow: none !important; -webkit-text-stroke: 0 !important; caret-color: transparent !important; text-decoration-color: transparent !important; } svg { visibility: hidden !important; }',
+// Hide text, keep everything else, and shoot the page. The rule goes in a
+// cascade layer prepended to <head>: among !important declarations the
+// earliest-declared layer wins, and the MailerLite overrides are layered
+// !important, so an unlayered rule here would leave the form's text painted
+// and its glyphs would pollute the background samples. The fill colour is
+// cleared too, for embeds that set it.
+await page.evaluate(() => {
+  const style = document.createElement('style');
+  style.textContent =
+    '@layer pixc-hide { *, *::before, *::after { color: transparent !important; -webkit-text-fill-color: transparent !important; text-shadow: none !important; -webkit-text-stroke: 0 !important; caret-color: transparent !important; text-decoration-color: transparent !important; } svg { visibility: hidden !important; } }';
+  document.head.prepend(style);
 });
 await page.waitForTimeout(200);
 const { data, info } = await sharp(await page.screenshot())
@@ -149,7 +161,7 @@ const fails = results
   .filter((r) => r.worst < r.need)
   .sort((a, b) => a.worst - b.worst);
 const min = results.sort((a, b) => a.worst / a.need - b.worst / b.need)[0];
-const path = new URL(url).pathname;
+const path = new URL(url).pathname + (state ? ` [${state}]` : '');
 console.log(
   `${path} @${width} ${mode}: fails=${fails.length} worst=${min.worst.toFixed(2)} (need ${min.need}) "${min.text}"`
 );

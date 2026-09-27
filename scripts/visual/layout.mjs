@@ -1,10 +1,12 @@
 // Layout checks over every route, in both colour schemes.
 // usage: node scripts/visual/layout.mjs <baseUrl>
-// - No sideways scroll: scrollWidth is 320 at a 320px viewport.
+// - No sideways scroll: scrollWidth is 320 at a 320px viewport, on every route
+//   and on `/` with the MailerLite form in its error and success states.
 // - On `/` at 390×844: the hero's Sign Up, a Discord link and a Facebook link
 //   sit fully inside the first screen and are not visibility: hidden.
 // Exits 1 on any failure. Contrast is pixc.mjs's job.
 import { chromium } from '/home/riley/.npm/_npx/86170c4cd1c5da32/node_modules/playwright/index.mjs';
+import { setFormState } from './mlform.mjs';
 
 // Playwright's bundled browser is the wrong version on this machine.
 const CHROMIUM = '/usr/bin/chromium';
@@ -50,6 +52,20 @@ for (const scheme of ['light', 'dark']) {
     if (!ok) failed++;
     console.log(
       `${ok ? 'ok  ' : 'FAIL'} ${scheme} ${route} scrollWidth@320=${scrollWidth}`
+    );
+    await context.close();
+  }
+
+  for (const state of ['error', 'success']) {
+    const { page, context } = await open('/', 320, 844, scheme);
+    await setFormState(page, state);
+    const scrollWidth = await page.evaluate(
+      () => document.documentElement.scrollWidth
+    );
+    const ok = scrollWidth === 320;
+    if (!ok) failed++;
+    console.log(
+      `${ok ? 'ok  ' : 'FAIL'} ${scheme} / [${state}] scrollWidth@320=${scrollWidth}`
     );
     await context.close();
   }

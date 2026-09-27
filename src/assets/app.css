@@ -55,6 +55,8 @@
   --band-content: #f4ead3;
   --surface-raised: #fbf4e3;
   --color-focus: #22170e;
+  /* Error text (the MailerLite form). daisyUI's --color-error fails on cream. */
+  --color-error-ink: #9b1c10;
 }
 
 /* Dark — Ember · Cream: the orange cover stays lit on a warm near-black page. */
@@ -102,6 +104,7 @@
   --band-content: #f3e7cf;
   --surface-raised: #221a11;
   --color-focus: #f5bf1f;
+  --color-error-ink: #ff8a70;
 }
 
 /* Self-hosted latin subsets of Google Fonts' Anton and Archivo (licence in
