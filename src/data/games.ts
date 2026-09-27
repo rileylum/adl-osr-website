@@ -6,6 +6,8 @@ export interface Game {
   warhornUrl: string;
   gm?: string;
   level?: string;
+  /** Unused: no component renders tags since the F redesign. Kept on
+   *  purpose, with its data, for a future filter or card treatment. */
   tags?: string[];
   /** The agenda session this game runs in, matched against an
    *  `AgendaRow.sessionNumber`. Replaces the rigid `slot: 1 | 2 | 3`. */
