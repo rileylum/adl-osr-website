@@ -5,7 +5,8 @@ dist/
 .astro/
 
 # dependencies
-node_modules/
+# no trailing slash, so it also matches a node_modules symlink in a git worktree
+node_modules
 
 # logs
 npm-debug.log*
