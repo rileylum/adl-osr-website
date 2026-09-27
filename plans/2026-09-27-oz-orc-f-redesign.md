@@ -21,7 +21,8 @@ Tokens and global styles:
 - `src/assets/app.css`: the `ozorc` / `ozorc-dark` daisyUI theme blocks, `@theme`, the
   `title-*` type scale and `logo-ink`. All colour and shape decisions land here.
 - `src/layouts/Layout.astro`: the `<head>` (font preloads go here) and the body shell.
-  The MailerLite loader script must stay untouched.
+  The MailerLite loader script must stay untouched. A `head` slot lets a page add its
+  own `<head>` tags.
 
 The seam (new):
 
@@ -31,8 +32,8 @@ The seam (new):
 
 Homepage (Phase 2):
 
-- `src/pages/index.astro`: the section order and the `alternating-sections` rule, which F
-  drops.
+- `src/pages/index.astro`: the logo preload, through Layout's `head` slot. Also the
+  section order and the `alternating-sections` rule, which F drops.
 - `src/components/Hero.astro`: replaced by a new `src/components/Cover.astro`. Its
   three-state tuple moves into `homeFunnel()`.
 - `src/components/CommandBar.astro` (new).
@@ -318,7 +319,10 @@ Follow the doc's **Page structure**, in order.
 - **Cover (`Cover.astro`).** Lift the prototype's `.cover` markup and CSS as scoped
   styles.
   - **The logo** stays an `<img>` of `/images/OZORC_Dungeon-*.webp`, keeping today's
-    `srcset`, `fetchpriority` and preload. It sits in the `--hero-panel` frame with no
+    `srcset` and `fetchpriority`. Its preload lives in `index.astro`, through Layout's
+    `head` slot, with an `imagesrcset` and `imagesizes` that match the `<img>`'s `srcset`
+    and `sizes`, so the image downloads once and inner pages don't fetch it (the
+    owner's decision after review round 1). It sits in the `--hero-panel` frame with no
     filter. The logo is black line art and the panel is cream in both modes. Don't port
     the prototype's mask-painted logo: it would load the 226 KB SVG for the page's LCP
     image.
