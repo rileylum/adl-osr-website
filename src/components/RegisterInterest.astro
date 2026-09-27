@@ -2,8 +2,9 @@
 // Register-interest / newsletter capture — MailerLite Universal embed (form
 // B6FVva). The account loader lives once in Layout's <head> per MailerLite's
 // guidance; universal.js renders this form into the .ml-embedded div and owns
-// its styling, validation, reCAPTCHA and double opt-in. Edit the form's copy,
-// fields and success message in the MailerLite dashboard, not here.
+// its behaviour — validation, reCAPTCHA, double opt-in — and its copy. This
+// file owns its look (the global style below). Edit the form's copy, fields
+// and success message in the MailerLite dashboard, not here.
 import Section from './ui/Section.astro';
 import SectionHeading from './ui/SectionHeading.astro';
 ---
@@ -62,5 +63,218 @@ import SectionHeading from './ui/SectionHeading.astro';
     appearance: none;
     flex-shrink: 1;
     vertical-align: baseline;
+  }
+
+  /* F's look for the MailerLite form. universal.js writes plain markup (not an
+     iframe) into .ml-embedded; these rules depend on its class names:
+
+       #mlb2-<id>.ml-form-embedContainer > .ml-form-align-center
+         > .ml-form-embedWrapper
+           .ml-form-embedBody.row-form
+             .ml-form-embedContent > h4, p
+             form.ml-block-form
+               .ml-field-group.ml-field-email > input[type=email]
+               .ml-form-embedPermissionsContent > p
+               .ml-form-checkboxRow > label.checkbox
+                 > input[type=checkbox] + .label-description > p
+               .ml-form-embedSubmit > button.primary, button.loading
+           .ml-form-successBody.row-success > .ml-form-successContent > h4, p
+       Error: MailerLite adds .ml-error to the email group and the consent row.
+
+     If MailerLite renames these classes, the form falls back to MailerLite's
+     own look. Nothing catches that at runtime; the visual checks, run by hand
+     against a build, catch it (scripts/visual/pixc.mjs with its error and
+     success states, and layout.mjs).
+
+     Why a layer and !important everywhere: MailerLite's rules are unlayered,
+     scoped by a generated ID (#mlb2-…), and often !important. A class selector
+     can't out-specify the ID, but a layered !important beats an unlayered
+     !important whatever the specificity. A layered normal declaration loses
+     to MailerLite's unlayered ones, so a line here without !important does
+     nothing. Removing the layer or any !important brings MailerLite's look
+     back. Never anchor on #mlb2-…: the ID changes with the form. */
+  @layer mailerlite-embed {
+    .ml-embedded .ml-form-embedWrapper {
+      display: block !important;
+      width: 100% !important;
+      max-width: none !important;
+      padding: 0 !important;
+      background: transparent !important;
+      border: 0 !important;
+      border-radius: 0 !important;
+    }
+
+    .ml-embedded .ml-form-embedBody,
+    .ml-embedded .ml-form-successBody {
+      padding: 0 !important;
+    }
+
+    .ml-embedded .ml-form-embedContent h4,
+    .ml-embedded .ml-form-successContent h4 {
+      font-family: var(--font-display) !important;
+      font-size: var(--text-2xl) !important;
+      line-height: var(--text-2xl--line-height) !important;
+      font-weight: 400 !important;
+      text-transform: none !important;
+      color: var(--color-base-content) !important;
+    }
+
+    .ml-embedded .ml-form-embedContent p,
+    .ml-embedded .ml-form-successContent p {
+      font-family: var(--font-sans) !important;
+      font-size: 1.0625rem !important;
+      line-height: 1.6 !important;
+      color: var(--color-base-content) !important;
+      /* The success copy ends in a bare Discord URL, which would push a 320px
+         page sideways. */
+      overflow-wrap: anywhere !important;
+    }
+
+    .ml-embedded .ml-form-successContent a {
+      color: var(--color-link) !important;
+      text-decoration: underline !important;
+      text-decoration-thickness: 2px !important;
+      text-underline-offset: 3px !important;
+    }
+
+    .ml-embedded .ml-field-group input {
+      background-color: var(--color-base-100) !important;
+      color: var(--color-base-content) !important;
+      border: var(--border) solid var(--color-rule) !important;
+      border-radius: 0 !important;
+      font-family: var(--font-sans) !important;
+      /* 16px or more, or iOS zooms the page on focus. */
+      font-size: 1.0625rem !important;
+      height: auto !important;
+      padding: 0.7rem 0.8rem !important;
+    }
+
+    .ml-embedded .ml-field-group input::placeholder {
+      color: var(--color-muted) !important;
+    }
+
+    .ml-embedded .ml-field-group input:focus-visible {
+      outline: 3px solid var(--color-focus) !important;
+      outline-offset: 3px !important;
+    }
+
+    .ml-embedded .ml-form-embedPermissionsContent p {
+      font-family: var(--font-sans) !important;
+      font-size: 0.9375rem !important;
+      line-height: 1.5 !important;
+      color: var(--color-muted) !important;
+    }
+
+    .ml-embedded .ml-form-checkboxRow label {
+      padding-left: 1.9rem !important;
+    }
+
+    .ml-embedded .ml-form-checkboxRow .label-description p {
+      font-family: var(--font-sans) !important;
+      font-size: 0.9375rem !important;
+      line-height: 1.5 !important;
+      color: var(--color-base-content) !important;
+    }
+
+    /* The drawn box and its tick. The top offset centres the 1.1rem box on the
+       first 1.5 × 0.9375rem text line. */
+    .ml-embedded .ml-form-checkboxRow .label-description::before,
+    .ml-embedded .ml-form-checkboxRow .label-description::after {
+      top: 0.15rem !important;
+      left: -1.9rem !important;
+      width: 1.1rem !important;
+      height: 1.1rem !important;
+      border-radius: 0 !important;
+    }
+
+    .ml-embedded .ml-form-checkboxRow .label-description::before {
+      border: 2px solid var(--color-rule) !important;
+      background-color: var(--color-base-100) !important;
+    }
+
+    .ml-embedded
+      .ml-form-checkboxRow
+      input:checked
+      ~ .label-description::before {
+      border-color: var(--color-rule) !important;
+      background-color: var(--color-primary) !important;
+    }
+
+    /* MailerLite's tick, filled dark: its white tick vanishes on yellow. */
+    .ml-embedded
+      .ml-form-checkboxRow
+      input:checked
+      ~ .label-description::after {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2322170e' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e") !important;
+    }
+
+    /* The real checkbox is invisible (opacity 0), so keyboard focus shows on
+       the drawn box or nowhere. */
+    .ml-embedded
+      .ml-form-checkboxRow
+      input:focus-visible
+      ~ .label-description::before {
+      outline: 3px solid var(--color-focus) !important;
+      outline-offset: 3px !important;
+    }
+
+    /* Matches the site's .btn.btn-primary.btn-lg as rendered; the loading
+       button replaces it while a request is in flight, so it wears the same
+       box. */
+    .ml-embedded .ml-form-embedSubmit button.primary,
+    .ml-embedded .ml-form-embedSubmit button.loading {
+      width: 100% !important;
+      min-height: 3rem !important;
+      padding: 0.5rem 1.25rem !important;
+      background-color: var(--color-primary) !important;
+      color: var(--color-primary-content) !important;
+      border: var(--border) solid var(--color-primary) !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      font-family: var(--font-sans) !important;
+      font-variation-settings: 'wdth' 70 !important;
+      font-weight: 800 !important;
+      font-size: 1.125rem !important;
+      line-height: 1.6 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.06em !important;
+    }
+
+    /* daisyUI's .btn:hover mix, at the site's depth 0. */
+    .ml-embedded .ml-form-embedSubmit button.primary:hover {
+      background-color: color-mix(
+        in oklab,
+        var(--color-primary),
+        #000 7%
+      ) !important;
+      border-color: color-mix(
+        in oklab,
+        var(--color-primary),
+        #000 7%
+      ) !important;
+    }
+
+    /* MailerLite's white spinner vanishes on yellow. */
+    .ml-embedded .ml-form-embedSubmitLoad::after {
+      border-color: var(--color-primary-content) var(--color-primary-content)
+        var(--color-primary-content) transparent !important;
+    }
+
+    /* The thicker rule is a cue that doesn't rely on hue alone. */
+    .ml-embedded .ml-error input {
+      border-color: var(--color-error-ink) !important;
+      box-shadow: inset 0 0 0 2px var(--color-error-ink) !important;
+    }
+
+    /* MailerLite colours the first letter separately, so it needs its own
+       rule or it stays #ff0000. */
+    .ml-embedded .ml-error .label-description p,
+    .ml-embedded .ml-error .label-description p::first-letter {
+      color: var(--color-error-ink) !important;
+    }
+
+    .ml-embedded .ml-error .label-description::before {
+      border: var(--border) solid var(--color-error-ink) !important;
+    }
   }
 </style>
