@@ -332,9 +332,12 @@ html[data-look='h'] {
     border: 0;
   }
 
+  /* white-space: F's heads don't wrap, and at 320px "Modern D&D (5e)" then
+     pushes /what-is-osr's table past its scroll box, clipping the text. */
   & .table thead th {
     background: var(--titlebar-bg);
     color: var(--titlebar-content);
+    white-space: normal;
   }
 
   /* Shared with the homepage's help log and inventory lists. */
@@ -1025,6 +1028,16 @@ html[data-look='h'] {
       margin-inline: calc(-1 * var(--page-pad));
     }
 
+    /* Plex Mono is wider than F's Archivo: at this size the longest words
+       ("improvisation", "storytelling") fit /what-is-osr's table in 320px. */
+    & .table {
+      font-size: 0.9375rem;
+    }
+
+    & .table :is(th, td) {
+      padding-inline: 0.4rem;
+    }
+
     & .ctl {
       display: none;
     }
@@ -1201,23 +1214,26 @@ html[data-look='h'] {
    its home link, as F's navbar does there: it doesn't need one. The inner
    pages keep the short name. */
 @media (max-width: 374px) {
-  html[data-look='h'] .menubar-name.is-home {
-    display: none;
-  }
-}
-
-@media (max-width: 360px) {
   html[data-look='h'] {
+    & .menubar-name.is-home {
+      display: none;
+    }
+
+    /* The inner pages' short name, both menus and Exit fit 320px with about
+       13px to spare; much larger, and the page scrolls sideways. */
     & .menubar {
-      font-size: 1.55rem;
+      font-size: 1.45rem;
+      gap: 0.5rem;
     }
 
     & .gb-menu summary,
     & .menubar-exit {
-      padding-inline: 0.55rem;
+      padding-inline: 0.45rem;
     }
   }
+}
 
+@media (max-width: 360px) {
   .home-h {
     & .facts {
       font-size: 1rem;
