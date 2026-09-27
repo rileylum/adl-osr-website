@@ -20,7 +20,7 @@ const { title, as: Tag = 'h2', subtitle } = Astro.props;
 
 {
   Tag === 'h1' ? (
-    <div class="cover-strip cover-frame">
+    <div class="cover-strip cover-frame" data-ui="page-title">
       <div class="module-code mb-2">
         <span class="label-caps">Convention Module</span>
         <span>{site.edition}</span>
@@ -34,7 +34,7 @@ const { title, as: Tag = 'h2', subtitle } = Astro.props;
       )}
     </div>
   ) : (
-    <div class="keyed mb-8">
+    <div class="keyed mb-8" data-ui="section-title">
       <h2 class="title-section keyed-title">{title}</h2>
       {subtitle && <p class="text-lg text-(--color-muted) mt-3">{subtitle}</p>}
       <slot />

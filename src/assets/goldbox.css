@@ -196,7 +196,8 @@ html[data-look='h'] {
 
   /* ========== WINDOWS ========== */
 
-  & .window {
+  & .window,
+  & [data-ui='page'] {
     background: var(--color-base-200);
     border: var(--gb-border) var(--frame-style) var(--frame);
     padding: 3px;
@@ -241,7 +242,9 @@ html[data-look='h'] {
     padding: clamp(1rem, 2.5vw, 1.75rem);
   }
 
-  & .sunken {
+  & .sunken,
+  & [data-ui='card'],
+  & [data-ui='read-aloud'] {
     background: var(--surface-raised);
     box-shadow:
       inset 1px 1px var(--bevel-shadow),
@@ -253,7 +256,8 @@ html[data-look='h'] {
 
   /* ========== BUTTONS ========== */
 
-  & .gb-btn {
+  & .gb-btn,
+  & .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -269,13 +273,17 @@ html[data-look='h'] {
       inset -2px -2px var(--bevel-shadow),
       inset 2px 2px var(--bevel-light);
     cursor: pointer;
+    /* daisyUI's .btn sets a fixed height. */
+    height: auto;
   }
 
-  & .gb-btn:active {
+  & .gb-btn:active,
+  & .btn:active {
     box-shadow: inset 2px 2px var(--bevel-shadow);
   }
 
-  & .gb-btn-primary {
+  & .gb-btn-primary,
+  & .btn-primary {
     background: var(--color-primary);
     color: var(--color-primary-content);
     box-shadow:
@@ -287,6 +295,69 @@ html[data-look='h'] {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
+  }
+
+  /* ========== INNER PAGES ==========
+     F's markup under H. Every text sits in the page window: black text on
+     light H's teal desktop reads about 4.4:1. */
+
+  /* One window per page, inset from the desktop's edges like the homepage's.
+     Tailwind's max-w-* still caps its width. */
+  & [data-ui='page'] {
+    --page-pad: clamp(1rem, 2.5vw, 1.75rem);
+    width: calc(100% - 2 * var(--gutter));
+    padding: 3px var(--page-pad) var(--page-pad);
+  }
+
+  /* The window's title bar: flush across its top, inside the bevel. The
+     margins undo SectionHeading's break-out to the cover's width. */
+  & [data-ui='page-title'] {
+    margin: 0 calc(3px - var(--page-pad)) var(--page-pad);
+    padding: 0.5rem 0.75rem 0.75rem;
+    border: 0;
+    box-shadow: none;
+  }
+
+  /* H's link colour is the title bar's colour in light mode. */
+  & [data-ui='page-title'] a {
+    color: inherit;
+  }
+
+  & [data-ui='section-title'] h2,
+  & [data-ui='card'] .title-card {
+    color: var(--heading);
+  }
+
+  & :is([data-ui='card'], [data-ui='read-aloud']) {
+    border: 0;
+  }
+
+  & .table thead th {
+    background: var(--titlebar-bg);
+    color: var(--titlebar-content);
+  }
+
+  /* Shared with the homepage's help log and inventory lists. */
+  & .home-h .faq summary,
+  & [data-ui='faq'] > summary {
+    font: 400 1.85rem/1.1 var(--font-display);
+    color: var(--heading);
+  }
+
+  & .home-h .faq summary:hover,
+  & [data-ui='faq'] > summary:hover {
+    background: var(--highlight);
+    color: var(--highlight-content);
+  }
+
+  & .home-h .inventory li::before,
+  & [data-ui='icon-list'] > li::before {
+    content: '\25BA';
+    position: absolute;
+    left: 0;
+    color: var(--color-muted);
+    font-size: 0.8em;
+    top: 0.2em;
   }
 
   /* ========== NAVBAR (menu bar) ========== */
@@ -758,15 +829,6 @@ html[data-look='h'] {
     margin-bottom: 0.35rem;
   }
 
-  & .inventory li::before {
-    content: '\25BA';
-    position: absolute;
-    left: 0;
-    color: var(--color-muted);
-    font-size: 0.8em;
-    top: 0.2em;
-  }
-
   & .msgbox {
     grid-column: 1 / -1;
     display: flex;
@@ -815,8 +877,6 @@ html[data-look='h'] {
     display: flex;
     gap: 0.7rem;
     padding: 0.7rem 0.4rem;
-    font: 400 1.85rem/1.1 var(--font-display);
-    color: var(--heading);
   }
 
   & .faq summary::-webkit-details-marker {
@@ -832,11 +892,6 @@ html[data-look='h'] {
 
   & .faq details[open] summary::before {
     content: '\2212';
-  }
-
-  & .faq summary:hover {
-    background: var(--highlight);
-    color: var(--highlight-content);
   }
 
   & .faq summary:hover::before {
@@ -902,11 +957,14 @@ html[data-look='h'] {
 
 @media (prefers-color-scheme: dark) {
   html[data-look='h'] {
-    & .window {
+    & .window,
+    & [data-ui='page'] {
       box-shadow: none;
     }
 
-    & .sunken {
+    & .sunken,
+    & [data-ui='card'],
+    & [data-ui='read-aloud'] {
       box-shadow: inset 0 0 0 2px var(--color-base-300);
     }
   }
@@ -952,9 +1010,19 @@ html[data-look='h'] {
   }
 
   html[data-look='h'] {
-    & .window {
+    & .window,
+    & [data-ui='page'] {
       box-shadow: none;
       padding: 0;
+    }
+
+    & [data-ui='page'] {
+      --page-pad: 1rem;
+      padding: 0 var(--page-pad) 1.25rem;
+    }
+
+    & [data-ui='page-title'] {
+      margin-inline: calc(-1 * var(--page-pad));
     }
 
     & .ctl {
@@ -965,7 +1033,9 @@ html[data-look='h'] {
       padding: 1.1rem 1rem 1.25rem;
     }
 
-    & .sunken {
+    & .sunken,
+    & [data-ui='card'],
+    & [data-ui='read-aloud'] {
       background: none;
       box-shadow: none;
       padding: 0;
