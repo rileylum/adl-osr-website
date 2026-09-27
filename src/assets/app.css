@@ -289,8 +289,8 @@
 }
 
 /* The "CONVENTION MODULE / OZ3" tag at a cover's top right: a kicker span,
-   then the code span. The two custom properties let the homepage cover set
-   it larger; a scoped class rule can't, as these child selectors outrank it. */
+   then the code span. The homepage cover sets it larger through the two
+   custom properties, which keep both sizes in one place. */
 @utility module-code {
   display: flex;
   flex-direction: column;
