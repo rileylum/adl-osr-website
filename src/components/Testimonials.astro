@@ -1,25 +1,21 @@
 ---
-
+import Section from './ui/Section.astro';
+import SectionHeading from './ui/SectionHeading.astro';
+import Card from './ui/Card.astro';
 ---
 
-<section class="py-20">
-  <div class="max-w-4xl mx-auto px-6">
-    <div class="text-center mb-12">
-      <h2 class="text-4xl font-bold mb-6">WHAT ATTENDEES SAY</h2>
-    </div>
+<Section>
+  <SectionHeading title="WHAT ATTENDEES SAY" />
 
-    <div class="grid gap-6">
-      <div class="card bg-base-200 shadow-sm">
-        <div class="card-body">
-          <p class="text-lg italic mb-4">
-            "Was great meeting you all! Just ran my first game last night and
-            enjoyed the chaos. Looking forward to gaining more experience.
-            Seeing the vibe at the last event, I know it's not as intimidating
-            as one might imagine."
-          </p>
-          <div class="text-sm text-base-content/70">— Will</div>
-        </div>
-      </div>
-    </div>
+  <div class="grid gap-6">
+    <Card>
+      <p class="text-lg italic mb-4">
+        "Was great meeting you all! Just ran my first game last night and
+        enjoyed the chaos. Looking forward to gaining more experience. Seeing
+        the vibe at the last event, I know it's not as intimidating as one might
+        imagine."
+      </p>
+      <div class="text-sm text-base-content/70">— Will</div>
+    </Card>
   </div>
-</section>
+</Section>

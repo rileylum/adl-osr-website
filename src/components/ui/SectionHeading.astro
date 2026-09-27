@@ -1,0 +1,26 @@
+---
+// The centred title block that opens a page or section. h1 for page titles,
+// h2 for homepage sections; the level picks the type role. Extra content
+// (event date and venue, etc.) goes in the slot below the subtitle.
+interface Props {
+  title: string;
+  as?: 'h1' | 'h2';
+  subtitle?: string;
+}
+
+const { title, as: Tag = 'h2', subtitle } = Astro.props;
+const hasMore = subtitle || Astro.slots.has('default');
+---
+
+<div class="text-center mb-12">
+  <Tag
+    class:list={[
+      Tag === 'h1' ? 'title-page' : 'title-section',
+      hasMore && 'mb-6',
+    ]}
+  >
+    {title}
+  </Tag>
+  {subtitle && <p class="text-lg text-base-content/70">{subtitle}</p>}
+  <slot />
+</div>

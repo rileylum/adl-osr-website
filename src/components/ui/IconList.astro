@@ -1,0 +1,30 @@
+---
+// Bulleted list with a primary-coloured glyph marker. Items are plain <li>s
+// in the slot, so they can hold links and inline markup.
+interface Props {
+  marker: 'check' | 'arrow';
+}
+
+const glyphs = { check: '✓', arrow: '→' };
+const { marker } = Astro.props;
+---
+
+<ul class="icon-list space-y-2" style={`--marker: '${glyphs[marker]}'`}>
+  <slot />
+</ul>
+
+<style>
+  /* Absolute marker rather than a flex row: flex would turn each text run and
+     inline element in an item into its own flex item and gap them apart. */
+  .icon-list :global(li) {
+    position: relative;
+    padding-left: 1.5em;
+  }
+
+  .icon-list :global(li)::before {
+    content: var(--marker);
+    position: absolute;
+    left: 0;
+    color: var(--color-primary);
+  }
+</style>

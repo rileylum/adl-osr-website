@@ -4,64 +4,63 @@
 // carousel and funnels GMs to the submission form while applications are
 // open, otherwise to Discord.
 import DiscordIcon from '../assets/discord.svg?raw';
+import Section from './ui/Section.astro';
+import SectionHeading from './ui/SectionHeading.astro';
+import ExternalLink from './ui/ExternalLink.astro';
 import { site } from '../data/site';
 import { currentEvent, gmApplications, nextEventWindow } from '../data/events';
 import { longDate } from '../lib/format';
 ---
 
-<section class="py-16">
-  <div class="max-w-3xl mx-auto px-4 sm:px-6 text-center">
-    <h2 class="text-3xl sm:text-4xl font-bold mb-4">GMS WANTED</h2>
-    {
-      currentEvent ? (
-        <Fragment>
-          <p class="text-lg mb-3">
-            The game lineup is being assembled right now. We're recruiting Game
-            Masters to run old-school and OSR games across our three sessions.
-          </p>
-          <p class="text-lg mb-8">
-            Want to run a table? Submit your game below — confirmed games will
-            appear here as they're locked in.
-          </p>
-        </Fragment>
-      ) : gmApplications ? (
-        <Fragment>
-          <p class="text-lg mb-3">
-            Want to run a table at OZ ORC in {nextEventWindow}? We welcome GMs
-            of every experience level.
-          </p>
-          <p class="text-lg mb-8">
-            GM applications are open until {longDate(gmApplications.closes)}.
-            Submit your game below, or join our Discord if you'd like to chat it
-            over first.
-          </p>
-        </Fragment>
-      ) : (
-        <Fragment>
-          <p class="text-lg mb-3">
-            Want to run a table at OZ ORC in {nextEventWindow}? We welcome GMs
-            of every experience level.
-          </p>
-          <p class="text-lg mb-8">
-            Game submissions open once the date is set. Join our Discord and
-            tell us what you'd like to run — we'll let you know first.
-          </p>
-        </Fragment>
-      )
-    }
-    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-      <a href="/gm-submission" class="btn btn-primary btn-lg">
-        {currentEvent || gmApplications ? 'Run a Game' : 'GM Submissions'}
-      </a>
-      <a
-        href={site.socials.discord}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="btn btn-outline btn-lg gap-2"
-      >
-        <Fragment set:html={DiscordIcon} />
-        Join our Discord
-      </a>
-    </div>
+<Section width="text" class="text-center">
+  <SectionHeading title="GMS WANTED" />
+  {
+    currentEvent ? (
+      <Fragment>
+        <p class="text-lg mb-3">
+          The game lineup is being assembled right now. We're recruiting Game
+          Masters to run old-school and OSR games across our three sessions.
+        </p>
+        <p class="text-lg mb-8">
+          Want to run a table? Submit your game below — confirmed games will
+          appear here as they're locked in.
+        </p>
+      </Fragment>
+    ) : gmApplications ? (
+      <Fragment>
+        <p class="text-lg mb-3">
+          Want to run a table at OZ ORC in {nextEventWindow}? We welcome GMs of
+          every experience level.
+        </p>
+        <p class="text-lg mb-8">
+          GM applications are open until {longDate(gmApplications.closes)}.
+          Submit your game below, or join our Discord if you'd like to chat it
+          over first.
+        </p>
+      </Fragment>
+    ) : (
+      <Fragment>
+        <p class="text-lg mb-3">
+          Want to run a table at OZ ORC in {nextEventWindow}? We welcome GMs of
+          every experience level.
+        </p>
+        <p class="text-lg mb-8">
+          Game submissions open once the date is set. Join our Discord and tell
+          us what you'd like to run — we'll let you know first.
+        </p>
+      </Fragment>
+    )
+  }
+  <div class="flex flex-col sm:flex-row gap-4 justify-center">
+    <a href="/gm-submission" class="btn btn-primary btn-lg">
+      {currentEvent || gmApplications ? 'Run a Game' : 'GM Submissions'}
+    </a>
+    <ExternalLink
+      href={site.socials.discord}
+      class="btn btn-outline btn-lg gap-2"
+    >
+      <Fragment set:html={DiscordIcon} />
+      Join our Discord
+    </ExternalLink>
   </div>
-</section>
+</Section>

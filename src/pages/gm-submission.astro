@@ -1,6 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import DiscordIcon from '../assets/discord.svg?raw';
+import Section from '../components/ui/Section.astro';
+import Card from '../components/ui/Card.astro';
+import ExternalLink from '../components/ui/ExternalLink.astro';
 import { site } from '../data/site';
 import { gmApplications, nextEventWindow } from '../data/events';
 import { longDate } from '../lib/format';
@@ -12,59 +15,53 @@ import { longDate } from '../lib/format';
     ? `Run a game at OZ ORC ${nextEventWindow}! GM applications are open until ${longDate(gmApplications.closes)} — submit your OSR or old-school D&D game. All experience levels welcome.`
     : `Run a game at OZ ORC ${nextEventWindow}! GM submissions aren't open yet — join our Discord to register your interest. All experience levels welcome.`}
 >
-  <div class="flex-1 bg-base-200 py-8">
-    <div class="max-w-4xl mx-auto px-4">
-      <h1 class="text-4xl font-bold text-center mb-8">Game Submission</h1>
-      {
-        !gmApplications && (
-          <div class="card bg-base-100 shadow-lg max-w-2xl mx-auto">
-            <div class="card-body text-center">
-              <h2 class="text-2xl font-bold mb-2">
-                Submissions for {nextEventWindow} aren't open yet
-              </h2>
-              <p class="text-lg mb-6">
-                Join our Discord and tell us what you'd like to run, or join the
-                mailing list to hear when submissions open.
-              </p>
-              <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a
-                  href={site.socials.discord}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="btn btn-primary gap-2"
-                >
-                  <Fragment set:html={DiscordIcon} />
-                  Join our Discord
-                </a>
-                <a href="/#register" class="btn btn-outline">
-                  Join the Mailing List
-                </a>
-              </div>
-            </div>
-          </div>
-        )
-      }
-      {
-        gmApplications && (
-          <div class="bg-base-100 rounded-lg shadow-lg p-4">
-            <p class="text-lg text-center mb-4">
-              Applications close {longDate(gmApplications.closes)}.
-            </p>
-            <iframe
-              src={gmApplications.formUrl}
-              width="100%"
-              height="1200"
-              frameborder="0"
-              marginheight="0"
-              marginwidth="0"
-              class="w-full"
-              style="max-height: 80vh;"
+  <Section page as="div">
+    <h1 class="title-page text-center mb-12">Game Submission</h1>
+    {
+      !gmApplications && (
+        <Card class="max-w-2xl mx-auto text-center">
+          <h2 class="title-card mb-2">
+            Submissions for {nextEventWindow} aren't open yet
+          </h2>
+          <p class="text-lg mb-6">
+            Join our Discord and tell us what you'd like to run, or join the
+            mailing list to hear when submissions open.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <ExternalLink
+              href={site.socials.discord}
+              class="btn btn-primary gap-2"
             >
-              Loading…
-            </iframe>
+              <Fragment set:html={DiscordIcon} />
+              Join our Discord
+            </ExternalLink>
+            <a href="/#register" class="btn btn-outline">
+              Join the Mailing List
+            </a>
           </div>
-        )
-      }
-    </div>
-  </div>
+        </Card>
+      )
+    }
+    {
+      gmApplications && (
+        <div class="bg-raised rounded-box shadow-sm p-4">
+          <p class="text-lg text-center mb-4">
+            Applications close {longDate(gmApplications.closes)}.
+          </p>
+          <iframe
+            src={gmApplications.formUrl}
+            width="100%"
+            height="1200"
+            frameborder="0"
+            marginheight="0"
+            marginwidth="0"
+            class="w-full"
+            style="max-height: 80vh;"
+          >
+            Loading…
+          </iframe>
+        </div>
+      )
+    }
+  </Section>
 </Layout>

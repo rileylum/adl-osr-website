@@ -56,11 +56,14 @@ const [title, description] = !currentEvent
      per section can put two of the same shade side by side. Alternate by
      position instead. `of :not(script)` skips the inline JSON-LD and module
      scripts some sections emit as siblings — plain :nth-child would count
-     them and break the pattern. Sections must not set their own bg-base-*. */
+     them and break the pattern. Sections must not set their own bg-base-*;
+     cards inside use bg-raised, which --surface-raised keeps contrasting. */
   .alternating-sections > :nth-child(odd of :not(script)) {
     background-color: var(--color-base-200);
+    --surface-raised: var(--color-base-100);
   }
   .alternating-sections > :nth-child(even of :not(script)) {
     background-color: var(--color-base-100);
+    --surface-raised: var(--color-base-200);
   }
 </style>

@@ -1,0 +1,39 @@
+---
+// Layout primitive: every page body and homepage section. Owns vertical rhythm
+// (py-section) and content width so components never set their own.
+interface Props {
+  width?: keyof typeof widths;
+  /** A page's top-level body: fills the height Layout's <main> leaves and
+   *  takes the page surface. Homepage sections leave it off — index.astro
+   *  alternates their backgrounds by position. */
+  page?: boolean;
+  as?: 'section' | 'div';
+  id?: string;
+  class?: string;
+}
+
+const widths = {
+  narrow: 'max-w-md',
+  text: 'max-w-3xl',
+  content: 'max-w-4xl',
+  wide: 'max-w-6xl',
+  full: 'max-w-7xl',
+};
+
+const {
+  width = 'content',
+  page = false,
+  as: Tag = 'section',
+  id,
+  class: className,
+} = Astro.props;
+---
+
+<Tag
+  id={id}
+  class:list={['py-section', page && 'flex-1 bg-base-200', className]}
+>
+  <div class:list={['mx-auto px-6', widths[width]]}>
+    <slot />
+  </div>
+</Tag>

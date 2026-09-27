@@ -3,6 +3,7 @@
 // doesn't exist until the next event is set. The slot holds the message; the
 // mailing list and Discord are the off-season funnels.
 import DiscordIcon from '../assets/discord.svg?raw';
+import ExternalLink from './ui/ExternalLink.astro';
 import { site } from '../data/site';
 
 interface Props {
@@ -18,19 +19,14 @@ const { title } = Astro.props;
 <div class="hero bg-base-200 flex-1">
   <div class="hero-content max-w-2xl text-center">
     <div>
-      <h1 class="text-5xl font-bold mb-6">{title}</h1>
+      <h1 class="title-page mb-6">{title}</h1>
       <p class="text-lg mb-8"><slot /></p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
         <a href="/#register" class="btn btn-primary">Join the Mailing List</a>
-        <a
-          href={site.socials.discord}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="btn btn-outline gap-2"
-        >
+        <ExternalLink href={site.socials.discord} class="btn btn-outline gap-2">
           <Fragment set:html={DiscordIcon} />
           Join our Discord
-        </a>
+        </ExternalLink>
       </div>
     </div>
   </div>

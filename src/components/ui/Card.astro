@@ -1,0 +1,18 @@
+---
+// Content card on a raised surface. Use for prose and lists; GameCard and the
+// gallery tiles are media cards and build on daisyUI's .card directly.
+interface Props {
+  title?: string;
+  titleAs?: 'h2' | 'h3';
+  class?: string;
+}
+
+const { title, titleAs: Title = 'h2', class: className } = Astro.props;
+---
+
+<div class:list={['card bg-raised shadow-sm', className]}>
+  <div class="card-body">
+    {title && <Title class="title-card mb-4">{title}</Title>}
+    <slot />
+  </div>
+</div>
