@@ -899,8 +899,9 @@ html[data-look='h'] {
 
   /* ========== COMMAND BAR ==========
      Sticky, not fixed, and the last child of .home-h: it rides the bottom of
-     the viewport while scrolling, then parks below the status bar at the end,
-     so it can never cover the status bar or the last content. */
+     the viewport while scrolling, then parks at the end of .home-h, above the
+     status bar, which sits after <main>. Fixed, it would cover the status bar
+     and the last content. */
 
   & .cmdbar {
     position: sticky;
