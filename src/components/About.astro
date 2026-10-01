@@ -47,8 +47,15 @@ import { longDate } from '../lib/format';
       > to learn more about our commitment to creating a welcoming environment.
     </p>
     <figure class="illo">
+      {
+        /* The sizes values are the rendered widths: one column below 760px, half
+           the two-column text above it, capped at 526px. Change them with the
+           layout, or phones fetch a bigger file than they need. */
+      }
       <img
         src="/images/gallery/sep-2026/wrap-up-01.webp"
+        srcset="/images/gallery/sep-2026/wrap-up-01-480w.webp 480w, /images/gallery/sep-2026/wrap-up-01-720w.webp 720w, /images/gallery/sep-2026/wrap-up-01.webp 960w"
+        sizes="(min-width: 760px) min(50vw - 50px, 526px), calc(100vw - 54px)"
         alt="Wide view of the hall at OZ ORC, with players at tables between partition screens"
         width="959"
         height="722"
