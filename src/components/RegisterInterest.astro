@@ -109,7 +109,14 @@ import SectionHeading from './ui/SectionHeading.astro';
       padding: 0 !important;
     }
 
-    .ml-embedded .ml-form-embedContent h4,
+    /* The form's title repeats the section heading above it, and MailerLite
+       renders it as an <h4> under our <h2>, skipping a level. The dashboard
+       can't change the tag, so hide it. If the title comes back, give it
+       role="heading" aria-level="3" instead. */
+    .ml-embedded .ml-form-embedContent h4 {
+      display: none !important;
+    }
+
     .ml-embedded .ml-form-successContent h4 {
       font-family: var(--font-display) !important;
       font-size: var(--text-2xl) !important;
@@ -169,6 +176,10 @@ import SectionHeading from './ui/SectionHeading.astro';
       padding-left: 1.9rem !important;
     }
 
+    /* The div too, not just its <p>: the div holds only whitespace, but
+       MailerLite sets it in Open Sans, and Chrome downloads a font even for
+       whitespace. */
+    .ml-embedded .ml-form-checkboxRow .label-description,
     .ml-embedded .ml-form-checkboxRow .label-description p {
       font-family: var(--font-sans) !important;
       font-size: 0.9375rem !important;
