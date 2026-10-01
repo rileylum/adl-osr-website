@@ -293,6 +293,11 @@ python3 make-mask.py aldrovandi-winged-dragon.jpg dragon.webp 1600 0.30 0.66 \
   2750,380,4450,745 crop:300,400,4420,2933   # blank the upside-down caption; crop scan edges
 ```
 
+The shipped `public/art/dragon-mask.webp` was then re-encoded with lossy alpha, from
+523 KB to 243 KB, using sharp's `webp({ quality: 50, alphaQuality: 60, effort: 6 })`.
+At 2× zoom it can't be told apart from the lossless mask. At `alphaQuality: 40` the
+hatching starts to soften.
+
 ## Traps
 
 - **Relative `url()` inside a custom property** resolves against the stylesheet that
