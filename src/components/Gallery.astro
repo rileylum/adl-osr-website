@@ -1,153 +1,7 @@
 ---
 import Section from './ui/Section.astro';
 import SectionHeading from './ui/SectionHeading.astro';
-
-interface Photo {
-  src: string;
-  alt: string;
-}
-
-interface GallerySection {
-  title: string;
-  photos: Photo[];
-}
-
-// Newest event first. The mini con ran before the OZ ORC branding. Sep 2026 photos keep the order of the Facebook posts they
-// were sorted into (con-prep/con-photos/posts); file names are <post>-<nn>.
-const sep = (name: string, alt: string): Photo => ({
-  src: `/images/gallery/sep-2026/${name}.webp`,
-  alt,
-});
-const feb = (n: number, alt: string): Photo => ({
-  src: `/images/gallery/feb-2026/${String(n).padStart(2, '0')}.webp`,
-  alt,
-});
-const miniCon = (n: number, alt: string): Photo => ({
-  src: `/images/gallery/mini-con/${n}.webp`,
-  alt,
-});
-
-const sections: GallerySection[] = [
-  {
-    title: 'OZ ORC 2 — September 2026',
-    photos: [
-      sep(
-        'wrap-up-01',
-        'Wide view of the hall at OZ ORC, with players at tables between partition screens'
-      ),
-      sep(
-        'wrap-up-02',
-        'A game master in an OZ ORC shirt gives two thumbs up beside a table'
-      ),
-      sep('wrap-up-03', 'A smiling table of players takes a selfie mid-game'),
-      sep(
-        'wrap-up-04',
-        'A game master in a top hat runs a crowded table of players'
-      ),
-      sep(
-        'wrap-up-05',
-        'Players gathered around a table covered in maps and terrain'
-      ),
-      sep(
-        'wrap-up-06',
-        'A game master in a wizard hat leads a table of players'
-      ),
-      sep('wrap-up-07', 'A full table of players around a GM screen'),
-      sep(
-        'wrap-up-08',
-        'Players around a table with a hand-drawn map and figures'
-      ),
-      sep('wrap-up-09', 'A small table of players in a corner of the hall'),
-      sep(
-        'at-the-tables-01',
-        'Players racing toy cars around a road-map play mat at OZ ORC'
-      ),
-      sep(
-        'at-the-tables-02',
-        'Close-up of toy cars and flame effects on a road-map battle mat'
-      ),
-      sep(
-        'at-the-tables-03',
-        'Top-down view of a road-map game board covered in toy cars'
-      ),
-      sep(
-        'at-the-tables-04',
-        'Painted red-robed cultist miniatures among stone ruins on a grid mat'
-      ),
-      sep(
-        'at-the-tables-05',
-        'Painted miniatures fighting inside stone wall terrain on a grid mat'
-      ),
-      sep(
-        'at-the-tables-06',
-        'Painted beast-folk adventurer miniatures on a grid mat'
-      ),
-      sep(
-        'at-the-tables-07',
-        'A game master behind a painted GM screen at Table 3'
-      ),
-      sep(
-        'at-the-tables-08',
-        'Two players study their notes over a table of miniatures and terrain'
-      ),
-      sep(
-        'at-the-tables-09',
-        'A battle mat, GM screen and character sheets set out before play'
-      ),
-      sep(
-        'at-the-tables-10',
-        'A table set with a hand-drawn map, clipboards and character sheets'
-      ),
-    ],
-  },
-  {
-    title: 'OZ ORC 1 — February 2026',
-    photos: [
-      feb(
-        1,
-        'A game master in an OZ ORC shirt explains the adventure to a table of players, one in a wizard hat'
-      ),
-      feb(2, 'Players around a table near the doorway of the hall'),
-      feb(
-        3,
-        'Close-up of painted wizard and warrior miniatures beside a stone well on a grid mat'
-      ),
-      feb(4, 'A player in a wizard hat at a table mid-game'),
-      feb(
-        5,
-        'A smiling table of players, one in a wizard hat, turns to the camera'
-      ),
-      feb(6, 'Attendees mingling in the hall between sessions'),
-      feb(
-        7,
-        'A table of players poses behind a GM screen and their gaming gear'
-      ),
-    ],
-  },
-  {
-    title: 'Adelaide OSR/NSR Mini Con',
-    photos: [
-      miniCon(
-        1,
-        'Players enjoying old-school D&D gaming at OZ ORC Adelaide convention'
-      ),
-      miniCon(2, 'Game master running OSR tabletop RPG session at OZ ORC'),
-      miniCon(
-        3,
-        'Attendees playing classic tabletop games at Adelaide OSR convention'
-      ),
-      miniCon(4, 'Gaming tables setup at OZ ORC old-school gaming event'),
-      miniCon(5, 'Dice and character sheets during OSR game session at OZ ORC'),
-      miniCon(
-        6,
-        'Community gathering at OZ ORC Adelaide tabletop gaming convention'
-      ),
-      miniCon(7, 'Players engaged in dungeon crawl at OZ ORC OSR event'),
-      miniCon(8, 'Tabletop RPG gaming atmosphere at OZ ORC Adelaide'),
-      miniCon(9, 'Old-school D&D enthusiasts at OZ ORC gaming convention'),
-    ],
-  },
-];
+import { gallerySections, galleryLeadCount } from '../data/gallery';
 ---
 
 <Section page width="wide">
@@ -158,11 +12,11 @@ const sections: GallerySection[] = [
   />
 
   {
-    sections.map((section) => (
+    gallerySections.map((section, sectionIndex) => (
       <div class="mb-16">
         <SectionHeading title={section.title} />
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {section.photos.map((photo) => (
+          {section.photos.map((photo, photoIndex) => (
             <a
               href={photo.src}
               target="_blank"
@@ -177,7 +31,11 @@ const sections: GallerySection[] = [
                   alt={photo.alt}
                   width="959"
                   height="722"
-                  loading="lazy"
+                  loading={
+                    sectionIndex === 0 && photoIndex < galleryLeadCount
+                      ? 'eager'
+                      : 'lazy'
+                  }
                   decoding="async"
                   class="w-full h-full object-cover motion-safe:transition-transform motion-safe:duration-300 motion-safe:hover:scale-105"
                 />

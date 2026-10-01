@@ -6,6 +6,8 @@ import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import GoldBoxChrome from '../components/GoldBoxChrome.astro';
 import OrganizationSchema from '../components/schemas/OrganizationSchema.astro';
+import { gallerySections, galleryLeadCount } from '../data/gallery';
+import { gmApplications } from '../data/events';
 
 export interface Props {
   title: string;
@@ -22,6 +24,20 @@ const {
   type,
   showLogo = true,
 } = Astro.props;
+
+// Keyed by link path; read by the warm-on-hover script below.
+const warmups: Record<string, { images: string[]; origins: string[] }> = {
+  '/gallery/': {
+    images: gallerySections[0].photos
+      .slice(0, galleryLeadCount)
+      .map((p) => p.src),
+    origins: [],
+  },
+  '/gm-submission/': {
+    images: [],
+    origins: gmApplications ? [new URL(gmApplications.formUrl).origin] : [],
+  },
+};
 ---
 
 <!doctype html>
@@ -72,6 +88,39 @@ const {
     <meta name="generator" content={Astro.generator} />
     <SEO title={title} description={description} image={image} type={type} />
     <ViewTransitions />
+    <!-- The router already prefetches a page's HTML on hover; this warms what
+         loads after it. Google serves the form no-store, so a connection is
+         all it can warm. -->
+    <script is:inline define:vars={{ warmups }}>
+      (function () {
+        if (window.__warmWatcher) return;
+        window.__warmWatcher = 1;
+        var warmed = {};
+        function warm(e) {
+          var a = e.target.closest && e.target.closest('a[href]');
+          if (!a || a.origin !== location.origin) return;
+          var w = warmups[a.pathname];
+          if (!w) return;
+          w.images.forEach(function (src) {
+            if (warmed[src]) return;
+            warmed[src] = 1;
+            new Image().src = src;
+          });
+          w.origins.forEach(function (href) {
+            // The router drops this link on the next swap, so a later hover
+            // warms the connection again.
+            if (document.head.querySelector('link[href="' + href + '"]'))
+              return;
+            var l = document.createElement('link');
+            l.rel = 'preconnect';
+            l.href = href;
+            document.head.appendChild(l);
+          });
+        }
+        document.addEventListener('pointerover', warm);
+        document.addEventListener('focusin', warm);
+      })();
+    </script>
     <!-- MailerLite Universal — account loader, required on every page. Astro's
          view transitions swap the document and drop universal.js's injected
          script, so instead of loading once we (re)load it on every
