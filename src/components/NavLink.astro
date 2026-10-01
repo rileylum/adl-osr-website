@@ -9,12 +9,15 @@ const { text, url, disabled = false } = Astro.props;
 ---
 
 <li class={disabled ? 'disabled' : ''}>
-  <a
-    href={disabled ? undefined : url}
-    class={disabled ? 'opacity-50 cursor-not-allowed' : ''}
-    title={disabled ? 'Coming Soon' : undefined}
-    onclick={disabled ? 'event.preventDefault(); return false;' : undefined}
-  >
-    {text}
-  </a>
+  {
+    disabled ? (
+      // A span, not an <a> without href: crawlers and Lighthouse flag
+      // href-less anchors, and there's nowhere to go yet.
+      <span class="opacity-50 cursor-not-allowed" title="Coming Soon">
+        {text}
+      </span>
+    ) : (
+      <a href={url}>{text}</a>
+    )
+  }
 </li>

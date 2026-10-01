@@ -433,7 +433,8 @@ html[data-look='h'] {
     min-width: 16rem;
   }
 
-  & .menu-list a {
+  & .menu-list a,
+  & .menu-list .is-disabled {
     display: block;
     padding: 0.5rem 0.8rem;
     color: var(--color-base-content);
@@ -449,14 +450,9 @@ html[data-look='h'] {
   }
 
   /* No Warhorn link yet: muted rather than faded, so it still reads 4.5:1. */
-  & .menu-list a.is-disabled {
+  & .menu-list .is-disabled {
     color: var(--color-muted);
     cursor: not-allowed;
-  }
-
-  & .menu-list a.is-disabled:hover {
-    background: none;
-    color: var(--color-muted);
   }
 
   /* ========== FOOTER (status bar) ========== */
