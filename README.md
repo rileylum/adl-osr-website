@@ -122,6 +122,16 @@ npm test          # guards + formatters — catches bad event/game data
 npm run build     # outputs to ./dist/ — this is what goes live
 ```
 
+Then, in the Cloudflare dashboard, open the **`ozorc.com`** zone (not
+`oz-orc.com`) and go to **Caching → Configuration → Purge Everything**. Do this
+after the build finishes, never before.
+
+**Why the purge matters:** a Cache Rule ("Cache ozorc.com HTML") keeps every page
+at Cloudflare's edge for 2 hours. Without a purge, visitors get the old HTML for
+up to 2 hours. That old HTML points at `/_astro/` CSS and JS files the build has
+just deleted, so pages can load without styling. A page requested mid-build can
+also be cached half-written.
+
 Game images live in `public/` and are committed, so `git pull` brings them and
 the build copies them into `dist/`. Nothing needs moving by hand.
 
@@ -130,15 +140,17 @@ per region; every game's `session` matching an agenda row) will fail the build
 anyway, but the tests tell you _what_ is wrong in a fraction of the time.
 
 > **Note:** because the served directory is rewritten in place, the site can
-> serve incomplete content for the few seconds `npm run build` is running. That
-> is fine for a low-traffic site — just don't build while pointing someone at it.
+> serve incomplete content for the few seconds `npm run build` is running, and
+> Cloudflare may cache it. The purge after the build clears that.
 
 ### After publishing
 
 - Hard-refresh and confirm the homepage shows the **current** event's date, venue
   and CTA (sign-up vs register-interest depends on `warhornUrl` / `games`).
-- Check `/schedule` renders every session, and spot-check a game card image.
+- Check `/schedule/` renders every session, and spot-check a game card image.
 - `curl -s https://ozorc.com/sitemap-index.xml` to confirm the sitemap regenerated.
+- Run `curl -sI https://ozorc.com/ | grep -i cf-cache-status` twice. The second
+  run should print `HIT`. If both print `DYNAMIC`, the Cache Rule isn't applying.
 
 ---
 
