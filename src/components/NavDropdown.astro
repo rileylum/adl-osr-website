@@ -67,7 +67,8 @@ const { title, alignEnd = false } = Astro.props;
     border-top: 1px solid var(--band-content);
   }
 
-  .menu :global(a) {
+  .menu :global(a),
+  .menu :global(li > span) {
     display: block;
     padding: 0.65rem 1rem;
     color: var(--band-content);
