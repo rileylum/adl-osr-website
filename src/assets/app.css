@@ -109,9 +109,12 @@
 
 /* Self-hosted latin subsets of Google Fonts' Anton and Archivo (licence in
    public/fonts/OFL.txt). Archivo is one variable file: the label style needs
-   its narrow widths. */
+   its narrow widths.
+   Anton's family name isn't 'Anton' because MailerLite's form stylesheet
+   declares its own 'Anton' face. Under the shared name, the browser downloaded
+   theirs too (53 KB) whenever a page set text in Anton. Keep the name unique. */
 @font-face {
-  font-family: 'Anton';
+  font-family: 'OZ Anton';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
@@ -146,7 +149,7 @@
 @theme {
   /* Anton for titles, headings and stat numerals; Archivo for everything else. */
   --font-sans: 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-display: 'Anton', 'Impact', 'Arial Narrow', sans-serif;
+  --font-display: 'OZ Anton', 'Impact', 'Arial Narrow', sans-serif;
 
   /* Vertical padding of every page and homepage section (`py-section`). */
   --spacing-section: clamp(3rem, 7vw, 5rem);
