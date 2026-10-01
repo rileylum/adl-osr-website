@@ -84,7 +84,7 @@ describe('homeFunnel, registration open', () => {
   it('links GM applications with their closing day', () => {
     expect(funnel.gmLink).toEqual({
       label: 'GMs wanted: apply by November 30th',
-      href: '/gm-submission',
+      href: '/gm-submission/',
     });
   });
 

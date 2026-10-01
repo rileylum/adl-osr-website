@@ -91,7 +91,7 @@ export function homeFaqs({
       answer: gmApplications
         ? [
             `Yes! We welcome GMs of all experience levels and are currently recruiting GMs for our next event. Applications close ${longDate(gmApplications.closes)} — check out the `,
-            { text: 'Game Submission', href: '/gm-submission' },
+            { text: 'Game Submission', href: '/gm-submission/' },
             ' page to submit your game proposal.',
           ]
         : [

@@ -62,7 +62,7 @@ describe('homeFaqs', () => {
     expect(plainText(gm)).toContain('Applications close November 30th, 2026');
     expect(gm).toContainEqual({
       text: 'Game Submission',
-      href: '/gm-submission',
+      href: '/gm-submission/',
     });
   });
 });

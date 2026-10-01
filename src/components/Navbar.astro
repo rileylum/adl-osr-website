@@ -51,22 +51,22 @@ const { showLogo = true } = Astro.props;
     }
     <nav class="flex-1 flex justify-end items-center gap-1.5" aria-label="Main">
       <NavDropdown title="ATTEND">
-        <NavLink text="Code of Conduct" url="/code-of-conduct" />
+        <NavLink text="Code of Conduct" url="/code-of-conduct/" />
         <NavLink
           text="Event Signup"
           url={currentEvent?.warhornUrl ?? ''}
           disabled={!currentEvent?.warhornUrl}
         />
-        <NavLink text="Event Schedule" url="/schedule" />
-        <NavLink text="Event Location" url="/location" />
-        <NavLink text="Gallery" url="/gallery" />
+        <NavLink text="Event Schedule" url="/schedule/" />
+        <NavLink text="Event Location" url="/location/" />
+        <NavLink text="Gallery" url="/gallery/" />
       </NavDropdown>
       <!-- <NavDropdown title="INFO"> -->
       <!--   <NavLink text="What is OSR?" url="/what-is-osr" /> -->
       <!-- </NavDropdown> -->
       <NavDropdown title="GM'S" alignEnd={true}>
-        <NavLink text="GM Info" url="/gm-info" />
-        <NavLink text="Game Submission" url="/gm-submission" />
+        <NavLink text="GM Info" url="/gm-info/" />
+        <NavLink text="Game Submission" url="/gm-submission/" />
       </NavDropdown>
     </nav>
   </div>

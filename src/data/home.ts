@@ -153,7 +153,7 @@ export function homeFunnel({
     venue: currentEvent?.venue.name ?? 'Adelaide — venue TBC',
     gmLink: gmApplications && {
       label: `GMs wanted: apply by ${longDate(gmApplications.closes).split(',')[0]}`,
-      href: '/gm-submission',
+      href: '/gm-submission/',
     },
     hasGames: gameCount > 0,
   };
