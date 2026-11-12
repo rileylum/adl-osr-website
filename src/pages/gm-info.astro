@@ -9,6 +9,30 @@ import FaqItem from '../components/ui/FaqItem.astro';
 import { site } from '../data/site';
 import { gmApplications, nextEventWindow } from '../data/events';
 import { longDate } from '../lib/format';
+
+// Hand-curated from the Mini Con, Feb 2026 and Sep 2026 game lists, merging
+// variant spellings and grouping hacks under their parent game.
+const pastSystems = [
+  'Original Dungeons & Dragons',
+  'Old School Essentials',
+  'Basic Fantasy Role-Playing Game',
+  'Adventurer Conqueror King',
+  'Shadowdark',
+  'Dungeon Crawl Classics',
+  "Hero's Gambit",
+  'Cairn',
+  'Into the Odd',
+  'GLOG',
+  'Elfmaids & Octopi',
+  'Swyvers',
+  'Mörk Borg and its hacks (CY_BORG, Mörk Råtta)',
+  'Mothership',
+  'Forbidden Lands',
+  'Dragonbane',
+  'Cthulhu Now',
+  'Marvel Super Heroes',
+  'Cowpunchers Reloaded',
+];
 ---
 
 <Layout
@@ -23,6 +47,23 @@ import { longDate } from '../lib/format';
     />
 
     <div class="space-y-12">
+      <div id="systems">
+        <SectionHeading title="Systems We've Run" />
+        <Card>
+          <p class="mb-6">
+            Not sure if your game fits? Here are the systems GMs have run at
+            past cons. It's a guide, not a limit. If your game has an old-school
+            spirit, we'd love to hear about it.
+          </p>
+          <IconList
+            marker="arrow"
+            class="sm:columns-2 lg:columns-3 gap-x-8 *:break-inside-avoid"
+          >
+            {pastSystems.map((system) => <li>{system}</li>)}
+          </IconList>
+        </Card>
+      </div>
+
       <div>
         <SectionHeading title="Support & Resources" />
         <Card>
