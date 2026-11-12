@@ -3,14 +3,15 @@
 // in the slot, so they can hold links and inline markup.
 interface Props {
   marker: 'check' | 'arrow';
+  class?: string;
 }
 
 const glyphs = { check: '✓', arrow: '→' };
-const { marker } = Astro.props;
+const { marker, class: className } = Astro.props;
 ---
 
 <ul
-  class="icon-list space-y-2"
+  class:list={['icon-list space-y-2', className]}
   style={`--marker: '${glyphs[marker]}'`}
   data-ui="icon-list"
 >
